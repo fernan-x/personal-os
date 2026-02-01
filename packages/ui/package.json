@@ -1,0 +1,23 @@
+{
+  "name": "@personal-os/ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@mantine/core": "catalog:",
+    "react": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/react": "^19.0.0",
+    "@personal-os/tsconfig": "workspace:*",
+    "@personal-os/eslint-config": "workspace:*",
+    "eslint": "catalog:"
+  }
+}

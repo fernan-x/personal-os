@@ -1,0 +1,30 @@
+{
+  "name": "@personal-os/database",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "build": "tsc",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@prisma/client": "catalog:"
+  },
+  "devDependencies": {
+    "prisma": "catalog:",
+    "typescript": "catalog:",
+    "@personal-os/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@personal-os/eslint-config": "workspace:*",
+    "eslint": "catalog:"
+  }
+}

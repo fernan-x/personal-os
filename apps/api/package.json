@@ -1,0 +1,32 @@
+{
+  "name": "@personal-os/api",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "start:prod": "node dist/main",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@nestjs/core": "catalog:",
+    "@nestjs/common": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "@personal-os/database": "workspace:*",
+    "@personal-os/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "catalog:",
+    "@nestjs/schematics": "catalog:",
+    "@swc/cli": "catalog:",
+    "@swc/core": "catalog:",
+    "typescript": "catalog:",
+    "@personal-os/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "@personal-os/eslint-config": "workspace:*",
+    "eslint": "catalog:"
+  }
+}

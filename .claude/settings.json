@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm *)",
+      "Bash(node *)",
+      "Bash(npx *)",
+      "Bash(git *)",
+      "Bash(nest *)",
+      "Bash(prisma *)",
+      "Bash(vitest *)",
+      "Bash(eslint *)",
+      "Bash(tsx *)",
+      "Bash(mkdir *)",
+      "Bash(ls *)",
+      "Bash(rm -rf dist *)",
+      "Bash(rm -rf node_modules *)",
+      "Bash(cp *)",
+      "Bash(curl *)"
+    ]
+  }
+}
