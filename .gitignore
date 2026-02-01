@@ -30,5 +30,8 @@ packages/database/prisma/migrations/*.sql.bak
 npm-debug.log*
 pnpm-debug.log*
 
+# Docker
+docker-volumes/
+
 # Misc
 *.tsbuildinfo

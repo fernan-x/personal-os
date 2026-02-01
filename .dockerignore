@@ -1,0 +1,25 @@
+node_modules/
+dist/
+build/
+.git/
+coverage/
+
+.env
+.env.local
+.env.*.local
+
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+*.log
+npm-debug.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# Docker
+docker-compose*.yml
+.dockerignore

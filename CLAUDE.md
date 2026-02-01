@@ -35,6 +35,17 @@ pnpm db:push        # Push schema to DB
 pnpm db:studio      # Prisma Studio
 ```
 
+## Docker
+```bash
+docker compose up              # Dev: PostgreSQL + API (hot-reload) + Web (hot-reload)
+docker compose up --build      # Dev: rebuild images then start
+docker compose down            # Stop all dev containers
+docker compose down -v         # Stop and remove volumes (reset DB)
+
+docker compose -f docker-compose.prod.yml up --build   # Prod: built API + nginx SPA
+docker compose -f docker-compose.prod.yml down          # Stop prod containers
+```
+
 ## Conventions
 - Domain logic lives in `packages/domain` (pure TS, zero runtime deps)
 - Database access goes through `DatabaseService` (NestJS) or `prisma` singleton
