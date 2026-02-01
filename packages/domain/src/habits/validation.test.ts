@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateCreateHabit, isValidHabitFrequency } from "./validation.js";
+import { validateCreateHabit, isValidHabitFrequency } from "./validation.ts";
 
 describe("validateCreateHabit", () => {
   it("returns no errors for valid input", () => {

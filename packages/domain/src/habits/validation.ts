@@ -1,10 +1,10 @@
+import type { HabitFrequency } from "@personal-os/database";
 import {
   HABIT_FREQUENCIES,
   HABIT_NAME_MAX_LENGTH,
   HABIT_DESCRIPTION_MAX_LENGTH,
-} from "./constants.js";
-import type { HabitFrequency } from "./constants.js";
-import type { CreateHabitInput } from "./types.js";
+} from "./constants.ts";
+import type { CreateHabitInput } from "./types.ts";
 
 export function isValidHabitFrequency(value: string): value is HabitFrequency {
   return (HABIT_FREQUENCIES as readonly string[]).includes(value);

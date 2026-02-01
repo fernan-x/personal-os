@@ -13,6 +13,9 @@
     "build": "tsc",
     "lint": "eslint ."
   },
+  "dependencies": {
+    "@personal-os/database": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "catalog:",
     "@personal-os/tsconfig": "workspace:*",

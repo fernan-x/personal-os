@@ -240,6 +240,10 @@ importers:
         version: 5.9.3
 
   packages/domain:
+    dependencies:
+      '@personal-os/database':
+        specifier: workspace:*
+        version: link:../database
     devDependencies:
       '@personal-os/eslint-config':
         specifier: workspace:*

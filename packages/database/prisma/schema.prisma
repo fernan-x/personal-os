@@ -7,14 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum HabitFrequency {
+  daily
+  weekly
+  custom
+}
+
 model Habit {
-  id          String       @id @default(cuid())
+  id          String         @id @default(cuid())
   name        String
   description String?
-  frequency   String       @default("daily") // daily | weekly | custom
-  isActive    Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  frequency   HabitFrequency @default(daily)
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   entries     HabitEntry[]
 
   @@map("habits")

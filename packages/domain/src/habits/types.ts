@@ -1,13 +1,4 @@
-import type { EntityId, Timestamps } from "../common/index.js";
-import type { HabitFrequency } from "./constants.js";
-
-export interface HabitDto extends Timestamps {
-  id: EntityId;
-  name: string;
-  description: string | null;
-  frequency: HabitFrequency;
-  isActive: boolean;
-}
+import type { HabitFrequency } from "@personal-os/database";
 
 export interface CreateHabitInput {
   name: string;
@@ -15,17 +6,8 @@ export interface CreateHabitInput {
   frequency?: HabitFrequency;
 }
 
-export interface HabitEntryDto {
-  id: EntityId;
-  habitId: EntityId;
-  date: Date;
-  completed: boolean;
-  note: string | null;
-  createdAt: Date;
-}
-
 export interface LogHabitEntryInput {
-  habitId: EntityId;
+  habitId: string;
   date: Date;
   completed: boolean;
   note?: string;
