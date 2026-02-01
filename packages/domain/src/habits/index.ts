@@ -1,5 +1,5 @@
 export type { Habit, HabitEntry, HabitFrequency } from "@personal-os/database";
-export type { CreateHabitInput, LogHabitEntryInput } from "./types.ts";
+export type { CreateHabitInput, UpdateHabitInput, LogHabitEntryInput } from "./types.ts";
 export {
   HABIT_FREQUENCIES,
   HABIT_NAME_MAX_LENGTH,
@@ -8,6 +8,7 @@ export {
 } from "./constants.ts";
 export {
   validateCreateHabit,
+  validateUpdateHabit,
   isValidHabitFrequency,
 } from "./validation.ts";
 export type { ValidationError } from "./validation.ts";

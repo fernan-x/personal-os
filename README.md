@@ -16,3 +16,7 @@ modules/
   habits/
     MODULE.md
 ```
+
+```
+docker compose up --build -V
+```
