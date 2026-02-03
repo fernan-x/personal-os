@@ -10,23 +10,30 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@nestjs/core": "catalog:",
     "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "catalog:",
-    "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
     "@personal-os/database": "workspace:*",
-    "@personal-os/domain": "workspace:*"
+    "@personal-os/domain": "workspace:*",
+    "bcrypt": "^6.0.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "catalog:",
     "@nestjs/schematics": "catalog:",
+    "@personal-os/eslint-config": "workspace:*",
+    "@personal-os/tsconfig": "workspace:*",
     "@swc/cli": "catalog:",
     "@swc/core": "catalog:",
-    "typescript": "catalog:",
-    "@personal-os/tsconfig": "workspace:*",
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "^22.0.0",
-    "@personal-os/eslint-config": "workspace:*",
-    "eslint": "catalog:"
+    "@types/passport-jwt": "^4.0.1",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   }
 }

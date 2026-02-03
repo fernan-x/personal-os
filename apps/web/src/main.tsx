@@ -6,13 +6,16 @@ import { RouterProvider } from "react-router/dom";
 import { theme } from "./theme";
 import { router } from "./router";
 import { queryClient } from "./lib/query-client";
+import { AuthProvider } from "./contexts/auth-context";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme} defaultColorScheme="auto">
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </MantineProvider>
     </QueryClientProvider>
   </StrictMode>,

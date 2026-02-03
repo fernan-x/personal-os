@@ -10,28 +10,29 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@mantine/core": "catalog:",
+    "@mantine/form": "^7.17.0",
+    "@mantine/hooks": "catalog:",
+    "@personal-os/domain": "workspace:*",
+    "@personal-os/ui": "workspace:*",
+    "@tanstack/react-query": "^5.64.0",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-router": "catalog:",
-    "@mantine/core": "catalog:",
-    "@mantine/hooks": "catalog:",
-    "@tanstack/react-query": "^5.64.0",
-    "@mantine/form": "^7.17.0",
-    "@personal-os/domain": "workspace:*",
-    "@personal-os/ui": "workspace:*"
+    "react-router": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "@vitejs/plugin-react-swc": "catalog:",
-    "tailwindcss": "catalog:",
+    "@personal-os/eslint-config": "workspace:*",
+    "@personal-os/tsconfig": "workspace:*",
     "@tailwindcss/vite": "catalog:",
-    "postcss": "^8.5.0",
-    "postcss-preset-mantine": "^1.17.0",
+    "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@personal-os/tsconfig": "workspace:*",
-    "@personal-os/eslint-config": "workspace:*",
-    "eslint": "catalog:"
+    "@vitejs/plugin-react-swc": "catalog:",
+    "eslint": "catalog:",
+    "postcss": "^8.5.0",
+    "postcss-preset-mantine": "^1.17.0",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
   }
 }
