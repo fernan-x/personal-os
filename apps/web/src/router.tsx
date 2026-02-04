@@ -6,6 +6,10 @@ import { HomePage } from "./pages/home";
 import { HabitsPage } from "./pages/habits";
 import { LoginPage } from "./pages/login";
 import { RegisterPage } from "./pages/register";
+import { BudgetPage } from "./pages/budget/index";
+import { BudgetGroupPage } from "./pages/budget/group";
+import { BudgetPlanPage } from "./pages/budget/plan";
+import { BudgetTrackingPage } from "./pages/budget/tracking";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +28,10 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "habits", element: <HabitsPage /> },
+      { path: "budget", element: <BudgetPage /> },
+      { path: "budget/:groupId", element: <BudgetGroupPage /> },
+      { path: "budget/:groupId/plans/:planId", element: <BudgetPlanPage /> },
+      { path: "budget/:groupId/plans/:planId/tracking", element: <BudgetTrackingPage /> },
     ],
   },
 ]);

@@ -1,4 +1,5 @@
 import type { HabitFrequency } from "@personal-os/database";
+import type { ValidationError } from "../common/index.ts";
 import {
   HABIT_FREQUENCIES,
   HABIT_NAME_MAX_LENGTH,
@@ -8,11 +9,6 @@ import type { CreateHabitInput, UpdateHabitInput } from "./types.ts";
 
 export function isValidHabitFrequency(value: string): value is HabitFrequency {
   return (HABIT_FREQUENCIES as readonly string[]).includes(value);
-}
-
-export interface ValidationError {
-  field: string;
-  message: string;
 }
 
 export function validateCreateHabit(

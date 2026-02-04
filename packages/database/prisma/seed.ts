@@ -5,6 +5,18 @@ const prisma = new PrismaClient();
 
 const BCRYPT_ROUNDS = 10;
 
+const DEFAULT_CATEGORIES = [
+  { name: "Food", icon: "utensils" },
+  { name: "Transport", icon: "car" },
+  { name: "Housing", icon: "home" },
+  { name: "Utilities", icon: "bolt" },
+  { name: "Healthcare", icon: "heart" },
+  { name: "Entertainment", icon: "film" },
+  { name: "Shopping", icon: "shopping-cart" },
+  { name: "Savings", icon: "piggy-bank" },
+  { name: "Other", icon: "ellipsis" },
+];
+
 async function main() {
   const password = await hash("password123", BCRYPT_ROUNDS);
 
@@ -47,6 +59,22 @@ async function main() {
 
   const habits = await prisma.habit.findMany({ where: { userId: user.id } });
   console.log(`Seeded ${habits.length} habits`);
+
+  // Seed default expense categories
+  for (const category of DEFAULT_CATEGORIES) {
+    await prisma.expenseCategory.upsert({
+      where: { name: category.name },
+      update: {},
+      create: {
+        name: category.name,
+        icon: category.icon,
+        isDefault: true,
+      },
+    });
+  }
+
+  const categories = await prisma.expenseCategory.count();
+  console.log(`Seeded ${categories} expense categories`);
 }
 
 main()

@@ -14,6 +14,7 @@ import { useAuth } from "../contexts/auth-context";
 const navItems = [
   { label: "Home", path: "/" },
   { label: "Habits", path: "/habits" },
+  { label: "Budget", path: "/budget" },
 ];
 
 export function RootLayout() {

@@ -5,7 +5,7 @@ import {
   NAME_MAX_LENGTH,
 } from "./constants.ts";
 import type { RegisterUserInput, LoginInput } from "./types.ts";
-import type { ValidationError } from "../habits/validation.ts";
+import type { ValidationError } from "../common/index.ts";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
