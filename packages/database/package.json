@@ -8,11 +8,16 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset",
     "build": "tsc",
     "lint": "eslint ."
   },
@@ -21,6 +26,9 @@
   },
   "devDependencies": {
     "prisma": "catalog:",
+    "tsx": "^4.19.0",
+    "bcrypt": "^6.0.0",
+    "@types/bcrypt": "^6.0.0",
     "typescript": "catalog:",
     "@personal-os/tsconfig": "workspace:*",
     "@types/node": "^22.0.0",

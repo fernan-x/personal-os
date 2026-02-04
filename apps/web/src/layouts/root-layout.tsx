@@ -1,6 +1,15 @@
-import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Group,
+  NavLink,
+  Title,
+  Text,
+  Button,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Outlet, useNavigate, useLocation } from "react-router";
+import { useAuth } from "../contexts/auth-context";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -11,6 +20,12 @@ export function RootLayout() {
   const [opened, { toggle }] = useDisclosure();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
 
   return (
     <AppShell
@@ -19,9 +34,24 @@ export function RootLayout() {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Title order={3}>Personal OS</Title>
+        <Group h="100%" px="md" justify="space-between">
+          <Group>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Title order={3}>Personal OS</Title>
+          </Group>
+          <Group>
+            <Text size="sm" c="dimmed">
+              {user?.email}
+            </Text>
+            <Button variant="subtle" size="sm" onClick={handleLogout}>
+              Logout
+            </Button>
+          </Group>
         </Group>
       </AppShell.Header>
 

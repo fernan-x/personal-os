@@ -13,6 +13,8 @@
     "db:generate": "pnpm --filter @personal-os/database db:generate",
     "db:migrate": "pnpm --filter @personal-os/database db:migrate",
     "db:push": "pnpm --filter @personal-os/database db:push",
+    "db:seed": "pnpm --filter @personal-os/database db:seed",
+    "db:reset": "pnpm --filter @personal-os/database db:reset",
     "db:studio": "pnpm --filter @personal-os/database db:studio",
     "clean": "pnpm -r exec rm -rf dist node_modules .turbo && rm -rf node_modules"
   },
