@@ -11,4 +11,4 @@ export {
   validateUpdateHabit,
   isValidHabitFrequency,
 } from "./validation.ts";
-export type { ValidationError } from "./validation.ts";
+export type { ValidationError } from "../common/index.ts";

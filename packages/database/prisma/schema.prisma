@@ -17,6 +17,12 @@ model User {
   updatedAt DateTime @updatedAt
   habits    Habit[]
 
+  budgetMemberships BudgetMembership[]
+  incomes           Income[]
+  plannedExpenses   PlannedExpense[]
+  expenseShares     ExpenseShare[]
+  envelopeEntries   EnvelopeEntry[]
+
   @@map("users")
 }
 
@@ -53,4 +59,159 @@ model HabitEntry {
 
   @@unique([habitId, date])
   @@map("habit_entries")
+}
+
+// ── Budget ──────────────────────────────────────────────────────
+
+model BudgetGroup {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members BudgetMembership[]
+  plans   MonthlyPlan[]
+
+  @@map("budget_groups")
+}
+
+model BudgetMembership {
+  id        String   @id @default(cuid())
+  userId    String
+  groupId   String
+  createdAt DateTime @default(now())
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group BudgetGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@index([groupId])
+  @@map("budget_memberships")
+}
+
+model MonthlyPlan {
+  id        String   @id @default(cuid())
+  groupId   String
+  month     Int
+  year      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group     BudgetGroup      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  incomes   Income[]
+  expenses  PlannedExpense[]
+  envelopes Envelope[]
+
+  @@unique([groupId, month, year])
+  @@map("monthly_plans")
+}
+
+enum ExpenseScope {
+  personal
+  common
+}
+
+enum ExpenseRecurrence {
+  recurring
+  exceptional
+}
+
+enum ExpenseStatus {
+  pending
+  paid
+}
+
+model Income {
+  id            String   @id @default(cuid())
+  monthlyPlanId String
+  userId        String
+  source        String
+  amount        Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  monthlyPlan MonthlyPlan @relation(fields: [monthlyPlanId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([monthlyPlanId])
+  @@map("incomes")
+}
+
+model PlannedExpense {
+  id            String            @id @default(cuid())
+  monthlyPlanId String
+  userId        String?
+  name          String
+  amount        Int
+  scope         ExpenseScope      @default(personal)
+  recurrence    ExpenseRecurrence @default(recurring)
+  status        ExpenseStatus     @default(pending)
+  categoryId    String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  monthlyPlan MonthlyPlan      @relation(fields: [monthlyPlanId], references: [id], onDelete: Cascade)
+  user        User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  category    ExpenseCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  shares      ExpenseShare[]
+
+  @@index([monthlyPlanId])
+  @@map("planned_expenses")
+}
+
+model ExpenseShare {
+  id               String @id @default(cuid())
+  plannedExpenseId String
+  userId           String
+  percentage       Int
+
+  plannedExpense PlannedExpense @relation(fields: [plannedExpenseId], references: [id], onDelete: Cascade)
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([plannedExpenseId, userId])
+  @@map("expense_shares")
+}
+
+model ExpenseCategory {
+  id        String  @id @default(cuid())
+  name      String  @unique
+  icon      String?
+  isDefault Boolean @default(false)
+
+  expenses  PlannedExpense[]
+  envelopes Envelope[]
+
+  @@map("expense_categories")
+}
+
+model Envelope {
+  id              String   @id @default(cuid())
+  monthlyPlanId   String
+  categoryId      String
+  allocatedAmount Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  monthlyPlan MonthlyPlan     @relation(fields: [monthlyPlanId], references: [id], onDelete: Cascade)
+  category    ExpenseCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  entries     EnvelopeEntry[]
+
+  @@unique([monthlyPlanId, categoryId])
+  @@map("envelopes")
+}
+
+model EnvelopeEntry {
+  id         String   @id @default(cuid())
+  envelopeId String
+  userId     String
+  amount     Int
+  note       String?
+  date       DateTime @db.Date
+  createdAt  DateTime @default(now())
+
+  envelope Envelope @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([envelopeId])
+  @@map("envelope_entries")
 }

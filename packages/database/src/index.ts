@@ -10,5 +10,11 @@ if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
 
-export { PrismaClient, HabitFrequency } from "@prisma/client";
+export {
+  PrismaClient,
+  HabitFrequency,
+  ExpenseScope,
+  ExpenseRecurrence,
+  ExpenseStatus,
+} from "@prisma/client";
 export type * from "@prisma/client";
