@@ -10,6 +10,10 @@ import { BudgetPage } from "./pages/budget/index";
 import { BudgetGroupPage } from "./pages/budget/group";
 import { BudgetPlanPage } from "./pages/budget/plan";
 import { BudgetTrackingPage } from "./pages/budget/tracking";
+import { PuppyPage } from "./pages/puppy/index";
+import { HouseholdPage } from "./pages/puppy/household";
+import { PetPage } from "./pages/puppy/pet";
+import { TodayPage } from "./pages/puppy/today";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +36,10 @@ export const router = createBrowserRouter([
       { path: "budget/:groupId", element: <BudgetGroupPage /> },
       { path: "budget/:groupId/plans/:planId", element: <BudgetPlanPage /> },
       { path: "budget/:groupId/plans/:planId/tracking", element: <BudgetTrackingPage /> },
+      { path: "puppy", element: <PuppyPage /> },
+      { path: "puppy/:householdId", element: <HouseholdPage /> },
+      { path: "puppy/:householdId/today", element: <TodayPage /> },
+      { path: "puppy/:householdId/pets/:petId", element: <PetPage /> },
     ],
   },
 ]);

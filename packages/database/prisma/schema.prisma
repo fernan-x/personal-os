@@ -23,6 +23,10 @@ model User {
   expenseShares     ExpenseShare[]
   envelopeEntries   EnvelopeEntry[]
 
+  householdMemberships HouseholdMember[]
+  activityLogs         ActivityLog[]        @relation("ActivityLogUser")
+  checklistCompleted   DailyChecklistItem[] @relation("ChecklistCompletedBy")
+
   @@map("users")
 }
 
@@ -214,4 +218,211 @@ model EnvelopeEntry {
 
   @@index([envelopeId])
   @@map("envelope_entries")
+}
+
+// ── Puppy Tracker ───────────────────────────────────────────────
+
+enum ActivityType {
+  meal
+  walk
+  potty
+  sleep
+  grooming
+  medication
+  other
+}
+
+enum TrainingStatus {
+  not_started
+  in_progress
+  learned
+}
+
+enum MedicationFrequency {
+  once_daily
+  twice_daily
+  three_times_daily
+  weekly
+  as_needed
+}
+
+model Household {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members HouseholdMember[]
+  pets    Pet[]
+
+  @@map("households")
+}
+
+model HouseholdMember {
+  id          String   @id @default(cuid())
+  userId      String
+  householdId String
+  createdAt   DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, householdId])
+  @@index([householdId])
+  @@map("household_members")
+}
+
+model Pet {
+  id          String    @id @default(cuid())
+  householdId String
+  name        String
+  breed       String?
+  birthDate   DateTime? @db.Date
+  photoUrl    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  household          Household           @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  routineTemplates   RoutineTemplate[]
+  dailyChecklistItems DailyChecklistItem[]
+  activityLogs       ActivityLog[]
+  weightEntries      WeightEntry[]
+  vetVisits          VetVisit[]
+  vaccinations       Vaccination[]
+  medications        Medication[]
+  trainingMilestones TrainingMilestone[]
+
+  @@index([householdId])
+  @@map("pets")
+}
+
+model RoutineTemplate {
+  id        String       @id @default(cuid())
+  petId     String
+  name      String
+  time      String
+  type      ActivityType
+  sortOrder Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  pet            Pet                  @relation(fields: [petId], references: [id], onDelete: Cascade)
+  checklistItems DailyChecklistItem[]
+
+  @@index([petId])
+  @@map("routine_templates")
+}
+
+model DailyChecklistItem {
+  id            String    @id @default(cuid())
+  petId         String
+  templateId    String
+  date          DateTime  @db.Date
+  completed     Boolean   @default(false)
+  completedById String?
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+
+  pet         Pet              @relation(fields: [petId], references: [id], onDelete: Cascade)
+  template    RoutineTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  completedBy User?            @relation("ChecklistCompletedBy", fields: [completedById], references: [id], onDelete: SetNull)
+
+  @@unique([templateId, date])
+  @@index([petId])
+  @@map("daily_checklist_items")
+}
+
+model ActivityLog {
+  id       String       @id @default(cuid())
+  petId    String
+  userId   String
+  type     ActivityType
+  duration Int?
+  note     String?
+  loggedAt DateTime     @default(now())
+
+  pet  Pet  @relation(fields: [petId], references: [id], onDelete: Cascade)
+  user User @relation("ActivityLogUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([petId])
+  @@index([userId])
+  @@map("activity_logs")
+}
+
+model WeightEntry {
+  id        String   @id @default(cuid())
+  petId     String
+  weight    Int
+  date      DateTime @db.Date
+  createdAt DateTime @default(now())
+
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@unique([petId, date])
+  @@map("weight_entries")
+}
+
+model VetVisit {
+  id            String    @id @default(cuid())
+  petId         String
+  date          DateTime  @db.Date
+  reason        String
+  notes         String?
+  nextVisitDate DateTime? @db.Date
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@index([petId])
+  @@map("vet_visits")
+}
+
+model Vaccination {
+  id          String    @id @default(cuid())
+  petId       String
+  name        String
+  date        DateTime  @db.Date
+  nextDueDate DateTime? @db.Date
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@index([petId])
+  @@map("vaccinations")
+}
+
+model Medication {
+  id        String              @id @default(cuid())
+  petId     String
+  name      String
+  dosage    String
+  frequency MedicationFrequency
+  startDate DateTime            @db.Date
+  endDate   DateTime?           @db.Date
+  notes     String?
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@index([petId])
+  @@map("medications")
+}
+
+model TrainingMilestone {
+  id           String         @id @default(cuid())
+  petId        String
+  command      String
+  status       TrainingStatus @default(not_started)
+  dateAchieved DateTime?      @db.Date
+  notes        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@index([petId])
+  @@map("training_milestones")
 }
