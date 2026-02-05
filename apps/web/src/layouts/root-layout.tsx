@@ -15,6 +15,7 @@ const navItems = [
   { label: "Home", path: "/" },
   { label: "Habits", path: "/habits" },
   { label: "Budget", path: "/budget" },
+  { label: "Puppy", path: "/puppy" },
 ];
 
 export function RootLayout() {

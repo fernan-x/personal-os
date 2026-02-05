@@ -16,5 +16,8 @@ export {
   ExpenseScope,
   ExpenseRecurrence,
   ExpenseStatus,
+  ActivityType,
+  TrainingStatus,
+  MedicationFrequency,
 } from "@prisma/client";
 export type * from "@prisma/client";
