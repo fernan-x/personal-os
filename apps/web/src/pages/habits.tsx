@@ -27,10 +27,10 @@ export function HabitsPage() {
     <Stack>
       <Group justify="space-between" align="center">
         <div>
-          <Title>Habits</Title>
-          <Text c="dimmed">Track and build your daily habits.</Text>
+          <Title>Habitudes</Title>
+          <Text c="dimmed">Suivez et développez vos habitudes quotidiennes.</Text>
         </div>
-        <Button onClick={openCreate}>New Habit</Button>
+        <Button onClick={openCreate}>Nouvelle habitude</Button>
       </Group>
 
       {isLoading && (
@@ -40,14 +40,14 @@ export function HabitsPage() {
       )}
 
       {error && (
-        <Alert color="red" title="Error loading habits">
+        <Alert color="red" title="Erreur de chargement">
           {error.message}
         </Alert>
       )}
 
       {habits && habits.length === 0 && (
         <Text c="dimmed" ta="center" py="xl">
-          No habits yet. Create your first habit to get started!
+          Pas encore d'habitudes. Créez votre première habitude pour commencer !
         </Text>
       )}
 

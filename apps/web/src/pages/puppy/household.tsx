@@ -48,7 +48,7 @@ export function HouseholdPage() {
   }
 
   if (!household) {
-    return <Alert color="red">Household not found</Alert>;
+    return <Alert color="red">Foyer non trouvé</Alert>;
   }
 
   return (
@@ -56,14 +56,14 @@ export function HouseholdPage() {
       <Group justify="space-between" align="center">
         <div>
           <Title>{household.name}</Title>
-          <Text c="dimmed">Manage members and pets.</Text>
+          <Text c="dimmed">Gérez les membres et les animaux.</Text>
         </div>
         <Group>
           <Button onClick={() => navigate(`/puppy/${householdId}/today`)}>
-            Today
+            Aujourd'hui
           </Button>
           <Button variant="subtle" onClick={() => navigate("/puppy")}>
-            Back to households
+            Retour aux foyers
           </Button>
         </Group>
       </Group>
@@ -71,7 +71,7 @@ export function HouseholdPage() {
       {/* Members */}
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Text fw={500} size="lg" mb="sm">
-          Members
+          Membres
         </Text>
         <Stack gap="xs">
           {household.members.map((m) => (
@@ -80,7 +80,7 @@ export function HouseholdPage() {
                 {m.user.name || m.user.email}
                 {m.userId === user?.id && (
                   <Badge ml="xs" size="xs" variant="light">
-                    you
+                    vous
                   </Badge>
                 )}
               </Text>
@@ -101,14 +101,14 @@ export function HouseholdPage() {
           <form onSubmit={handleAddMember}>
             <Group mt="md" gap="xs">
               <TextInput
-                placeholder="Add member by email"
+                placeholder="Ajouter un membre par email"
                 value={email}
                 onChange={(e) => setEmail(e.currentTarget.value)}
                 style={{ flex: 1 }}
                 size="sm"
               />
               <Button type="submit" size="sm" loading={addMember.isPending}>
-                Add
+                Ajouter
               </Button>
             </Group>
           </form>
@@ -124,16 +124,16 @@ export function HouseholdPage() {
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Group justify="space-between" mb="sm">
           <Text fw={500} size="lg">
-            Pets
+            Animaux
           </Text>
           <Button size="sm" onClick={openPetModal}>
-            Add Pet
+            Ajouter un animal
           </Button>
         </Group>
 
         {household.pets.length === 0 && (
           <Text c="dimmed" ta="center" py="md">
-            No pets yet. Add your first pet!
+            Pas encore d'animaux. Ajoutez votre premier animal !
           </Text>
         )}
 
@@ -160,7 +160,7 @@ export function HouseholdPage() {
                   )}
                 </div>
                 <Button variant="subtle" size="xs">
-                  View
+                  Voir
                 </Button>
               </Group>
             </Card>

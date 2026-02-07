@@ -26,8 +26,8 @@ import { useAuth } from "../../contexts/auth-context";
 import { CreatePlanModal } from "../../components/budget/create-plan-modal";
 
 const MONTH_NAMES = [
-  "", "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre",
 ];
 
 export function BudgetGroupPage() {
@@ -59,7 +59,7 @@ export function BudgetGroupPage() {
   }
 
   if (!group) {
-    return <Alert color="red">Group not found</Alert>;
+    return <Alert color="red">Groupe non trouvé</Alert>;
   }
 
   return (
@@ -67,17 +67,17 @@ export function BudgetGroupPage() {
       <Group justify="space-between" align="center">
         <div>
           <Title>{group.name}</Title>
-          <Text c="dimmed">Manage members and monthly plans.</Text>
+          <Text c="dimmed">Gérez les membres et les plans mensuels.</Text>
         </div>
         <Button variant="subtle" onClick={() => navigate("/budget")}>
-          Back to groups
+          Retour aux groupes
         </Button>
       </Group>
 
       {/* Members */}
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Text fw={500} size="lg" mb="sm">
-          Members
+          Membres
         </Text>
         <Stack gap="xs">
           {group.members.map((m) => (
@@ -86,7 +86,7 @@ export function BudgetGroupPage() {
                 {m.user.name || m.user.email}
                 {m.userId === user?.id && (
                   <Badge ml="xs" size="xs" variant="light">
-                    you
+                    vous
                   </Badge>
                 )}
               </Text>
@@ -106,14 +106,14 @@ export function BudgetGroupPage() {
         <form onSubmit={handleAddMember}>
           <Group mt="md" gap="xs">
             <TextInput
-              placeholder="Add member by email"
+              placeholder="Ajouter un membre par email"
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
               style={{ flex: 1 }}
               size="sm"
             />
             <Button type="submit" size="sm" loading={addMember.isPending}>
-              Add
+              Ajouter
             </Button>
           </Group>
         </form>
@@ -128,16 +128,16 @@ export function BudgetGroupPage() {
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Group justify="space-between" mb="sm">
           <Text fw={500} size="lg">
-            Monthly Plans
+            Plans mensuels
           </Text>
           <Button size="sm" onClick={openPlanModal}>
-            New Plan
+            Nouveau plan
           </Button>
         </Group>
 
         {plans && plans.length === 0 && (
           <Text c="dimmed" ta="center" py="md">
-            No plans yet. Create your first monthly plan.
+            Pas encore de plan. Créez votre premier plan mensuel.
           </Text>
         )}
 
@@ -145,8 +145,8 @@ export function BudgetGroupPage() {
           <Table striped highlightOnHover>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Month</Table.Th>
-                <Table.Th>Year</Table.Th>
+                <Table.Th>Mois</Table.Th>
+                <Table.Th>Année</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>
@@ -163,7 +163,7 @@ export function BudgetGroupPage() {
                   <Table.Td>{plan.year}</Table.Td>
                   <Table.Td>
                     <Button variant="subtle" size="xs">
-                      View
+                      Voir
                     </Button>
                   </Table.Td>
                 </Table.Tr>

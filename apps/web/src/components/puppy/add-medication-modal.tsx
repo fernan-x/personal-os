@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useCreateMedication } from "../../hooks/use-puppy";
 import { MEDICATION_FREQUENCIES } from "@personal-os/domain";
 import type { MedicationFrequency } from "@personal-os/domain";
+import { MEDICATION_FREQUENCY_LABELS_FR } from "../../lib/labels";
 
 interface Props {
   householdId: string;
@@ -13,7 +14,7 @@ interface Props {
 
 const frequencyOptions = MEDICATION_FREQUENCIES.map((f) => ({
   value: f,
-  label: f.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase()),
+  label: MEDICATION_FREQUENCY_LABELS_FR[f] ?? f,
 }));
 
 export function AddMedicationModal({ householdId, petId, opened, onClose }: Props) {
@@ -51,16 +52,16 @@ export function AddMedicationModal({ householdId, petId, opened, onClose }: Prop
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Medication">
+    <Modal opened={opened} onClose={onClose} title="Ajouter un médicament">
       <form onSubmit={handleSubmit}>
         <Stack>
-          <TextInput label="Name" placeholder="e.g. Heartgard" value={name} onChange={(e) => setName(e.currentTarget.value)} required />
-          <TextInput label="Dosage" placeholder="e.g. 1 tablet" value={dosage} onChange={(e) => setDosage(e.currentTarget.value)} required />
-          <Select label="Frequency" data={frequencyOptions} value={frequency} onChange={(v) => v && setFrequency(v)} required />
-          <TextInput label="Start date" type="date" value={startDate} onChange={(e) => setStartDate(e.currentTarget.value)} required />
-          <TextInput label="End date" type="date" value={endDate} onChange={(e) => setEndDate(e.currentTarget.value)} />
-          <Textarea label="Notes" placeholder="Optional notes..." value={notes} onChange={(e) => setNotes(e.currentTarget.value)} />
-          <Button type="submit" loading={create.isPending}>Add</Button>
+          <TextInput label="Nom" placeholder="ex. Heartgard" value={name} onChange={(e) => setName(e.currentTarget.value)} required />
+          <TextInput label="Dosage" placeholder="ex. 1 comprimé" value={dosage} onChange={(e) => setDosage(e.currentTarget.value)} required />
+          <Select label="Fréquence" data={frequencyOptions} value={frequency} onChange={(v) => v && setFrequency(v)} required />
+          <TextInput label="Date de début" type="date" value={startDate} onChange={(e) => setStartDate(e.currentTarget.value)} required />
+          <TextInput label="Date de fin" type="date" value={endDate} onChange={(e) => setEndDate(e.currentTarget.value)} />
+          <Textarea label="Notes" placeholder="Notes optionnelles..." value={notes} onChange={(e) => setNotes(e.currentTarget.value)} />
+          <Button type="submit" loading={create.isPending}>Ajouter</Button>
         </Stack>
       </form>
     </Modal>

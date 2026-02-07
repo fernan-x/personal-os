@@ -25,9 +25,9 @@ export function BudgetPage() {
       <Group justify="space-between" align="center">
         <div>
           <Title>Budget</Title>
-          <Text c="dimmed">Manage your budget groups and monthly plans.</Text>
+          <Text c="dimmed">Gérez vos groupes de budget et plans mensuels.</Text>
         </div>
-        <Button onClick={open}>New Group</Button>
+        <Button onClick={open}>Nouveau groupe</Button>
       </Group>
 
       {isLoading && (
@@ -37,14 +37,14 @@ export function BudgetPage() {
       )}
 
       {error && (
-        <Alert color="red" title="Error loading groups">
+        <Alert color="red" title="Erreur de chargement">
           {error.message}
         </Alert>
       )}
 
       {groups && groups.length === 0 && (
         <Text c="dimmed" ta="center" py="xl">
-          No budget groups yet. Create one to get started!
+          Pas encore de groupe de budget. Créez-en un pour commencer !
         </Text>
       )}
 
@@ -73,7 +73,7 @@ export function BudgetPage() {
                 </Group>
               </div>
               <Badge variant="outline">
-                {group.members.length} member{group.members.length !== 1 ? "s" : ""}
+                {group.members.length} membre{group.members.length !== 1 ? "s" : ""}
               </Badge>
             </Group>
           </Card>

@@ -15,6 +15,7 @@ import {
 } from "../../hooks/use-puppy";
 import { TRAINING_STATUSES } from "@personal-os/domain";
 import type { TrainingStatus } from "@personal-os/domain";
+import { TRAINING_STATUS_LABELS_FR } from "../../lib/labels";
 
 interface Props {
   householdId: string;
@@ -29,7 +30,7 @@ const statusColors: Record<string, string> = {
 
 const statusOptions = TRAINING_STATUSES.map((s) => ({
   value: s,
-  label: s.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase()),
+  label: TRAINING_STATUS_LABELS_FR[s] ?? s,
 }));
 
 export function TrainingBoard({ householdId, petId }: Props) {
@@ -40,12 +41,12 @@ export function TrainingBoard({ householdId, petId }: Props) {
   const updateMilestone = useUpdateTrainingMilestone(householdId, petId);
   const deleteMilestone = useDeleteTrainingMilestone(householdId, petId);
 
-  if (isLoading) return <Text c="dimmed">Loading...</Text>;
+  if (isLoading) return <Text c="dimmed">Chargement...</Text>;
 
   if (!milestones || milestones.length === 0) {
     return (
       <Text c="dimmed" size="sm">
-        No training milestones yet. Add your first goal!
+        Aucun objectif de dressage. Ajoutez votre premier objectif !
       </Text>
     );
   }
@@ -58,7 +59,7 @@ export function TrainingBoard({ householdId, petId }: Props) {
     <Stack>
       <Group gap="sm">
         <Text fw={500}>
-          {learned}/{total} commands learned
+          {learned}/{total} commandes acquises
         </Text>
         <Progress value={progress} size="lg" style={{ flex: 1 }} color="green" />
       </Group>
@@ -81,7 +82,7 @@ export function TrainingBoard({ householdId, petId }: Props) {
               </Group>
               {milestone.dateAchieved && (
                 <Text size="xs" c="dimmed">
-                  Learned {new Date(milestone.dateAchieved).toLocaleDateString()}
+                  Acquis le {new Date(milestone.dateAchieved).toLocaleDateString("fr-FR")}
                 </Text>
               )}
               {milestone.notes && (

@@ -60,19 +60,19 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Edit Habit">
+    <Modal opened={opened} onClose={onClose} title="Modifier l'habitude">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
           <TextInput
-            label="Name"
-            placeholder="e.g. Morning meditation"
+            label="Nom"
+            placeholder="ex. Méditation matinale"
             maxLength={HABIT_NAME_MAX_LENGTH}
             required
             {...form.getInputProps("name")}
           />
           <Textarea
             label="Description"
-            placeholder="Optional description"
+            placeholder="Description optionnelle"
             maxLength={HABIT_DESCRIPTION_MAX_LENGTH}
             autosize
             minRows={2}
@@ -80,7 +80,7 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
             {...form.getInputProps("description")}
           />
           <Select
-            label="Frequency"
+            label="Fréquence"
             data={HABIT_FREQUENCIES.map((f) => ({ value: f, label: f }))}
             {...form.getInputProps("frequency")}
             onChange={(value) =>
@@ -88,7 +88,7 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
             }
           />
           <Button type="submit" loading={updateHabit.isPending}>
-            Save Changes
+            Enregistrer
           </Button>
         </Stack>
       </form>

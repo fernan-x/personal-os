@@ -14,6 +14,7 @@ import {
 } from "../../hooks/use-puppy";
 import { ACTIVITY_TYPES } from "@personal-os/domain";
 import type { ActivityType } from "@personal-os/domain";
+import { ACTIVITY_TYPE_LABELS_FR } from "../../lib/labels";
 
 interface Props {
   householdId: string;
@@ -21,10 +22,10 @@ interface Props {
 }
 
 const filterOptions = [
-  { value: "", label: "All types" },
+  { value: "", label: "Tous les types" },
   ...ACTIVITY_TYPES.map((t) => ({
     value: t,
-    label: t.charAt(0).toUpperCase() + t.slice(1),
+    label: ACTIVITY_TYPE_LABELS_FR[t] ?? t,
   })),
 ];
 
@@ -40,7 +41,7 @@ export function ActivityFeed({ householdId, petId }: Props) {
   return (
     <Stack>
       <Select
-        label="Filter by type"
+        label="Filtrer par type"
         data={filterOptions}
         value={typeFilter}
         onChange={(v) => setTypeFilter(v ?? "")}
@@ -49,11 +50,11 @@ export function ActivityFeed({ householdId, petId }: Props) {
         style={{ maxWidth: 200 }}
       />
 
-      {isLoading && <Text c="dimmed">Loading...</Text>}
+      {isLoading && <Text c="dimmed">Chargement...</Text>}
 
       {logs && logs.length === 0 && (
         <Text c="dimmed" size="sm">
-          No activities logged yet.
+          Aucune activité enregistrée.
         </Text>
       )}
 
@@ -76,7 +77,7 @@ export function ActivityFeed({ householdId, petId }: Props) {
               </Group>
               <Group gap="xs" wrap="nowrap">
                 <Text size="xs" c="dimmed">
-                  {new Date(log.loggedAt).toLocaleString()}
+                  {new Date(log.loggedAt).toLocaleString("fr-FR")}
                 </Text>
                 <Badge size="xs" variant="light">
                   {log.user.name || log.user.email}

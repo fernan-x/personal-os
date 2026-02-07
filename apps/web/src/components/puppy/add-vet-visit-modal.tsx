@@ -38,14 +38,14 @@ export function AddVetVisitModal({ householdId, petId, opened, onClose }: Props)
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Vet Visit">
+    <Modal opened={opened} onClose={onClose} title="Ajouter une visite vétérinaire">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput label="Date" type="date" value={date} onChange={(e) => setDate(e.currentTarget.value)} required />
-          <TextInput label="Reason" placeholder="e.g. Annual checkup" value={reason} onChange={(e) => setReason(e.currentTarget.value)} required />
-          <Textarea label="Notes" placeholder="Optional notes..." value={notes} onChange={(e) => setNotes(e.currentTarget.value)} />
-          <TextInput label="Next visit date" type="date" value={nextVisitDate} onChange={(e) => setNextVisitDate(e.currentTarget.value)} />
-          <Button type="submit" loading={create.isPending}>Add</Button>
+          <TextInput label="Motif" placeholder="ex. Bilan annuel" value={reason} onChange={(e) => setReason(e.currentTarget.value)} required />
+          <Textarea label="Notes" placeholder="Notes optionnelles..." value={notes} onChange={(e) => setNotes(e.currentTarget.value)} />
+          <TextInput label="Prochaine visite" type="date" value={nextVisitDate} onChange={(e) => setNextVisitDate(e.currentTarget.value)} />
+          <Button type="submit" loading={create.isPending}>Ajouter</Button>
         </Stack>
       </form>
     </Modal>

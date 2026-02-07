@@ -25,18 +25,18 @@ export function CreateHouseholdModal({ opened, onClose }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="New Household">
+    <Modal opened={opened} onClose={onClose} title="Nouveau foyer">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
-            label="Household name"
-            placeholder="e.g. Our Home"
+            label="Nom du foyer"
+            placeholder="ex. Notre maison"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
           <Button type="submit" loading={createHousehold.isPending}>
-            Create
+            Créer
           </Button>
         </Stack>
       </form>

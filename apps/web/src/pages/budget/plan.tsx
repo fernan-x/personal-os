@@ -17,8 +17,8 @@ import { ExpenseStep } from "../../components/budget/expense-step";
 import { SummaryView } from "../../components/budget/summary-view";
 
 const MONTH_NAMES = [
-  "", "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre",
 ];
 
 export function BudgetPlanPage() {
@@ -39,7 +39,7 @@ export function BudgetPlanPage() {
   }
 
   if (error || !plan) {
-    return <Alert color="red">Plan not found</Alert>;
+    return <Alert color="red">Plan non trouvé</Alert>;
   }
 
   return (
@@ -49,35 +49,35 @@ export function BudgetPlanPage() {
           <Title order={2}>
             {MONTH_NAMES[plan.month]} {plan.year}
           </Title>
-          <Text c="dimmed">Plan your monthly budget step by step.</Text>
+          <Text c="dimmed">Planifiez votre budget mensuel étape par étape.</Text>
         </div>
         <Group>
           <Button
             variant="subtle"
             onClick={() => navigate(`/budget/${groupId}`)}
           >
-            Back to group
+            Retour au groupe
           </Button>
           <Button
             onClick={() =>
               navigate(`/budget/${groupId}/plans/${planId}/tracking`)
             }
           >
-            Track Expenses
+            Suivi des dépenses
           </Button>
         </Group>
       </Group>
 
       <Stepper active={step} onStepClick={setStep}>
-        <Stepper.Step label="Incomes" description="Add income sources">
+        <Stepper.Step label="Revenus" description="Ajoutez vos sources de revenus">
           <IncomeStep groupId={groupId!} plan={plan} />
         </Stepper.Step>
 
-        <Stepper.Step label="Expenses" description="Plan your expenses">
+        <Stepper.Step label="Dépenses" description="Planifiez vos dépenses">
           <ExpenseStep groupId={groupId!} plan={plan} />
         </Stepper.Step>
 
-        <Stepper.Step label="Summary" description="Review your plan">
+        <Stepper.Step label="Résumé" description="Vérifiez votre plan">
           <SummaryView groupId={groupId!} planId={planId!} />
         </Stepper.Step>
       </Stepper>
@@ -85,11 +85,11 @@ export function BudgetPlanPage() {
       <Group justify="center" mt="md">
         {step > 0 && (
           <Button variant="default" onClick={() => setStep(step - 1)}>
-            Back
+            Retour
           </Button>
         )}
         {step < 2 && (
-          <Button onClick={() => setStep(step + 1)}>Next</Button>
+          <Button onClick={() => setStep(step + 1)}>Suivant</Button>
         )}
       </Group>
     </Stack>

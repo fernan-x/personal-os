@@ -50,30 +50,30 @@ export function IncomeStep({ groupId, plan }: Props) {
   return (
     <Stack>
       <Text fw={500} size="lg">
-        Incomes
+        Revenus
       </Text>
 
       <form onSubmit={handleAdd}>
         <Group gap="xs" align="end">
           <TextInput
             label="Source"
-            placeholder="e.g. Salary"
+            placeholder="ex. Salaire"
             value={source}
             onChange={(e) => setSource(e.currentTarget.value)}
             style={{ flex: 1 }}
           />
           <NumberInput
-            label="Amount"
-            placeholder="0.00"
+            label="Montant"
+            placeholder="0,00"
             value={amount}
             onChange={setAmount}
             min={0}
             decimalScale={2}
             fixedDecimalScale
-            prefix="$"
+            prefix="€"
           />
           <Button type="submit" loading={createIncome.isPending}>
-            Add
+            Ajouter
           </Button>
         </Group>
       </form>
@@ -83,8 +83,8 @@ export function IncomeStep({ groupId, plan }: Props) {
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Source</Table.Th>
-              <Table.Th>User</Table.Th>
-              <Table.Th ta="right">Amount</Table.Th>
+              <Table.Th>Utilisateur</Table.Th>
+              <Table.Th ta="right">Montant</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
@@ -93,7 +93,7 @@ export function IncomeStep({ groupId, plan }: Props) {
               <Table.Tr key={income.id}>
                 <Table.Td>{income.source}</Table.Td>
                 <Table.Td>{income.user.name || income.user.email}</Table.Td>
-                <Table.Td ta="right">${formatCents(income.amount)}</Table.Td>
+                <Table.Td ta="right">{formatCents(income.amount)} €</Table.Td>
                 <Table.Td>
                   <ActionIcon
                     color="red"
@@ -113,7 +113,7 @@ export function IncomeStep({ groupId, plan }: Props) {
                 <Text fw={600}>Total</Text>
               </Table.Td>
               <Table.Td ta="right">
-                <Text fw={600}>${formatCents(totalIncome)}</Text>
+                <Text fw={600}>{formatCents(totalIncome)} €</Text>
               </Table.Td>
               <Table.Td />
             </Table.Tr>

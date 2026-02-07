@@ -12,10 +12,10 @@ import { Outlet, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../contexts/auth-context";
 
 const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Habits", path: "/habits" },
+  { label: "Accueil", path: "/" },
+  { label: "Habitudes", path: "/habits" },
   { label: "Budget", path: "/budget" },
-  { label: "Puppy", path: "/puppy" },
+  { label: "Animaux", path: "/puppy" },
 ];
 
 export function RootLayout() {
@@ -51,7 +51,7 @@ export function RootLayout() {
               {user?.email}
             </Text>
             <Button variant="subtle" size="sm" onClick={handleLogout}>
-              Logout
+              Déconnexion
             </Button>
           </Group>
         </Group>

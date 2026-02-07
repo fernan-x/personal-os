@@ -76,63 +76,63 @@ export function ExpenseStep({ groupId, plan }: Props) {
   return (
     <Stack>
       <Text fw={500} size="lg">
-        Planned Expenses
+        Dépenses prévues
       </Text>
 
       <form onSubmit={handleAdd}>
         <Stack gap="xs">
           <Group gap="xs" align="end">
             <TextInput
-              label="Name"
-              placeholder="e.g. Rent"
+              label="Nom"
+              placeholder="ex. Loyer"
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
               style={{ flex: 1 }}
             />
             <NumberInput
-              label="Amount"
-              placeholder="0.00"
+              label="Montant"
+              placeholder="0,00"
               value={amount}
               onChange={setAmount}
               min={0}
               decimalScale={2}
               fixedDecimalScale
-              prefix="$"
+              prefix="€"
             />
           </Group>
           <Group gap="xs">
             <Select
-              label="Scope"
+              label="Portée"
               data={[
-                { value: "personal", label: "Personal" },
-                { value: "common", label: "Common" },
+                { value: "personal", label: "Personnel" },
+                { value: "common", label: "Commun" },
               ]}
               value={scope}
               onChange={setScope}
               style={{ flex: 1 }}
             />
             <Select
-              label="Recurrence"
+              label="Récurrence"
               data={[
-                { value: "recurring", label: "Recurring" },
-                { value: "exceptional", label: "Exceptional" },
+                { value: "recurring", label: "Récurrent" },
+                { value: "exceptional", label: "Exceptionnel" },
               ]}
               value={recurrence}
               onChange={setRecurrence}
               style={{ flex: 1 }}
             />
             <Select
-              label="Category"
+              label="Catégorie"
               data={categoryOptions}
               value={categoryId}
               onChange={setCategoryId}
               clearable
-              placeholder="Optional"
+              placeholder="Optionnel"
               style={{ flex: 1 }}
             />
           </Group>
           <Button type="submit" loading={createExpense.isPending}>
-            Add Expense
+            Ajouter la dépense
           </Button>
         </Stack>
       </form>
@@ -141,11 +141,11 @@ export function ExpenseStep({ groupId, plan }: Props) {
         <Table striped>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Paid</Table.Th>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Category</Table.Th>
-              <Table.Th>Scope</Table.Th>
-              <Table.Th ta="right">Amount</Table.Th>
+              <Table.Th>Payé</Table.Th>
+              <Table.Th>Nom</Table.Th>
+              <Table.Th>Catégorie</Table.Th>
+              <Table.Th>Portée</Table.Th>
+              <Table.Th ta="right">Montant</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
@@ -177,7 +177,7 @@ export function ExpenseStep({ groupId, plan }: Props) {
                     {expense.scope}
                   </Badge>
                 </Table.Td>
-                <Table.Td ta="right">${formatCents(expense.amount)}</Table.Td>
+                <Table.Td ta="right">{formatCents(expense.amount)} €</Table.Td>
                 <Table.Td>
                   <ActionIcon
                     color="red"
@@ -197,7 +197,7 @@ export function ExpenseStep({ groupId, plan }: Props) {
                 <Text fw={600}>Total</Text>
               </Table.Td>
               <Table.Td ta="right">
-                <Text fw={600}>${formatCents(totalExpenses)}</Text>
+                <Text fw={600}>{formatCents(totalExpenses)} €</Text>
               </Table.Td>
               <Table.Td />
             </Table.Tr>

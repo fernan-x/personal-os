@@ -30,17 +30,17 @@ export function RoutineSetup({ householdId, petId }: Props) {
   return (
     <Stack>
       <Group justify="space-between">
-        <Text fw={500}>Routine Templates</Text>
+        <Text fw={500}>Modèles de routine</Text>
         <Button size="sm" onClick={openAdd}>
-          Add Routine
+          Ajouter une routine
         </Button>
       </Group>
 
-      {isLoading && <Text c="dimmed">Loading...</Text>}
+      {isLoading && <Text c="dimmed">Chargement...</Text>}
 
       {routines && routines.length === 0 && (
         <Text c="dimmed" size="sm">
-          No routines set up yet. Add your first daily routine!
+          Aucune routine configurée. Ajoutez votre première routine quotidienne !
         </Text>
       )}
 

@@ -60,7 +60,7 @@ export function PetPage() {
   }
 
   if (!pet) {
-    return <Alert color="red">Pet not found</Alert>;
+    return <Alert color="red">Animal non trouvé</Alert>;
   }
 
   return (
@@ -77,19 +77,19 @@ export function PetPage() {
           </Group>
           {pet.birthDate && (
             <Text c="dimmed" size="sm">
-              Born {new Date(pet.birthDate).toLocaleDateString()}
+              Né le {new Date(pet.birthDate).toLocaleDateString('fr-FR')}
             </Text>
           )}
         </div>
         <Group>
           <Button variant="subtle" size="sm" onClick={openEdit}>
-            Edit
+            Modifier
           </Button>
           <Button
             variant="subtle"
             onClick={() => navigate(`/puppy/${householdId}`)}
           >
-            Back to household
+            Retour au foyer
           </Button>
         </Group>
       </Group>
@@ -98,10 +98,10 @@ export function PetPage() {
 
       <Tabs defaultValue="activity">
         <Tabs.List>
-          <Tabs.Tab value="activity">Activity</Tabs.Tab>
-          <Tabs.Tab value="growth">Growth</Tabs.Tab>
-          <Tabs.Tab value="health">Health</Tabs.Tab>
-          <Tabs.Tab value="training">Training</Tabs.Tab>
+          <Tabs.Tab value="activity">Activité</Tabs.Tab>
+          <Tabs.Tab value="growth">Croissance</Tabs.Tab>
+          <Tabs.Tab value="health">Santé</Tabs.Tab>
+          <Tabs.Tab value="training">Dressage</Tabs.Tab>
           <Tabs.Tab value="routines">Routines</Tabs.Tab>
         </Tabs.List>
 
@@ -109,7 +109,7 @@ export function PetPage() {
           <Stack>
             <Group justify="flex-end">
               <Button size="sm" onClick={openActivity}>
-                Log Activity
+                Enregistrer une activité
               </Button>
             </Group>
             <ActivityFeed householdId={householdId!} petId={petId!} />
@@ -120,7 +120,7 @@ export function PetPage() {
           <Stack>
             <Group justify="flex-end">
               <Button size="sm" onClick={openWeight}>
-                Log Weight
+                Enregistrer le poids
               </Button>
             </Group>
             <WeightChart householdId={householdId!} petId={petId!} />
@@ -130,20 +130,20 @@ export function PetPage() {
         <Tabs.Panel value="health" pt="md">
           <Stack>
             <Group justify="space-between">
-              <Text fw={500}>Vet Visits</Text>
-              <Button size="xs" onClick={openVet}>Add Vet Visit</Button>
+              <Text fw={500}>Visites vétérinaires</Text>
+              <Button size="xs" onClick={openVet}>Ajouter une visite</Button>
             </Group>
             <VetVisitList householdId={householdId!} petId={petId!} />
 
             <Group justify="space-between" mt="md">
               <Text fw={500}>Vaccinations</Text>
-              <Button size="xs" onClick={openVax}>Add Vaccination</Button>
+              <Button size="xs" onClick={openVax}>Ajouter une vaccination</Button>
             </Group>
             <VaccinationList householdId={householdId!} petId={petId!} />
 
             <Group justify="space-between" mt="md">
-              <Text fw={500}>Medications</Text>
-              <Button size="xs" onClick={openMed}>Add Medication</Button>
+              <Text fw={500}>Médicaments</Text>
+              <Button size="xs" onClick={openMed}>Ajouter un médicament</Button>
             </Group>
             <MedicationList householdId={householdId!} petId={petId!} />
           </Stack>
@@ -153,7 +153,7 @@ export function PetPage() {
           <Stack>
             <Group justify="flex-end">
               <Button size="sm" onClick={openMilestone}>
-                Add Goal
+                Ajouter un objectif
               </Button>
             </Group>
             <TrainingBoard householdId={householdId!} petId={petId!} />

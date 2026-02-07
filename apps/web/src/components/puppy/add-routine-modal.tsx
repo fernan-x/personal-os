@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useCreateRoutineTemplate } from "../../hooks/use-puppy";
 import { ACTIVITY_TYPES } from "@personal-os/domain";
 import type { ActivityType } from "@personal-os/domain";
+import { ACTIVITY_TYPE_LABELS_FR } from "../../lib/labels";
 
 interface Props {
   householdId: string;
@@ -13,7 +14,7 @@ interface Props {
 
 const typeOptions = ACTIVITY_TYPES.map((t) => ({
   value: t,
-  label: t.charAt(0).toUpperCase() + t.slice(1),
+  label: ACTIVITY_TYPE_LABELS_FR[t] ?? t,
 }));
 
 export function AddRoutineModal({
@@ -43,18 +44,18 @@ export function AddRoutineModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Routine">
+    <Modal opened={opened} onClose={onClose} title="Ajouter une routine">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
-            label="Name"
-            placeholder="e.g. Morning meal"
+            label="Nom"
+            placeholder="ex. Repas du matin"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
           <TextInput
-            label="Time"
+            label="Heure"
             placeholder="HH:mm"
             type="time"
             value={time}
@@ -69,7 +70,7 @@ export function AddRoutineModal({
             required
           />
           <Button type="submit" loading={createRoutine.isPending}>
-            Add
+            Ajouter
           </Button>
         </Stack>
       </form>

@@ -37,30 +37,30 @@ export function AddEnvelopeModal({ groupId, planId, opened, onClose }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Envelope">
+    <Modal opened={opened} onClose={onClose} title="Ajouter une enveloppe">
       <form onSubmit={handleSubmit}>
         <Stack>
           <Select
-            label="Category"
+            label="Catégorie"
             data={categoryOptions}
             value={categoryId}
             onChange={setCategoryId}
             required
-            placeholder="Select a category"
+            placeholder="Sélectionner une catégorie"
           />
           <NumberInput
-            label="Budget Amount"
-            placeholder="0.00"
+            label="Montant du budget"
+            placeholder="0,00"
             value={amount}
             onChange={setAmount}
             min={0}
             decimalScale={2}
             fixedDecimalScale
-            prefix="$"
+            prefix="€"
             required
           />
           <Button type="submit" loading={createEnvelope.isPending}>
-            Create Envelope
+            Créer l'enveloppe
           </Button>
         </Stack>
       </form>

@@ -52,7 +52,7 @@ export function HabitCard({ habit, onEdit }: HabitCardProps) {
             </Badge>
           </Group>
           <ActionIcon variant="subtle" size="sm" onClick={onEdit}>
-            <Text size="xs">Edit</Text>
+            <Text size="xs">Modifier</Text>
           </ActionIcon>
         </Group>
 
@@ -63,7 +63,7 @@ export function HabitCard({ habit, onEdit }: HabitCardProps) {
         )}
 
         <Checkbox
-          label="Done today"
+          label="Fait aujourd'hui"
           checked={isCompletedToday}
           onChange={handleToggle}
           disabled={logEntry.isPending}

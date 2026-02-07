@@ -8,6 +8,7 @@ import {
 } from "@personal-os/domain";
 import type { CreateHabitInput, HabitFrequency } from "@personal-os/domain";
 import { useCreateHabit } from "../../hooks/use-habits";
+import { FREQUENCY_LABELS_FR } from "../../lib/labels";
 
 interface CreateHabitModalProps {
   opened: boolean;
@@ -43,19 +44,19 @@ export function CreateHabitModal({ opened, onClose }: CreateHabitModalProps) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="New Habit">
+    <Modal opened={opened} onClose={onClose} title="Nouvelle habitude">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
           <TextInput
-            label="Name"
-            placeholder="e.g. Morning meditation"
+            label="Nom"
+            placeholder="ex. Méditation matinale"
             maxLength={HABIT_NAME_MAX_LENGTH}
             required
             {...form.getInputProps("name")}
           />
           <Textarea
             label="Description"
-            placeholder="Optional description"
+            placeholder="Description optionnelle"
             maxLength={HABIT_DESCRIPTION_MAX_LENGTH}
             autosize
             minRows={2}
@@ -63,15 +64,15 @@ export function CreateHabitModal({ opened, onClose }: CreateHabitModalProps) {
             {...form.getInputProps("description")}
           />
           <Select
-            label="Frequency"
-            data={HABIT_FREQUENCIES.map((f) => ({ value: f, label: f }))}
+            label="Fréquence"
+            data={HABIT_FREQUENCIES.map((f) => ({ value: f, label: FREQUENCY_LABELS_FR[f] || f }))}
             {...form.getInputProps("frequency")}
             onChange={(value) =>
               form.setFieldValue("frequency", (value ?? "daily") as HabitFrequency)
             }
           />
           <Button type="submit" loading={createHabit.isPending}>
-            Create Habit
+            Créer l'habitude
           </Button>
         </Stack>
       </form>

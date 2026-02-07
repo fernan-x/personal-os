@@ -37,9 +37,9 @@ export function TodayPage() {
     <Stack>
       <Group justify="space-between" align="center">
         <div>
-          <Title>Today</Title>
+          <Title>Aujourd'hui</Title>
           <Text c="dimmed">
-            {new Date().toLocaleDateString(undefined, {
+            {new Date().toLocaleDateString('fr-FR', {
               weekday: "long",
               year: "numeric",
               month: "long",
@@ -51,13 +51,13 @@ export function TodayPage() {
           variant="subtle"
           onClick={() => navigate(`/puppy/${householdId}`)}
         >
-          Back to household
+          Retour au foyer
         </Button>
       </Group>
 
       {todayData && todayData.length === 0 && (
         <Text c="dimmed" ta="center" py="xl">
-          No pets in this household yet.
+          Pas encore d'animaux dans ce foyer.
         </Text>
       )}
 
