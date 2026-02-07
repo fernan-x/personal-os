@@ -38,9 +38,9 @@ export function LoginPage() {
     } catch (err) {
       if (err instanceof ApiError) {
         const data = err.data as { message?: string };
-        setError(data?.message || "Invalid credentials");
+        setError(data?.message || "Identifiants invalides");
       } else {
-        setError("An error occurred. Please try again.");
+        setError("Une erreur est survenue. Veuillez réessayer.");
       }
     } finally {
       setIsLoading(false);
@@ -50,7 +50,7 @@ export function LoginPage() {
   return (
     <Paper p="xl" maw={400} mx="auto" mt={100}>
       <Title order={2} ta="center" mb="lg">
-        Sign In
+        Connexion
       </Title>
 
       <form onSubmit={handleSubmit}>
@@ -64,28 +64,28 @@ export function LoginPage() {
           <TextInput
             label="Email"
             type="email"
-            placeholder="you@example.com"
+            placeholder="vous@exemple.com"
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
             required
           />
 
           <PasswordInput
-            label="Password"
-            placeholder="Your password"
+            label="Mot de passe"
+            placeholder="Votre mot de passe"
             value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
             required
           />
 
           <Button type="submit" loading={isLoading} fullWidth>
-            Sign In
+            Se connecter
           </Button>
 
           <Text ta="center" size="sm">
-            Don't have an account?{" "}
+            Pas encore de compte ?{" "}
             <Anchor component={Link} to="/register">
-              Register
+              S'inscrire
             </Anchor>
           </Text>
         </Stack>

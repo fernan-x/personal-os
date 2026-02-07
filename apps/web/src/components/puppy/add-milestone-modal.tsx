@@ -34,24 +34,24 @@ export function AddMilestoneModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Training Goal">
+    <Modal opened={opened} onClose={onClose} title="Ajouter un objectif de dressage">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
-            label="Command / Behavior"
-            placeholder="e.g. Sit, Stay, Come"
+            label="Commande / Comportement"
+            placeholder="ex. Assis, Reste, Viens"
             value={command}
             onChange={(e) => setCommand(e.currentTarget.value)}
             required
           />
           <Textarea
             label="Notes"
-            placeholder="Optional notes..."
+            placeholder="Notes optionnelles..."
             value={notes}
             onChange={(e) => setNotes(e.currentTarget.value)}
           />
           <Button type="submit" loading={create.isPending}>
-            Add
+            Ajouter
           </Button>
         </Stack>
       </form>

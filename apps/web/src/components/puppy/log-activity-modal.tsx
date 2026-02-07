@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useCreateActivityLog } from "../../hooks/use-puppy";
 import { ACTIVITY_TYPES } from "@personal-os/domain";
 import type { ActivityType } from "@personal-os/domain";
+import { ACTIVITY_TYPE_LABELS_FR } from "../../lib/labels";
 
 interface Props {
   householdId: string;
@@ -20,7 +21,7 @@ interface Props {
 
 const typeOptions = ACTIVITY_TYPES.map((t) => ({
   value: t,
-  label: t.charAt(0).toUpperCase() + t.slice(1),
+  label: ACTIVITY_TYPE_LABELS_FR[t] ?? t,
 }));
 
 export function LogActivityModal({
@@ -54,7 +55,7 @@ export function LogActivityModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Log Activity">
+    <Modal opened={opened} onClose={onClose} title="Enregistrer une activité">
       <form onSubmit={handleSubmit}>
         <Stack>
           <Select
@@ -65,21 +66,21 @@ export function LogActivityModal({
             required
           />
           <NumberInput
-            label="Duration (minutes)"
-            placeholder="Optional"
+            label="Durée (minutes)"
+            placeholder="Optionnel"
             value={duration}
             onChange={setDuration}
             min={1}
           />
           <Textarea
             label="Note"
-            placeholder="Optional note..."
+            placeholder="Note optionnelle..."
             value={note}
             onChange={(e) => setNote(e.currentTarget.value)}
             maxLength={1000}
           />
           <Button type="submit" loading={createLog.isPending}>
-            Log
+            Enregistrer
           </Button>
         </Stack>
       </form>

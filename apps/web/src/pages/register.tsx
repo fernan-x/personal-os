@@ -43,9 +43,9 @@ export function RegisterPage() {
     } catch (err) {
       if (err instanceof ApiError) {
         const data = err.data as { message?: string };
-        setError(data?.message || "Registration failed");
+        setError(data?.message || "L'inscription a échoué");
       } else {
-        setError("An error occurred. Please try again.");
+        setError("Une erreur est survenue. Veuillez réessayer.");
       }
     } finally {
       setIsLoading(false);
@@ -55,7 +55,7 @@ export function RegisterPage() {
   return (
     <Paper p="xl" maw={400} mx="auto" mt={100}>
       <Title order={2} ta="center" mb="lg">
-        Create Account
+        Créer un compte
       </Title>
 
       <form onSubmit={handleSubmit}>
@@ -73,8 +73,8 @@ export function RegisterPage() {
           )}
 
           <TextInput
-            label="Name"
-            placeholder="Your name (optional)"
+            label="Nom"
+            placeholder="Votre nom (optionnel)"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
           />
@@ -82,28 +82,28 @@ export function RegisterPage() {
           <TextInput
             label="Email"
             type="email"
-            placeholder="you@example.com"
+            placeholder="vous@exemple.com"
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
             required
           />
 
           <PasswordInput
-            label="Password"
-            placeholder="At least 8 characters"
+            label="Mot de passe"
+            placeholder="Au moins 8 caractères"
             value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
             required
           />
 
           <Button type="submit" loading={isLoading} fullWidth>
-            Register
+            S'inscrire
           </Button>
 
           <Text ta="center" size="sm">
-            Already have an account?{" "}
+            Déjà un compte ?{" "}
             <Anchor component={Link} to="/login">
-              Sign In
+              Se connecter
             </Anchor>
           </Text>
         </Stack>

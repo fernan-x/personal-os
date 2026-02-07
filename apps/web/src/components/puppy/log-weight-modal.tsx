@@ -34,12 +34,12 @@ export function LogWeightModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Log Weight">
+    <Modal opened={opened} onClose={onClose} title="Enregistrer le poids">
       <form onSubmit={handleSubmit}>
         <Stack>
           <NumberInput
-            label="Weight (grams)"
-            placeholder="e.g. 5000"
+            label="Poids (grammes)"
+            placeholder="ex. 5000"
             value={weight}
             onChange={setWeight}
             min={1}
@@ -53,7 +53,7 @@ export function LogWeightModal({
             required
           />
           <Button type="submit" loading={createWeight.isPending}>
-            Log Weight
+            Enregistrer
           </Button>
         </Stack>
       </form>

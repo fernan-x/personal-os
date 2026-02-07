@@ -47,23 +47,23 @@ export function LogEntryModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title={`Log expense — ${categoryName}`}>
+    <Modal opened={opened} onClose={onClose} title={`Enregistrer une dépense — ${categoryName}`}>
       <form onSubmit={handleSubmit}>
         <Stack>
           <NumberInput
-            label="Amount"
-            placeholder="0.00"
+            label="Montant"
+            placeholder="0,00"
             value={amount}
             onChange={setAmount}
             min={0}
             decimalScale={2}
             fixedDecimalScale
-            prefix="$"
+            prefix="€"
             required
           />
           <TextInput
             label="Note"
-            placeholder="What was this for?"
+            placeholder="À quoi correspond cette dépense ?"
             value={note}
             onChange={(e) => setNote(e.currentTarget.value)}
           />
@@ -75,7 +75,7 @@ export function LogEntryModal({
             required
           />
           <Button type="submit" loading={createEntry.isPending}>
-            Log Entry
+            Enregistrer
           </Button>
         </Stack>
       </form>

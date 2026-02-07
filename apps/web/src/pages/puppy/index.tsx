@@ -24,12 +24,12 @@ export function PuppyPage() {
     <Stack>
       <Group justify="space-between" align="center">
         <div>
-          <Title>Puppy Tracker</Title>
+          <Title>Suivi des animaux</Title>
           <Text c="dimmed">
-            Manage your household pets and daily care routines.
+            Gérez vos animaux et leurs routines quotidiennes.
           </Text>
         </div>
-        <Button onClick={open}>New Household</Button>
+        <Button onClick={open}>Nouveau foyer</Button>
       </Group>
 
       {isLoading && (
@@ -39,14 +39,14 @@ export function PuppyPage() {
       )}
 
       {error && (
-        <Alert color="red" title="Error loading households">
+        <Alert color="red" title="Erreur de chargement">
           {error.message}
         </Alert>
       )}
 
       {households && households.length === 0 && (
         <Text c="dimmed" ta="center" py="xl">
-          No households yet. Create one to start tracking your pets!
+          Pas encore de foyer. Créez-en un pour commencer à suivre vos animaux !
         </Text>
       )}
 
@@ -84,8 +84,7 @@ export function PuppyPage() {
                 )}
               </div>
               <Badge variant="outline">
-                {household.pets.length} pet
-                {household.pets.length !== 1 ? "s" : ""}
+                {household.pets.length} {household.pets.length !== 1 ? "animaux" : "animal"}
               </Badge>
             </Group>
           </Card>

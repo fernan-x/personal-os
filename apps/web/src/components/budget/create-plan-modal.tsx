@@ -17,18 +17,18 @@ interface Props {
 }
 
 const MONTHS = [
-  { value: "1", label: "January" },
-  { value: "2", label: "February" },
-  { value: "3", label: "March" },
-  { value: "4", label: "April" },
-  { value: "5", label: "May" },
-  { value: "6", label: "June" },
-  { value: "7", label: "July" },
-  { value: "8", label: "August" },
-  { value: "9", label: "September" },
-  { value: "10", label: "October" },
-  { value: "11", label: "November" },
-  { value: "12", label: "December" },
+  { value: "1", label: "Janvier" },
+  { value: "2", label: "Février" },
+  { value: "3", label: "Mars" },
+  { value: "4", label: "Avril" },
+  { value: "5", label: "Mai" },
+  { value: "6", label: "Juin" },
+  { value: "7", label: "Juillet" },
+  { value: "8", label: "Août" },
+  { value: "9", label: "Septembre" },
+  { value: "10", label: "Octobre" },
+  { value: "11", label: "Novembre" },
+  { value: "12", label: "Décembre" },
 ];
 
 export function CreatePlanModal({ groupId, opened, onClose }: Props) {
@@ -59,18 +59,18 @@ export function CreatePlanModal({ groupId, opened, onClose }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="New Monthly Plan">
+    <Modal opened={opened} onClose={onClose} title="Nouveau plan mensuel">
       <form onSubmit={handleSubmit}>
         <Stack>
           <Select
-            label="Month"
+            label="Mois"
             data={MONTHS}
             value={month}
             onChange={setMonth}
             required
           />
           <NumberInput
-            label="Year"
+            label="Année"
             value={year}
             onChange={setYear}
             min={2000}
@@ -78,12 +78,12 @@ export function CreatePlanModal({ groupId, opened, onClose }: Props) {
             required
           />
           <Switch
-            label="Pre-fill from previous month"
+            label="Pré-remplir depuis le mois précédent"
             checked={prefill}
             onChange={(e) => setPrefill(e.currentTarget.checked)}
           />
           <Button type="submit" loading={createPlan.isPending}>
-            Create Plan
+            Créer le plan
           </Button>
         </Stack>
       </form>

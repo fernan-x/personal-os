@@ -34,31 +34,31 @@ export function CreatePetModal({ householdId, opened, onClose }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Pet">
+    <Modal opened={opened} onClose={onClose} title="Ajouter un animal">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
-            label="Name"
-            placeholder="e.g. Max"
+            label="Nom"
+            placeholder="ex. Max"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
           <TextInput
-            label="Breed"
-            placeholder="e.g. Golden Retriever"
+            label="Race"
+            placeholder="ex. Golden Retriever"
             value={breed}
             onChange={(e) => setBreed(e.currentTarget.value)}
           />
           <TextInput
-            label="Birth date"
-            placeholder="YYYY-MM-DD"
+            label="Date de naissance"
+            placeholder="JJ/MM/AAAA"
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.currentTarget.value)}
           />
           <Button type="submit" loading={createPet.isPending}>
-            Add Pet
+            Ajouter
           </Button>
         </Stack>
       </form>

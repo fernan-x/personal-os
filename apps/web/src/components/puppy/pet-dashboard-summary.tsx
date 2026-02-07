@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { usePetDashboard } from "../../hooks/use-puppy";
 import { computeTimeSince } from "@personal-os/domain";
+import { ACTIVITY_TYPE_LABELS_FR } from "../../lib/labels";
 
 interface Props {
   householdId: string;
@@ -34,10 +35,10 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
       {/* Age & Stage */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
         <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Age
+          Âge
         </Text>
         <Text size="lg" fw={500}>
-          {pet.age || "Unknown"}
+          {pet.age || "Inconnu"}
         </Text>
         <Badge size="sm" variant="light" mt={4}>
           {pet.growthStage}
@@ -47,14 +48,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
       {/* Weight */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
         <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Weight
+          Poids
         </Text>
         <Text size="lg" fw={500}>
-          {latestWeight ? formatWeight(latestWeight.weight) : "Not logged"}
+          {latestWeight ? formatWeight(latestWeight.weight) : "Non renseigné"}
         </Text>
         {latestWeight && (
           <Text size="xs" c="dimmed" mt={4}>
-            as of {new Date(latestWeight.date).toLocaleDateString()}
+            au {new Date(latestWeight.date).toLocaleDateString("fr-FR")}
           </Text>
         )}
       </Card>
@@ -62,14 +63,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
       {/* Training Progress */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
         <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Training
+          Dressage
         </Text>
         <Group gap="xs" mt={4}>
           <Text size="lg" fw={500}>
             {trainingProgress.learned}/{trainingProgress.total}
           </Text>
           <Text size="sm" c="dimmed">
-            learned
+            acquis
           </Text>
         </Group>
         <Progress
@@ -83,14 +84,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
       {/* Today Checklist */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
         <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Today
+          Aujourd'hui
         </Text>
         <Group gap="xs" mt={4}>
           <Text size="lg" fw={500}>
             {todayChecklist.completed}/{todayChecklist.total}
           </Text>
           <Text size="sm" c="dimmed">
-            tasks done
+            tâches faites
           </Text>
         </Group>
         <Progress
@@ -113,17 +114,17 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
       {(lastActivity.walk || lastActivity.meal) && (
         <Card shadow="xs" padding="sm" radius="sm" withBorder>
           <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-            Last Activity
+            Dernière activité
           </Text>
           <Stack gap={4} mt={4}>
             {lastActivity.walk && (
               <Text size="sm">
-                Walk: {computeTimeSince(lastActivity.walk.loggedAt)}
+                Promenade : {computeTimeSince(lastActivity.walk.loggedAt)}
               </Text>
             )}
             {lastActivity.meal && (
               <Text size="sm">
-                Meal: {computeTimeSince(lastActivity.meal.loggedAt)}
+                Repas : {computeTimeSince(lastActivity.meal.loggedAt)}
               </Text>
             )}
           </Stack>
@@ -134,16 +135,16 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
       {upcomingReminders.length > 0 && (
         <Card shadow="xs" padding="sm" radius="sm" withBorder>
           <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-            Upcoming
+            À venir
           </Text>
           <Stack gap={4} mt={4}>
             {upcomingReminders.slice(0, 2).map((r, i) => (
               <Group key={i} gap="xs">
                 <Badge size="xs" variant="light" color={r.type === "vet" ? "blue" : "orange"}>
-                  {r.type}
+                  {r.type === "vet" ? "véto" : r.type}
                 </Badge>
                 <Text size="xs" lineClamp={1}>
-                  {r.name} - {r.date ? new Date(r.date).toLocaleDateString() : ""}
+                  {r.name} - {r.date ? new Date(r.date).toLocaleDateString("fr-FR") : ""}
                 </Text>
               </Group>
             ))}

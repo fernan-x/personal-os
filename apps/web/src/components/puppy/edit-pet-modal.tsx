@@ -41,28 +41,28 @@ export function EditPetModal({ householdId, pet, opened, onClose }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Edit Pet">
+    <Modal opened={opened} onClose={onClose} title="Modifier l'animal">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
-            label="Name"
+            label="Nom"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
           <TextInput
-            label="Breed"
+            label="Race"
             value={breed}
             onChange={(e) => setBreed(e.currentTarget.value)}
           />
           <TextInput
-            label="Birth date"
+            label="Date de naissance"
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.currentTarget.value)}
           />
           <Button type="submit" loading={updatePet.isPending}>
-            Save
+            Enregistrer
           </Button>
         </Stack>
       </form>

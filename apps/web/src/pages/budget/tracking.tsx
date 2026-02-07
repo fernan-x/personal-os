@@ -33,30 +33,30 @@ export function BudgetTrackingPage() {
   }
 
   if (error) {
-    return <Alert color="red">Failed to load envelopes</Alert>;
+    return <Alert color="red">Échec du chargement des enveloppes</Alert>;
   }
 
   return (
     <Stack>
       <Group justify="space-between" align="center">
         <div>
-          <Title order={2}>Expense Tracking</Title>
-          <Text c="dimmed">Track spending against your envelope budgets.</Text>
+          <Title order={2}>Suivi des dépenses</Title>
+          <Text c="dimmed">Suivez vos dépenses par rapport à vos enveloppes budgétaires.</Text>
         </div>
         <Group>
           <Button
             variant="subtle"
             onClick={() => navigate(`/budget/${groupId}/plans/${planId}`)}
           >
-            Back to plan
+            Retour au plan
           </Button>
-          <Button onClick={openAdd}>Add Envelope</Button>
+          <Button onClick={openAdd}>Ajouter une enveloppe</Button>
         </Group>
       </Group>
 
       {envelopes && envelopes.length === 0 && (
         <Text c="dimmed" ta="center" py="xl">
-          No envelopes yet. Add one to start tracking expenses.
+          Pas encore d'enveloppe. Ajoutez-en une pour commencer à suivre vos dépenses.
         </Text>
       )}
 

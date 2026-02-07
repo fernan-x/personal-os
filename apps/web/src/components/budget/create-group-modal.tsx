@@ -25,18 +25,18 @@ export function CreateGroupModal({ opened, onClose }: Props) {
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="New Budget Group">
+    <Modal opened={opened} onClose={onClose} title="Nouveau groupe de budget">
       <form onSubmit={handleSubmit}>
         <Stack>
           <TextInput
-            label="Group name"
-            placeholder="e.g. Household, Couple"
+            label="Nom du groupe"
+            placeholder="ex. Foyer, Couple"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
           <Button type="submit" loading={createGroup.isPending}>
-            Create
+            Créer
           </Button>
         </Stack>
       </form>

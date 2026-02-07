@@ -35,13 +35,13 @@ export function AddVaccinationModal({ householdId, petId, opened, onClose }: Pro
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Vaccination">
+    <Modal opened={opened} onClose={onClose} title="Ajouter un vaccin">
       <form onSubmit={handleSubmit}>
         <Stack>
-          <TextInput label="Vaccine name" placeholder="e.g. Rabies" value={name} onChange={(e) => setName(e.currentTarget.value)} required />
-          <TextInput label="Date administered" type="date" value={date} onChange={(e) => setDate(e.currentTarget.value)} required />
-          <TextInput label="Next due date" type="date" value={nextDueDate} onChange={(e) => setNextDueDate(e.currentTarget.value)} />
-          <Button type="submit" loading={create.isPending}>Add</Button>
+          <TextInput label="Nom du vaccin" placeholder="ex. Rage" value={name} onChange={(e) => setName(e.currentTarget.value)} required />
+          <TextInput label="Date d'administration" type="date" value={date} onChange={(e) => setDate(e.currentTarget.value)} required />
+          <TextInput label="Prochaine échéance" type="date" value={nextDueDate} onChange={(e) => setNextDueDate(e.currentTarget.value)} />
+          <Button type="submit" loading={create.isPending}>Ajouter</Button>
         </Stack>
       </form>
     </Modal>

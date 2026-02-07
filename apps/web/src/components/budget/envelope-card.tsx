@@ -62,7 +62,7 @@ export function EnvelopeCard({ groupId, planId, envelope }: Props) {
               color={isOverBudget ? "red" : "green"}
               variant="light"
             >
-              ${formatCents(envelope.remaining)} left
+              {formatCents(envelope.remaining)} € restants
             </Badge>
           </Group>
 
@@ -74,10 +74,10 @@ export function EnvelopeCard({ groupId, planId, envelope }: Props) {
 
           <Group justify="space-between">
             <Text size="sm" c="dimmed">
-              ${formatCents(envelope.spent)} / ${formatCents(envelope.allocatedAmount)}
+              {formatCents(envelope.spent)} € / {formatCents(envelope.allocatedAmount)} €
             </Text>
             <Button size="xs" onClick={openLog}>
-              Log Expense
+              Enregistrer une dépense
             </Button>
           </Group>
 
@@ -87,8 +87,8 @@ export function EnvelopeCard({ groupId, planId, envelope }: Props) {
                 <Table.Tr>
                   <Table.Th>Date</Table.Th>
                   <Table.Th>Note</Table.Th>
-                  <Table.Th>User</Table.Th>
-                  <Table.Th ta="right">Amount</Table.Th>
+                  <Table.Th>Utilisateur</Table.Th>
+                  <Table.Th ta="right">Montant</Table.Th>
                   <Table.Th />
                 </Table.Tr>
               </Table.Thead>
@@ -96,14 +96,14 @@ export function EnvelopeCard({ groupId, planId, envelope }: Props) {
                 {envelope.entries.map((entry) => (
                   <Table.Tr key={entry.id}>
                     <Table.Td>
-                      {new Date(entry.date).toLocaleDateString()}
+                      {new Date(entry.date).toLocaleDateString("fr-FR")}
                     </Table.Td>
                     <Table.Td>{entry.note || "-"}</Table.Td>
                     <Table.Td>
                       {entry.user.name || entry.user.email}
                     </Table.Td>
                     <Table.Td ta="right">
-                      ${formatCents(entry.amount)}
+                      {formatCents(entry.amount)} €
                     </Table.Td>
                     <Table.Td>
                       {entry.userId === user?.id && (

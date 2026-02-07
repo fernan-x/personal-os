@@ -42,36 +42,36 @@ export function SummaryView({ groupId, planId }: Props) {
   return (
     <Stack>
       <Text fw={500} size="lg">
-        Summary
+        Résumé
       </Text>
 
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
         <Card shadow="sm" padding="md" radius="md" withBorder>
           <Text c="dimmed" size="sm">
-            Total Income
+            Revenus totaux
           </Text>
           <Text fw={700} size="xl" c="green">
-            ${formatCents(summary.totalIncome)}
+            {formatCents(summary.totalIncome)} €
           </Text>
         </Card>
         <Card shadow="sm" padding="md" radius="md" withBorder>
           <Text c="dimmed" size="sm">
-            Total Expenses
+            Dépenses totales
           </Text>
           <Text fw={700} size="xl" c="red">
-            ${formatCents(summary.totalExpenses)}
+            {formatCents(summary.totalExpenses)} €
           </Text>
         </Card>
         <Card shadow="sm" padding="md" radius="md" withBorder>
           <Text c="dimmed" size="sm">
-            Savings
+            Épargne
           </Text>
           <Text
             fw={700}
             size="xl"
             c={summary.totalSavings >= 0 ? "green" : "red"}
           >
-            ${formatCents(summary.totalSavings)}
+            {formatCents(summary.totalSavings)} €
           </Text>
         </Card>
       </SimpleGrid>
@@ -80,33 +80,33 @@ export function SummaryView({ groupId, planId }: Props) {
         <Table striped>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Member</Table.Th>
-              <Table.Th ta="right">Income</Table.Th>
-              <Table.Th ta="right">Personal</Table.Th>
-              <Table.Th ta="right">Common Share</Table.Th>
-              <Table.Th ta="right">Total Expenses</Table.Th>
-              <Table.Th ta="right">Savings</Table.Th>
+              <Table.Th>Membre</Table.Th>
+              <Table.Th ta="right">Revenus</Table.Th>
+              <Table.Th ta="right">Personnel</Table.Th>
+              <Table.Th ta="right">Part commune</Table.Th>
+              <Table.Th ta="right">Dépenses totales</Table.Th>
+              <Table.Th ta="right">Épargne</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
             {summary.perUser.map((u) => (
               <Table.Tr key={u.userId}>
                 <Table.Td>{memberMap.get(u.userId) ?? u.userId}</Table.Td>
-                <Table.Td ta="right">${formatCents(u.totalIncome)}</Table.Td>
+                <Table.Td ta="right">{formatCents(u.totalIncome)} €</Table.Td>
                 <Table.Td ta="right">
-                  ${formatCents(u.personalExpenses)}
+                  {formatCents(u.personalExpenses)} €
                 </Table.Td>
                 <Table.Td ta="right">
-                  ${formatCents(u.commonExpenseShare)}
+                  {formatCents(u.commonExpenseShare)} €
                 </Table.Td>
                 <Table.Td ta="right">
-                  ${formatCents(u.totalExpenses)}
+                  {formatCents(u.totalExpenses)} €
                 </Table.Td>
                 <Table.Td
                   ta="right"
                   c={u.savings >= 0 ? "green" : "red"}
                 >
-                  ${formatCents(u.savings)}
+                  {formatCents(u.savings)} €
                 </Table.Td>
               </Table.Tr>
             ))}

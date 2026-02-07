@@ -20,12 +20,12 @@ export function WeightChart({ householdId, petId }: Props) {
   const { data: entries, isLoading } = useWeightEntries(householdId, petId);
   const deleteEntry = useDeleteWeightEntry(householdId, petId);
 
-  if (isLoading) return <Text c="dimmed">Loading...</Text>;
+  if (isLoading) return <Text c="dimmed">Chargement...</Text>;
 
   if (!entries || entries.length === 0) {
     return (
       <Text c="dimmed" size="sm">
-        No weight entries yet. Log your pet's first weight!
+        Aucune entrée de poids. Enregistrez le premier poids de votre animal !
       </Text>
     );
   }
@@ -38,12 +38,12 @@ export function WeightChart({ householdId, petId }: Props) {
     <Stack>
       <Group gap="sm">
         <Text fw={500} size="lg">
-          Current: {formatWeight(latest.weight)}
+          Actuel : {formatWeight(latest.weight)}
         </Text>
         {diff !== null && (
           <Text size="sm" c={diff >= 0 ? "green" : "red"}>
             ({diff >= 0 ? "+" : ""}
-            {formatWeight(diff)} since last)
+            {formatWeight(diff)} depuis la dernière pesée)
           </Text>
         )}
       </Group>
@@ -52,7 +52,7 @@ export function WeightChart({ householdId, petId }: Props) {
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Date</Table.Th>
-            <Table.Th>Weight</Table.Th>
+            <Table.Th>Poids</Table.Th>
             <Table.Th />
           </Table.Tr>
         </Table.Thead>
@@ -60,7 +60,7 @@ export function WeightChart({ householdId, petId }: Props) {
           {[...entries].reverse().map((entry) => (
             <Table.Tr key={entry.id}>
               <Table.Td>
-                {new Date(entry.date).toLocaleDateString()}
+                {new Date(entry.date).toLocaleDateString("fr-FR")}
               </Table.Td>
               <Table.Td>{formatWeight(entry.weight)}</Table.Td>
               <Table.Td>

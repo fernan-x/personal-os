@@ -45,7 +45,7 @@ export function ChecklistCard({ pet, items, householdId }: Props) {
 
       {items.length === 0 && (
         <Text c="dimmed" size="sm">
-          No routines set up yet. Add routines from the pet detail page.
+          Aucune routine configurée. Ajoutez des routines depuis la page de l'animal.
         </Text>
       )}
 

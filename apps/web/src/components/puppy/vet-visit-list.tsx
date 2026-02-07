@@ -10,10 +10,10 @@ export function VetVisitList({ householdId, petId }: Props) {
   const { data: visits, isLoading } = useVetVisits(householdId, petId);
   const deleteVisit = useDeleteVetVisit(householdId, petId);
 
-  if (isLoading) return <Text c="dimmed">Loading...</Text>;
+  if (isLoading) return <Text c="dimmed">Chargement...</Text>;
 
   if (!visits || visits.length === 0) {
-    return <Text c="dimmed" size="sm">No vet visits recorded.</Text>;
+    return <Text c="dimmed" size="sm">Aucune visite vétérinaire enregistrée.</Text>;
   }
 
   const now = new Date();
@@ -29,7 +29,7 @@ export function VetVisitList({ householdId, petId }: Props) {
                 <Group gap="xs">
                   <Text size="sm" fw={500}>{visit.reason}</Text>
                   <Text size="xs" c="dimmed">
-                    {new Date(visit.date).toLocaleDateString()}
+                    {new Date(visit.date).toLocaleDateString("fr-FR")}
                   </Text>
                 </Group>
                 {visit.notes && (
@@ -42,7 +42,7 @@ export function VetVisitList({ householdId, petId }: Props) {
                     variant="light"
                     color={isUpcoming ? "orange" : "gray"}
                   >
-                    Next: {new Date(visit.nextVisitDate).toLocaleDateString()}
+                    Prochaine : {new Date(visit.nextVisitDate).toLocaleDateString("fr-FR")}
                   </Badge>
                 )}
               </div>
