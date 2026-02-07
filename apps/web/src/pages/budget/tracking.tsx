@@ -1,5 +1,4 @@
 import {
-  Title,
   Text,
   Stack,
   Group,
@@ -8,12 +7,16 @@ import {
   Center,
   Alert,
   SimpleGrid,
+  ActionIcon,
 } from "@mantine/core";
 import { useParams, useNavigate } from "react-router";
+import { IconReceipt, IconPlus, IconArrowLeft } from "@tabler/icons-react";
 import { useEnvelopes } from "../../hooks/use-envelopes";
 import { EnvelopeCard } from "../../components/budget/envelope-card";
 import { AddEnvelopeModal } from "../../components/budget/add-envelope-modal";
 import { useDisclosure } from "@mantine/hooks";
+import { PageHeader } from "../../components/shared/page-header";
+import { EmptyState } from "../../components/shared/empty-state";
 
 export function BudgetTrackingPage() {
   const { groupId, planId } = useParams<{
@@ -38,26 +41,30 @@ export function BudgetTrackingPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title order={2}>Suivi des dépenses</Title>
-          <Text c="dimmed">Suivez vos dépenses par rapport à vos enveloppes budgétaires.</Text>
-        </div>
-        <Group>
-          <Button
-            variant="subtle"
-            onClick={() => navigate(`/budget/${groupId}/plans/${planId}`)}
-          >
-            Retour au plan
+      <PageHeader
+        title="Suivi des dépenses"
+        subtitle="Suivez vos dépenses par rapport à vos enveloppes budgétaires."
+        icon={IconReceipt}
+        backButton={
+          <ActionIcon variant="subtle" onClick={() => navigate(`/budget/${groupId}/plans/${planId}`)}>
+            <IconArrowLeft size={20} />
+          </ActionIcon>
+        }
+        actions={
+          <Button leftSection={<IconPlus size={16} />} onClick={openAdd}>
+            Ajouter une enveloppe
           </Button>
-          <Button onClick={openAdd}>Ajouter une enveloppe</Button>
-        </Group>
-      </Group>
+        }
+      />
 
       {envelopes && envelopes.length === 0 && (
-        <Text c="dimmed" ta="center" py="xl">
-          Pas encore d'enveloppe. Ajoutez-en une pour commencer à suivre vos dépenses.
-        </Text>
+        <EmptyState
+          icon={IconReceipt}
+          title="Aucune enveloppe"
+          description="Ajoutez une enveloppe pour commencer à suivre vos dépenses."
+          actionLabel="Ajouter une enveloppe"
+          onAction={openAdd}
+        />
       )}
 
       <SimpleGrid cols={{ base: 1, sm: 2 }}>

@@ -1,5 +1,4 @@
 import {
-  Title,
   Text,
   Stack,
   Group,
@@ -8,13 +7,16 @@ import {
   Center,
   Alert,
   Stepper,
+  ActionIcon,
 } from "@mantine/core";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { IconArrowLeft, IconArrowRight, IconCalendarStats, IconReceipt, IconCash, IconChartBar, IconCheck } from "@tabler/icons-react";
 import { useMonthlyPlan } from "../../hooks/use-budget";
 import { IncomeStep } from "../../components/budget/income-step";
 import { ExpenseStep } from "../../components/budget/expense-step";
 import { SummaryView } from "../../components/budget/summary-view";
+import { PageHeader } from "../../components/shared/page-header";
 
 const MONTH_NAMES = [
   "", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
@@ -44,52 +46,49 @@ export function BudgetPlanPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title order={2}>
-            {MONTH_NAMES[plan.month]} {plan.year}
-          </Title>
-          <Text c="dimmed">Planifiez votre budget mensuel étape par étape.</Text>
-        </div>
-        <Group>
+      <PageHeader
+        title={`${MONTH_NAMES[plan.month]} ${plan.year}`}
+        subtitle="Planifiez votre budget mensuel étape par étape."
+        icon={IconCalendarStats}
+        backButton={
+          <ActionIcon variant="subtle" onClick={() => navigate(`/budget/${groupId}`)}>
+            <IconArrowLeft size={20} />
+          </ActionIcon>
+        }
+        actions={
           <Button
-            variant="subtle"
-            onClick={() => navigate(`/budget/${groupId}`)}
-          >
-            Retour au groupe
-          </Button>
-          <Button
+            leftSection={<IconReceipt size={16} />}
             onClick={() =>
               navigate(`/budget/${groupId}/plans/${planId}/tracking`)
             }
           >
             Suivi des dépenses
           </Button>
-        </Group>
-      </Group>
+        }
+      />
 
       <Stepper active={step} onStepClick={setStep}>
-        <Stepper.Step label="Revenus" description="Ajoutez vos sources de revenus">
+        <Stepper.Step label="Revenus" description="Ajoutez vos sources de revenus" icon={<IconCash size={18} />}>
           <IncomeStep groupId={groupId!} plan={plan} />
         </Stepper.Step>
 
-        <Stepper.Step label="Dépenses" description="Planifiez vos dépenses">
+        <Stepper.Step label="Dépenses" description="Planifiez vos dépenses" icon={<IconReceipt size={18} />}>
           <ExpenseStep groupId={groupId!} plan={plan} />
         </Stepper.Step>
 
-        <Stepper.Step label="Résumé" description="Vérifiez votre plan">
+        <Stepper.Step label="Résumé" description="Vérifiez votre plan" icon={<IconChartBar size={18} />}>
           <SummaryView groupId={groupId!} planId={planId!} />
         </Stepper.Step>
       </Stepper>
 
       <Group justify="center" mt="md">
         {step > 0 && (
-          <Button variant="default" onClick={() => setStep(step - 1)}>
+          <Button variant="default" onClick={() => setStep(step - 1)} leftSection={<IconArrowLeft size={16} />}>
             Retour
           </Button>
         )}
         {step < 2 && (
-          <Button onClick={() => setStep(step + 1)}>Suivant</Button>
+          <Button onClick={() => setStep(step + 1)} rightSection={<IconArrowRight size={16} />}>Suivant</Button>
         )}
       </Group>
     </Stack>

@@ -1,5 +1,4 @@
 import {
-  Title,
   Text,
   Stack,
   Group,
@@ -12,8 +11,11 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router";
+import { IconPaw, IconPlus } from "@tabler/icons-react";
 import { useHouseholds } from "../../hooks/use-puppy";
 import { CreateHouseholdModal } from "../../components/puppy/create-household-modal";
+import { PageHeader } from "../../components/shared/page-header";
+import { EmptyState } from "../../components/shared/empty-state";
 
 export function PuppyPage() {
   const { data: households, isLoading, error } = useHouseholds();
@@ -22,15 +24,16 @@ export function PuppyPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title>Suivi des animaux</Title>
-          <Text c="dimmed">
-            Gérez vos animaux et leurs routines quotidiennes.
-          </Text>
-        </div>
-        <Button onClick={open}>Nouveau foyer</Button>
-      </Group>
+      <PageHeader
+        title="Animaux"
+        subtitle="Gérez vos foyers et animaux"
+        icon={IconPaw}
+        actions={
+          <Button leftSection={<IconPlus size={16} />} onClick={open}>
+            Nouveau foyer
+          </Button>
+        }
+      />
 
       {isLoading && (
         <Center py="xl">
@@ -45,9 +48,13 @@ export function PuppyPage() {
       )}
 
       {households && households.length === 0 && (
-        <Text c="dimmed" ta="center" py="xl">
-          Pas encore de foyer. Créez-en un pour commencer à suivre vos animaux !
-        </Text>
+        <EmptyState
+          icon={IconPaw}
+          title="Aucun foyer"
+          description="Créez votre premier foyer pour commencer à suivre vos animaux."
+          actionLabel="Créer un foyer"
+          onAction={open}
+        />
       )}
 
       {households &&

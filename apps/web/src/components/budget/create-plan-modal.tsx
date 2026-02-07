@@ -7,6 +7,7 @@ import {
   Select,
 } from "@mantine/core";
 import { useState } from "react";
+import { IconCheck } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 import { useCreateMonthlyPlan } from "../../hooks/use-budget";
 
@@ -82,7 +83,7 @@ export function CreatePlanModal({ groupId, opened, onClose }: Props) {
             checked={prefill}
             onChange={(e) => setPrefill(e.currentTarget.checked)}
           />
-          <Button type="submit" loading={createPlan.isPending}>
+          <Button type="submit" loading={createPlan.isPending} leftSection={<IconCheck size={16} />}>
             Créer le plan
           </Button>
         </Stack>

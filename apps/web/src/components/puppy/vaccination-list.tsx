@@ -1,4 +1,5 @@
 import { Stack, Card, Text, Group, Badge, ActionIcon } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
 import { useVaccinations, useDeleteVaccination } from "../../hooks/use-puppy";
 
 interface Props {
@@ -49,7 +50,7 @@ export function VaccinationList({ householdId, petId }: Props) {
                 size="sm"
                 onClick={() => deleteVax.mutate(vax.id)}
               >
-                x
+                <IconTrash size={14} />
               </ActionIcon>
             </Group>
           </Card>

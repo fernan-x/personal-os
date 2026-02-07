@@ -15,6 +15,7 @@
     "@mantine/hooks": "catalog:",
     "@personal-os/domain": "workspace:*",
     "@personal-os/ui": "workspace:*",
+    "@tabler/icons-react": "^3.36.1",
     "@tanstack/react-query": "^5.64.0",
     "react": "catalog:",
     "react-dom": "catalog:",

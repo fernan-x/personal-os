@@ -1,5 +1,6 @@
 import { Modal, NumberInput, Select, Button, Stack } from "@mantine/core";
 import { useState } from "react";
+import { IconCheck } from "@tabler/icons-react";
 import { useCreateEnvelope } from "../../hooks/use-envelopes";
 import { useExpenseCategories } from "../../hooks/use-budget";
 
@@ -59,7 +60,7 @@ export function AddEnvelopeModal({ groupId, planId, opened, onClose }: Props) {
             prefix="€"
             required
           />
-          <Button type="submit" loading={createEnvelope.isPending}>
+          <Button type="submit" loading={createEnvelope.isPending} leftSection={<IconCheck size={16} />}>
             Créer l'enveloppe
           </Button>
         </Stack>

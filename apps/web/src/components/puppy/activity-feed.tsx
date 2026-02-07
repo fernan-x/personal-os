@@ -7,6 +7,7 @@ import {
   Select,
   Card,
 } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import {
   useActivityLogs,
@@ -88,7 +89,7 @@ export function ActivityFeed({ householdId, petId }: Props) {
                   size="sm"
                   onClick={() => deleteLog.mutate(log.id)}
                 >
-                  x
+                  <IconTrash size={14} />
                 </ActionIcon>
               </Group>
             </Group>

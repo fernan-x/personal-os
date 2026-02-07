@@ -1,16 +1,17 @@
 import {
-  Title,
   Text,
   Stack,
-  Group,
-  Button,
   Loader,
   Center,
   Alert,
+  ActionIcon,
 } from "@mantine/core";
 import { useParams, useNavigate } from "react-router";
+import { IconSun, IconArrowLeft } from "@tabler/icons-react";
 import { useTodayChecklist } from "../../hooks/use-puppy";
 import { ChecklistCard } from "../../components/puppy/checklist-card";
+import { PageHeader } from "../../components/shared/page-header";
+import { EmptyState } from "../../components/shared/empty-state";
 
 export function TodayPage() {
   const { householdId } = useParams<{ householdId: string }>();
@@ -35,30 +36,28 @@ export function TodayPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title>Aujourd'hui</Title>
-          <Text c="dimmed">
-            {new Date().toLocaleDateString('fr-FR', {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </Text>
-        </div>
-        <Button
-          variant="subtle"
-          onClick={() => navigate(`/puppy/${householdId}`)}
-        >
-          Retour au foyer
-        </Button>
-      </Group>
+      <PageHeader
+        title="Aujourd'hui"
+        subtitle={new Date().toLocaleDateString('fr-FR', {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+        icon={IconSun}
+        backButton={
+          <ActionIcon variant="subtle" onClick={() => navigate(`/puppy/${householdId}`)}>
+            <IconArrowLeft size={20} />
+          </ActionIcon>
+        }
+      />
 
       {todayData && todayData.length === 0 && (
-        <Text c="dimmed" ta="center" py="xl">
-          Pas encore d'animaux dans ce foyer.
-        </Text>
+        <EmptyState
+          icon={IconSun}
+          title="Aucun animal"
+          description="Pas encore d'animaux dans ce foyer."
+        />
       )}
 
       {todayData &&

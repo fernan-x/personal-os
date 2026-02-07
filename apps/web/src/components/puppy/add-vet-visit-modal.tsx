@@ -1,4 +1,5 @@
 import { Modal, TextInput, Textarea, Button, Stack } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateVetVisit } from "../../hooks/use-puppy";
 
@@ -45,7 +46,7 @@ export function AddVetVisitModal({ householdId, petId, opened, onClose }: Props)
           <TextInput label="Motif" placeholder="ex. Bilan annuel" value={reason} onChange={(e) => setReason(e.currentTarget.value)} required />
           <Textarea label="Notes" placeholder="Notes optionnelles..." value={notes} onChange={(e) => setNotes(e.currentTarget.value)} />
           <TextInput label="Prochaine visite" type="date" value={nextVisitDate} onChange={(e) => setNextVisitDate(e.currentTarget.value)} />
-          <Button type="submit" loading={create.isPending}>Ajouter</Button>
+          <Button type="submit" loading={create.isPending} leftSection={<IconCheck size={16} />}>Ajouter</Button>
         </Stack>
       </form>
     </Modal>

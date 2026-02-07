@@ -1,5 +1,4 @@
 import {
-  Title,
   Text,
   Stack,
   Group,
@@ -16,6 +15,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useParams, useNavigate } from "react-router";
 import { useState } from "react";
+import { IconArrowLeft, IconPlus, IconTrash, IconArrowRight, IconUsersGroup, IconWallet, IconUser, IconCalendarStats } from "@tabler/icons-react";
 import {
   useBudgetGroup,
   useMonthlyPlans,
@@ -24,6 +24,7 @@ import {
 } from "../../hooks/use-budget";
 import { useAuth } from "../../contexts/auth-context";
 import { CreatePlanModal } from "../../components/budget/create-plan-modal";
+import { PageHeader } from "../../components/shared/page-header";
 
 const MONTH_NAMES = [
   "", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
@@ -64,15 +65,16 @@ export function BudgetGroupPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title>{group.name}</Title>
-          <Text c="dimmed">Gérez les membres et les plans mensuels.</Text>
-        </div>
-        <Button variant="subtle" onClick={() => navigate("/budget")}>
-          Retour aux groupes
-        </Button>
-      </Group>
+      <PageHeader
+        title={group.name}
+        subtitle="Gérez les membres et les plans mensuels."
+        icon={IconWallet}
+        backButton={
+          <ActionIcon variant="subtle" onClick={() => navigate("/budget")}>
+            <IconArrowLeft size={20} />
+          </ActionIcon>
+        }
+      />
 
       {/* Members */}
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -97,7 +99,7 @@ export function BudgetGroupPage() {
                   size="sm"
                   onClick={() => removeMember.mutate(m.userId)}
                 >
-                  x
+                  <IconTrash size={14} />
                 </ActionIcon>
               )}
             </Group>
@@ -112,7 +114,7 @@ export function BudgetGroupPage() {
               style={{ flex: 1 }}
               size="sm"
             />
-            <Button type="submit" size="sm" loading={addMember.isPending}>
+            <Button type="submit" size="sm" loading={addMember.isPending} leftSection={<IconPlus size={16} />}>
               Ajouter
             </Button>
           </Group>
@@ -130,7 +132,7 @@ export function BudgetGroupPage() {
           <Text fw={500} size="lg">
             Plans mensuels
           </Text>
-          <Button size="sm" onClick={openPlanModal}>
+          <Button size="sm" onClick={openPlanModal} leftSection={<IconPlus size={16} />}>
             Nouveau plan
           </Button>
         </Group>
@@ -162,7 +164,7 @@ export function BudgetGroupPage() {
                   <Table.Td>{MONTH_NAMES[plan.month]}</Table.Td>
                   <Table.Td>{plan.year}</Table.Td>
                   <Table.Td>
-                    <Button variant="subtle" size="xs">
+                    <Button variant="subtle" size="xs" leftSection={<IconCalendarStats size={14} />}>
                       Voir
                     </Button>
                   </Table.Td>

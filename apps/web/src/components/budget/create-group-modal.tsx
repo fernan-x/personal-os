@@ -1,5 +1,6 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
 import { useState } from "react";
+import { IconCheck } from "@tabler/icons-react";
 import { useCreateBudgetGroup } from "../../hooks/use-budget";
 
 interface Props {
@@ -35,7 +36,7 @@ export function CreateGroupModal({ opened, onClose }: Props) {
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
-          <Button type="submit" loading={createGroup.isPending}>
+          <Button type="submit" loading={createGroup.isPending} leftSection={<IconCheck size={16} />}>
             Créer
           </Button>
         </Stack>

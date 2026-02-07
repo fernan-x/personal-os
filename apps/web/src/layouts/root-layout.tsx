@@ -5,17 +5,36 @@ import {
   NavLink,
   Title,
   Text,
-  Button,
+  Avatar,
+  Menu,
+  UnstyledButton,
+  Divider,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../contexts/auth-context";
+import {
+  IconHome,
+  IconTargetArrow,
+  IconWallet,
+  IconPaw,
+  IconLogout,
+  IconChevronDown,
+  IconLayoutDashboard,
+} from "@tabler/icons-react";
+import type { ComponentType } from "react";
 
-const navItems = [
-  { label: "Accueil", path: "/" },
-  { label: "Habitudes", path: "/habits" },
-  { label: "Budget", path: "/budget" },
-  { label: "Animaux", path: "/puppy" },
+interface NavItem {
+  label: string;
+  path: string;
+  icon: ComponentType<{ size: number; stroke: number }>;
+}
+
+const navItems: NavItem[] = [
+  { label: "Accueil", path: "/", icon: IconHome },
+  { label: "Habitudes", path: "/habits", icon: IconTargetArrow },
+  { label: "Budget", path: "/budget", icon: IconWallet },
+  { label: "Animaux", path: "/puppy", icon: IconPaw },
 ];
 
 export function RootLayout() {
@@ -29,10 +48,27 @@ export function RootLayout() {
     navigate("/login");
   }
 
+  function getInitial(): string {
+    return (
+      user?.name?.[0]?.toUpperCase() ||
+      user?.email?.[0]?.toUpperCase() ||
+      "U"
+    );
+  }
+
+  function isActive(path: string): boolean {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  }
+
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      navbar={{
+        width: 260,
+        breakpoint: "sm",
+        collapsed: { mobile: !opened },
+      }}
       padding="md"
     >
       <AppShell.Header>
@@ -44,31 +80,74 @@ export function RootLayout() {
               hiddenFrom="sm"
               size="sm"
             />
-            <Title order={3}>Personal OS</Title>
+            <Group gap="xs">
+              <IconLayoutDashboard
+                size={28}
+                stroke={1.5}
+                color="var(--mantine-color-teal-5)"
+              />
+              <Title order={3} fw={700}>
+                Personal OS
+              </Title>
+            </Group>
           </Group>
-          <Group>
-            <Text size="sm" c="dimmed">
-              {user?.email}
-            </Text>
-            <Button variant="subtle" size="sm" onClick={handleLogout}>
-              Déconnexion
-            </Button>
-          </Group>
+          <Menu shadow="md" width={200} position="bottom-end">
+            <Menu.Target>
+              <UnstyledButton>
+                <Group gap="xs">
+                  <Avatar color="teal" radius="xl" size="sm">
+                    {getInitial()}
+                  </Avatar>
+                  <Text size="sm" fw={500} visibleFrom="sm">
+                    {user?.name || user?.email}
+                  </Text>
+                  <IconChevronDown size={14} />
+                </Group>
+              </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={<IconLogout size={16} />}
+                onClick={handleLogout}
+              >
+                Deconnexion
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            label={item.label}
-            active={location.pathname === item.path}
-            onClick={() => {
-              navigate(item.path);
-              toggle();
-            }}
-          />
-        ))}
+        <AppShell.Section grow>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              label={item.label}
+              leftSection={<item.icon size={20} stroke={1.5} />}
+              active={isActive(item.path)}
+              onClick={() => {
+                navigate(item.path);
+                toggle();
+              }}
+            />
+          ))}
+        </AppShell.Section>
+        <AppShell.Section>
+          <Divider mb="sm" color="cream.2" />
+          <Group gap="sm" p="xs">
+            <Avatar color="teal" radius="xl" size="sm">
+              {getInitial()}
+            </Avatar>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <Text size="sm" fw={500} lineClamp={1}>
+                {user?.name || "Utilisateur"}
+              </Text>
+              <Text size="xs" c="dimmed" lineClamp={1}>
+                {user?.email}
+              </Text>
+            </div>
+          </Group>
+        </AppShell.Section>
       </AppShell.Navbar>
 
       <AppShell.Main>

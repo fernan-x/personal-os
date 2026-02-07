@@ -1,5 +1,4 @@
 import {
-  Title,
   Text,
   Stack,
   Group,
@@ -9,9 +8,11 @@ import {
   Alert,
   Tabs,
   Badge,
+  ActionIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useParams, useNavigate } from "react-router";
+import { IconPaw, IconArrowLeft, IconPencil, IconActivity, IconScale, IconHeart, IconSchool, IconClock } from "@tabler/icons-react";
 import { usePet } from "../../hooks/use-puppy";
 import { EditPetModal } from "../../components/puppy/edit-pet-modal";
 import { RoutineSetup } from "../../components/puppy/routine-setup";
@@ -28,6 +29,7 @@ import { AddMedicationModal } from "../../components/puppy/add-medication-modal"
 import { TrainingBoard } from "../../components/puppy/training-board";
 import { AddMilestoneModal } from "../../components/puppy/add-milestone-modal";
 import { PetDashboardSummary } from "../../components/puppy/pet-dashboard-summary";
+import { PageHeader } from "../../components/shared/page-header";
 
 export function PetPage() {
   const { householdId, petId } = useParams<{
@@ -65,44 +67,34 @@ export function PetPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Group gap="sm" align="center">
-            <Title>{pet.name}</Title>
-            {pet.breed && (
-              <Badge variant="light" size="lg">
-                {pet.breed}
-              </Badge>
-            )}
-          </Group>
-          {pet.birthDate && (
-            <Text c="dimmed" size="sm">
-              Né le {new Date(pet.birthDate).toLocaleDateString('fr-FR')}
-            </Text>
-          )}
-        </div>
-        <Group>
-          <Button variant="subtle" size="sm" onClick={openEdit}>
+      <PageHeader
+        title={pet.name}
+        subtitle={[
+          pet.breed,
+          pet.birthDate && `Né le ${new Date(pet.birthDate).toLocaleDateString('fr-FR')}`,
+        ].filter(Boolean).join(' - ') || undefined}
+        icon={IconPaw}
+        backButton={
+          <ActionIcon variant="subtle" onClick={() => navigate(`/puppy/${householdId}`)}>
+            <IconArrowLeft size={20} />
+          </ActionIcon>
+        }
+        actions={
+          <Button variant="subtle" size="sm" onClick={openEdit} leftSection={<IconPencil size={16} />}>
             Modifier
           </Button>
-          <Button
-            variant="subtle"
-            onClick={() => navigate(`/puppy/${householdId}`)}
-          >
-            Retour au foyer
-          </Button>
-        </Group>
-      </Group>
+        }
+      />
 
       <PetDashboardSummary householdId={householdId!} petId={petId!} />
 
       <Tabs defaultValue="activity">
         <Tabs.List>
-          <Tabs.Tab value="activity">Activité</Tabs.Tab>
-          <Tabs.Tab value="growth">Croissance</Tabs.Tab>
-          <Tabs.Tab value="health">Santé</Tabs.Tab>
-          <Tabs.Tab value="training">Dressage</Tabs.Tab>
-          <Tabs.Tab value="routines">Routines</Tabs.Tab>
+          <Tabs.Tab value="activity" leftSection={<IconActivity size={16} />}>Activité</Tabs.Tab>
+          <Tabs.Tab value="growth" leftSection={<IconScale size={16} />}>Croissance</Tabs.Tab>
+          <Tabs.Tab value="health" leftSection={<IconHeart size={16} />}>Santé</Tabs.Tab>
+          <Tabs.Tab value="training" leftSection={<IconSchool size={16} />}>Dressage</Tabs.Tab>
+          <Tabs.Tab value="routines" leftSection={<IconClock size={16} />}>Routines</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="activity" pt="md">

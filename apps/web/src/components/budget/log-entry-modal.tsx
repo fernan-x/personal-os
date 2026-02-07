@@ -1,5 +1,6 @@
 import { Modal, NumberInput, TextInput, Button, Stack } from "@mantine/core";
 import { useState } from "react";
+import { IconCheck } from "@tabler/icons-react";
 import { useCreateEnvelopeEntry } from "../../hooks/use-envelopes";
 
 interface Props {
@@ -74,7 +75,7 @@ export function LogEntryModal({
             onChange={(e) => setDate(e.currentTarget.value)}
             required
           />
-          <Button type="submit" loading={createEntry.isPending}>
+          <Button type="submit" loading={createEntry.isPending} leftSection={<IconCheck size={16} />}>
             Enregistrer
           </Button>
         </Stack>

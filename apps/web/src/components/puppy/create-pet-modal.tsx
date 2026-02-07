@@ -1,4 +1,5 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreatePet } from "../../hooks/use-puppy";
 
@@ -57,7 +58,7 @@ export function CreatePetModal({ householdId, opened, onClose }: Props) {
             value={birthDate}
             onChange={(e) => setBirthDate(e.currentTarget.value)}
           />
-          <Button type="submit" loading={createPet.isPending}>
+          <Button type="submit" loading={createPet.isPending} leftSection={<IconCheck size={16} />}>
             Ajouter
           </Button>
         </Stack>

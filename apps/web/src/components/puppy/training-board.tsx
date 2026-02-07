@@ -8,6 +8,8 @@ import {
   Select,
   ActionIcon,
 } from "@mantine/core";
+import { IconTrash, IconSchool } from "@tabler/icons-react";
+import { EmptyState } from "../shared/empty-state";
 import {
   useTrainingMilestones,
   useUpdateTrainingMilestone,
@@ -45,9 +47,11 @@ export function TrainingBoard({ householdId, petId }: Props) {
 
   if (!milestones || milestones.length === 0) {
     return (
-      <Text c="dimmed" size="sm">
-        Aucun objectif de dressage. Ajoutez votre premier objectif !
-      </Text>
+      <EmptyState
+        icon={IconSchool}
+        title="Aucun objectif de dressage"
+        description="Ajoutez votre premier objectif !"
+      />
     );
   }
 
@@ -111,7 +115,7 @@ export function TrainingBoard({ householdId, petId }: Props) {
                 size="sm"
                 onClick={() => deleteMilestone.mutate(milestone.id)}
               >
-                x
+                <IconTrash size={14} />
               </ActionIcon>
             </Group>
           </Group>

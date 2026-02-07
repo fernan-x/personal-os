@@ -1,5 +1,4 @@
 import {
-  Title,
   Text,
   Stack,
   Group,
@@ -15,6 +14,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useParams, useNavigate } from "react-router";
 import { useState } from "react";
+import { IconPaw, IconPlus, IconArrowLeft, IconTrash, IconSun } from "@tabler/icons-react";
 import {
   useHousehold,
   useAddHouseholdMember,
@@ -22,6 +22,7 @@ import {
 } from "../../hooks/use-puppy";
 import { useAuth } from "../../contexts/auth-context";
 import { CreatePetModal } from "../../components/puppy/create-pet-modal";
+import { PageHeader } from "../../components/shared/page-header";
 
 export function HouseholdPage() {
   const { householdId } = useParams<{ householdId: string }>();
@@ -53,20 +54,21 @@ export function HouseholdPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title>{household.name}</Title>
-          <Text c="dimmed">Gérez les membres et les animaux.</Text>
-        </div>
-        <Group>
-          <Button onClick={() => navigate(`/puppy/${householdId}/today`)}>
+      <PageHeader
+        title={household.name}
+        subtitle="Gérez les membres et les animaux."
+        icon={IconPaw}
+        backButton={
+          <ActionIcon variant="subtle" onClick={() => navigate("/puppy")}>
+            <IconArrowLeft size={20} />
+          </ActionIcon>
+        }
+        actions={
+          <Button leftSection={<IconSun size={16} />} onClick={() => navigate(`/puppy/${householdId}/today`)}>
             Aujourd'hui
           </Button>
-          <Button variant="subtle" onClick={() => navigate("/puppy")}>
-            Retour aux foyers
-          </Button>
-        </Group>
-      </Group>
+        }
+      />
 
       {/* Members */}
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -91,7 +93,7 @@ export function HouseholdPage() {
                   size="sm"
                   onClick={() => removeMember.mutate(m.userId)}
                 >
-                  x
+                  <IconTrash size={14} />
                 </ActionIcon>
               )}
             </Group>
@@ -107,7 +109,7 @@ export function HouseholdPage() {
                 style={{ flex: 1 }}
                 size="sm"
               />
-              <Button type="submit" size="sm" loading={addMember.isPending}>
+              <Button type="submit" size="sm" loading={addMember.isPending} leftSection={<IconPlus size={16} />}>
                 Ajouter
               </Button>
             </Group>
@@ -126,7 +128,7 @@ export function HouseholdPage() {
           <Text fw={500} size="lg">
             Animaux
           </Text>
-          <Button size="sm" onClick={openPetModal}>
+          <Button size="sm" onClick={openPetModal} leftSection={<IconPlus size={16} />}>
             Ajouter un animal
           </Button>
         </Group>

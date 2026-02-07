@@ -7,6 +7,7 @@ import {
   Checkbox,
   ActionIcon,
 } from "@mantine/core";
+import { IconPencil } from "@tabler/icons-react";
 import type { HabitWithEntries } from "../../hooks/use-habits";
 import { useLogHabitEntry } from "../../hooks/use-habits";
 import type { HabitFrequency } from "@personal-os/domain";
@@ -52,7 +53,7 @@ export function HabitCard({ habit, onEdit }: HabitCardProps) {
             </Badge>
           </Group>
           <ActionIcon variant="subtle" size="sm" onClick={onEdit}>
-            <Text size="xs">Modifier</Text>
+            <IconPencil size={16} />
           </ActionIcon>
         </Group>
 

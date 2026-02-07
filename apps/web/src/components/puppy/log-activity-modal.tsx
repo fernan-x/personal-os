@@ -6,6 +6,7 @@ import {
   NumberInput,
   Textarea,
 } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateActivityLog } from "../../hooks/use-puppy";
 import { ACTIVITY_TYPES } from "@personal-os/domain";
@@ -79,7 +80,7 @@ export function LogActivityModal({
             onChange={(e) => setNote(e.currentTarget.value)}
             maxLength={1000}
           />
-          <Button type="submit" loading={createLog.isPending}>
+          <Button type="submit" loading={createLog.isPending} leftSection={<IconCheck size={16} />}>
             Enregistrer
           </Button>
         </Stack>

@@ -1,4 +1,5 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateHousehold } from "../../hooks/use-puppy";
 
@@ -35,7 +36,7 @@ export function CreateHouseholdModal({ opened, onClose }: Props) {
             onChange={(e) => setName(e.currentTarget.value)}
             required
           />
-          <Button type="submit" loading={createHousehold.isPending}>
+          <Button type="submit" loading={createHousehold.isPending} leftSection={<IconCheck size={16} />}>
             Créer
           </Button>
         </Stack>

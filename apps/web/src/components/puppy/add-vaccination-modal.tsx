@@ -1,4 +1,5 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateVaccination } from "../../hooks/use-puppy";
 
@@ -41,7 +42,7 @@ export function AddVaccinationModal({ householdId, petId, opened, onClose }: Pro
           <TextInput label="Nom du vaccin" placeholder="ex. Rage" value={name} onChange={(e) => setName(e.currentTarget.value)} required />
           <TextInput label="Date d'administration" type="date" value={date} onChange={(e) => setDate(e.currentTarget.value)} required />
           <TextInput label="Prochaine échéance" type="date" value={nextDueDate} onChange={(e) => setNextDueDate(e.currentTarget.value)} />
-          <Button type="submit" loading={create.isPending}>Ajouter</Button>
+          <Button type="submit" loading={create.isPending} leftSection={<IconCheck size={16} />}>Ajouter</Button>
         </Stack>
       </form>
     </Modal>

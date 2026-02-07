@@ -10,7 +10,9 @@ import {
   Stack,
   Alert,
   Anchor,
+  Center,
 } from "@mantine/core";
+import { IconLayoutDashboard, IconMail, IconLock, IconLogin } from "@tabler/icons-react";
 import { useAuth } from "../contexts/auth-context";
 import { ApiError } from "../lib/api-client";
 
@@ -48,48 +50,70 @@ export function LoginPage() {
   }
 
   return (
-    <Paper p="xl" maw={400} mx="auto" mt={100}>
-      <Title order={2} ta="center" mb="lg">
-        Connexion
-      </Title>
+    <Paper p="xl" maw={420} w="100%" shadow="lg">
+      <Stack>
+        <Center>
+          <Stack align="center" gap={4}>
+            <IconLayoutDashboard
+              size={40}
+              stroke={1.5}
+              color="var(--mantine-color-teal-5)"
+            />
+            <Title order={3} fw={700}>
+              Personal OS
+            </Title>
+          </Stack>
+        </Center>
 
-      <form onSubmit={handleSubmit}>
-        <Stack>
-          {error && (
-            <Alert color="red" variant="light">
-              {error}
-            </Alert>
-          )}
+        <Title order={2} ta="center">
+          Connexion
+        </Title>
 
-          <TextInput
-            label="Email"
-            type="email"
-            placeholder="vous@exemple.com"
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-            required
-          />
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            {error && (
+              <Alert color="red" variant="light">
+                {error}
+              </Alert>
+            )}
 
-          <PasswordInput
-            label="Mot de passe"
-            placeholder="Votre mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-            required
-          />
+            <TextInput
+              label="Email"
+              type="email"
+              placeholder="vous@exemple.com"
+              leftSection={<IconMail size={16} />}
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              required
+            />
 
-          <Button type="submit" loading={isLoading} fullWidth>
-            Se connecter
-          </Button>
+            <PasswordInput
+              label="Mot de passe"
+              placeholder="Votre mot de passe"
+              leftSection={<IconLock size={16} />}
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
+              required
+            />
 
-          <Text ta="center" size="sm">
-            Pas encore de compte ?{" "}
-            <Anchor component={Link} to="/register">
-              S'inscrire
-            </Anchor>
-          </Text>
-        </Stack>
-      </form>
+            <Button
+              type="submit"
+              loading={isLoading}
+              fullWidth
+              leftSection={<IconLogin size={16} />}
+            >
+              Se connecter
+            </Button>
+
+            <Text ta="center" size="sm">
+              Pas encore de compte ?{" "}
+              <Anchor component={Link} to="/register">
+                S'inscrire
+              </Anchor>
+            </Text>
+          </Stack>
+        </form>
+      </Stack>
     </Paper>
   );
 }

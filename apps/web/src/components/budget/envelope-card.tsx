@@ -10,6 +10,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconTrash, IconPlus } from "@tabler/icons-react";
 import { LogEntryModal } from "./log-entry-modal";
 import { useDeleteEnvelopeEntry } from "../../hooks/use-envelopes";
 import { useAuth } from "../../contexts/auth-context";
@@ -76,7 +77,7 @@ export function EnvelopeCard({ groupId, planId, envelope }: Props) {
             <Text size="sm" c="dimmed">
               {formatCents(envelope.spent)} € / {formatCents(envelope.allocatedAmount)} €
             </Text>
-            <Button size="xs" onClick={openLog}>
+            <Button size="xs" onClick={openLog} leftSection={<IconPlus size={16} />}>
               Enregistrer une dépense
             </Button>
           </Group>
@@ -113,7 +114,7 @@ export function EnvelopeCard({ groupId, planId, envelope }: Props) {
                           size="sm"
                           onClick={() => deleteEntry.mutate(entry.id)}
                         >
-                          x
+                          <IconTrash size={14} />
                         </ActionIcon>
                       )}
                     </Table.Td>

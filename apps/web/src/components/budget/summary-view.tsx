@@ -6,7 +6,10 @@ import {
   Table,
   Loader,
   Center,
+  ThemeIcon,
+  Group,
 } from "@mantine/core";
+import { IconCash, IconReceipt, IconPigMoney } from "@tabler/icons-react";
 import {
   usePlanSummary,
   useBudgetGroup,
@@ -47,25 +50,40 @@ export function SummaryView({ groupId, planId }: Props) {
 
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
         <Card shadow="sm" padding="md" radius="md" withBorder>
-          <Text c="dimmed" size="sm">
-            Revenus totaux
-          </Text>
+          <Group gap="sm" mb="xs">
+            <ThemeIcon variant="light" color="green" size="md" radius="md">
+              <IconCash size={16} />
+            </ThemeIcon>
+            <Text c="dimmed" size="sm">
+              Revenus totaux
+            </Text>
+          </Group>
           <Text fw={700} size="xl" c="green">
             {formatCents(summary.totalIncome)} €
           </Text>
         </Card>
         <Card shadow="sm" padding="md" radius="md" withBorder>
-          <Text c="dimmed" size="sm">
-            Dépenses totales
-          </Text>
+          <Group gap="sm" mb="xs">
+            <ThemeIcon variant="light" color="red" size="md" radius="md">
+              <IconReceipt size={16} />
+            </ThemeIcon>
+            <Text c="dimmed" size="sm">
+              Dépenses totales
+            </Text>
+          </Group>
           <Text fw={700} size="xl" c="red">
             {formatCents(summary.totalExpenses)} €
           </Text>
         </Card>
         <Card shadow="sm" padding="md" radius="md" withBorder>
-          <Text c="dimmed" size="sm">
-            Épargne
-          </Text>
+          <Group gap="sm" mb="xs">
+            <ThemeIcon variant="light" color={summary.totalSavings >= 0 ? "green" : "red"} size="md" radius="md">
+              <IconPigMoney size={16} />
+            </ThemeIcon>
+            <Text c="dimmed" size="sm">
+              Épargne
+            </Text>
+          </Group>
           <Text
             fw={700}
             size="xl"

@@ -7,6 +7,7 @@ import {
   ActionIcon,
   Badge,
 } from "@mantine/core";
+import { IconTrash, IconPlus } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import {
   useRoutineTemplates,
@@ -31,7 +32,7 @@ export function RoutineSetup({ householdId, petId }: Props) {
     <Stack>
       <Group justify="space-between">
         <Text fw={500}>Modèles de routine</Text>
-        <Button size="sm" onClick={openAdd}>
+        <Button size="sm" onClick={openAdd} leftSection={<IconPlus size={16} />}>
           Ajouter une routine
         </Button>
       </Group>
@@ -65,7 +66,7 @@ export function RoutineSetup({ householdId, petId }: Props) {
                 size="sm"
                 onClick={() => deleteRoutine.mutate(routine.id)}
               >
-                x
+                <IconTrash size={14} />
               </ActionIcon>
             </Group>
           </Card>

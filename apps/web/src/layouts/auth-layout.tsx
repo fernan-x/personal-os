@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router";
-import { Center, Loader } from "@mantine/core";
+import { Box, Center, Loader } from "@mantine/core";
 import { useAuth } from "../contexts/auth-context";
 
 export function AuthLayout() {
@@ -17,5 +17,17 @@ export function AuthLayout() {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <Box
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#FFFDF8",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Outlet />
+    </Box>
+  );
 }

@@ -1,19 +1,22 @@
 import {
-  Title,
   Text,
   Stack,
-  Group,
   Button,
   Card,
   Badge,
   Loader,
   Center,
   Alert,
+  Group,
+  ThemeIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router";
+import { IconWallet, IconPlus, IconUsersGroup, IconArrowRight } from "@tabler/icons-react";
 import { useBudgetGroups } from "../../hooks/use-budget";
 import { CreateGroupModal } from "../../components/budget/create-group-modal";
+import { PageHeader } from "../../components/shared/page-header";
+import { EmptyState } from "../../components/shared/empty-state";
 
 export function BudgetPage() {
   const { data: groups, isLoading, error } = useBudgetGroups();
@@ -22,13 +25,16 @@ export function BudgetPage() {
 
   return (
     <Stack>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title>Budget</Title>
-          <Text c="dimmed">Gérez vos groupes de budget et plans mensuels.</Text>
-        </div>
-        <Button onClick={open}>Nouveau groupe</Button>
-      </Group>
+      <PageHeader
+        title="Budget"
+        subtitle="Gérez vos groupes de budget"
+        icon={IconWallet}
+        actions={
+          <Button leftSection={<IconPlus size={16} />} onClick={open}>
+            Nouveau groupe
+          </Button>
+        }
+      />
 
       {isLoading && (
         <Center py="xl">
@@ -43,9 +49,13 @@ export function BudgetPage() {
       )}
 
       {groups && groups.length === 0 && (
-        <Text c="dimmed" ta="center" py="xl">
-          Pas encore de groupe de budget. Créez-en un pour commencer !
-        </Text>
+        <EmptyState
+          icon={IconWallet}
+          title="Aucun groupe"
+          description="Créez votre premier groupe de budget pour commencer."
+          actionLabel="Créer un groupe"
+          onAction={open}
+        />
       )}
 
       {groups &&
@@ -60,7 +70,11 @@ export function BudgetPage() {
             onClick={() => navigate(`/budget/${group.id}`)}
           >
             <Group justify="space-between">
-              <div>
+              <Group gap="md">
+                <ThemeIcon variant="light" color="teal" size="lg" radius="md">
+                  <IconUsersGroup size={20} />
+                </ThemeIcon>
+                <div>
                 <Text fw={500} size="lg">
                   {group.name}
                 </Text>
@@ -71,7 +85,8 @@ export function BudgetPage() {
                     </Badge>
                   ))}
                 </Group>
-              </div>
+                </div>
+              </Group>
               <Badge variant="outline">
                 {group.members.length} membre{group.members.length !== 1 ? "s" : ""}
               </Badge>

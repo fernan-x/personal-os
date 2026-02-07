@@ -1,4 +1,5 @@
 import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateRoutineTemplate } from "../../hooks/use-puppy";
 import { ACTIVITY_TYPES } from "@personal-os/domain";
@@ -69,7 +70,7 @@ export function AddRoutineModal({
             onChange={(v) => v && setType(v)}
             required
           />
-          <Button type="submit" loading={createRoutine.isPending}>
+          <Button type="submit" loading={createRoutine.isPending} leftSection={<IconCheck size={16} />}>
             Ajouter
           </Button>
         </Stack>

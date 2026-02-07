@@ -6,6 +6,7 @@ import {
   Badge,
   Stack,
 } from "@mantine/core";
+import { IconPaw } from "@tabler/icons-react";
 import { useToggleChecklistItem } from "../../hooks/use-puppy";
 import type { ChecklistItemFull } from "../../hooks/use-puppy";
 import type { Pet } from "@personal-os/domain";
@@ -26,6 +27,7 @@ export function ChecklistCard({ pet, items, householdId }: Props) {
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Group justify="space-between" mb="sm">
         <Group gap="sm">
+          <IconPaw size={20} />
           <Text fw={500} size="lg">
             {pet.name}
           </Text>

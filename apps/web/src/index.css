@@ -2,3 +2,49 @@
 @import "@mantine/core/styles.css";
 
 @custom-variant dark (&:where([data-mantine-color-scheme="dark"], [data-mantine-color-scheme="dark"] *));
+
+/* Cream background */
+body {
+  background-color: #FFFDF8;
+}
+
+/* Smooth transitions */
+.mantine-NavLink-root,
+.mantine-Button-root,
+.mantine-Card-root,
+.mantine-ActionIcon-root {
+  transition: all 0.15s ease;
+}
+
+.mantine-Card-root:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Sidebar & header */
+.mantine-AppShell-navbar {
+  background-color: #FFFDF8;
+  border-right-color: #FFF1E3;
+}
+
+.mantine-AppShell-header {
+  background-color: #FFFDF8;
+  border-bottom-color: #FFF1E3;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFE8D1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFDCBA;
+}

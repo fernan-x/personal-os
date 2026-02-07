@@ -1,4 +1,5 @@
 import { Button, Modal, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import {
   HABIT_FREQUENCIES,
@@ -71,7 +72,7 @@ export function CreateHabitModal({ opened, onClose }: CreateHabitModalProps) {
               form.setFieldValue("frequency", (value ?? "daily") as HabitFrequency)
             }
           />
-          <Button type="submit" loading={createHabit.isPending}>
+          <Button type="submit" loading={createHabit.isPending} leftSection={<IconCheck size={16} />}>
             Créer l'habitude
           </Button>
         </Stack>

@@ -1,4 +1,5 @@
 import { Stack, Text, Table, Group, ActionIcon } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
 import {
   useWeightEntries,
   useDeleteWeightEntry,
@@ -70,7 +71,7 @@ export function WeightChart({ householdId, petId }: Props) {
                   size="sm"
                   onClick={() => deleteEntry.mutate(entry.id)}
                 >
-                  x
+                  <IconTrash size={14} />
                 </ActionIcon>
               </Table.Td>
             </Table.Tr>

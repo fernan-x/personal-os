@@ -12,6 +12,7 @@ import {
   Checkbox,
 } from "@mantine/core";
 import { useState } from "react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import {
   useCreatePlannedExpense,
   useDeletePlannedExpense,
@@ -131,7 +132,7 @@ export function ExpenseStep({ groupId, plan }: Props) {
               style={{ flex: 1 }}
             />
           </Group>
-          <Button type="submit" loading={createExpense.isPending}>
+          <Button type="submit" loading={createExpense.isPending} leftSection={<IconPlus size={16} />}>
             Ajouter la dépense
           </Button>
         </Stack>
@@ -185,7 +186,7 @@ export function ExpenseStep({ groupId, plan }: Props) {
                     size="sm"
                     onClick={() => deleteExpense.mutate(expense.id)}
                   >
-                    x
+                    <IconTrash size={14} />
                   </ActionIcon>
                 </Table.Td>
               </Table.Tr>

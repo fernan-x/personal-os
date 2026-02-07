@@ -1,4 +1,5 @@
 import { Modal, TextInput, Textarea, Button, Stack } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateTrainingMilestone } from "../../hooks/use-puppy";
 
@@ -50,7 +51,7 @@ export function AddMilestoneModal({
             value={notes}
             onChange={(e) => setNotes(e.currentTarget.value)}
           />
-          <Button type="submit" loading={create.isPending}>
+          <Button type="submit" loading={create.isPending} leftSection={<IconCheck size={16} />}>
             Ajouter
           </Button>
         </Stack>

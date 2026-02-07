@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Button, Modal, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import {
   HABIT_FREQUENCIES,
@@ -87,7 +88,7 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
               form.setFieldValue("frequency", (value ?? "daily") as HabitFrequency)
             }
           />
-          <Button type="submit" loading={updateHabit.isPending}>
+          <Button type="submit" loading={updateHabit.isPending} leftSection={<IconCheck size={16} />}>
             Enregistrer
           </Button>
         </Stack>

@@ -9,6 +9,7 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { useState } from "react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import {
   useCreateIncome,
   useDeleteIncome,
@@ -72,7 +73,7 @@ export function IncomeStep({ groupId, plan }: Props) {
             fixedDecimalScale
             prefix="€"
           />
-          <Button type="submit" loading={createIncome.isPending}>
+          <Button type="submit" loading={createIncome.isPending} leftSection={<IconPlus size={16} />}>
             Ajouter
           </Button>
         </Group>
@@ -101,7 +102,7 @@ export function IncomeStep({ groupId, plan }: Props) {
                     size="sm"
                     onClick={() => deleteIncome.mutate(income.id)}
                   >
-                    x
+                    <IconTrash size={14} />
                   </ActionIcon>
                 </Table.Td>
               </Table.Tr>

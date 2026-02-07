@@ -1,4 +1,5 @@
 import { Modal, TextInput, Textarea, Button, Stack, Select } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateMedication } from "../../hooks/use-puppy";
 import { MEDICATION_FREQUENCIES } from "@personal-os/domain";
@@ -61,7 +62,7 @@ export function AddMedicationModal({ householdId, petId, opened, onClose }: Prop
           <TextInput label="Date de début" type="date" value={startDate} onChange={(e) => setStartDate(e.currentTarget.value)} required />
           <TextInput label="Date de fin" type="date" value={endDate} onChange={(e) => setEndDate(e.currentTarget.value)} />
           <Textarea label="Notes" placeholder="Notes optionnelles..." value={notes} onChange={(e) => setNotes(e.currentTarget.value)} />
-          <Button type="submit" loading={create.isPending}>Ajouter</Button>
+          <Button type="submit" loading={create.isPending} leftSection={<IconCheck size={16} />}>Ajouter</Button>
         </Stack>
       </form>
     </Modal>

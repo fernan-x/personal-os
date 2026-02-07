@@ -1,4 +1,5 @@
 import { Modal, TextInput, Button, Stack, NumberInput } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreateWeightEntry } from "../../hooks/use-puppy";
 
@@ -52,7 +53,7 @@ export function LogWeightModal({
             onChange={(e) => setDate(e.currentTarget.value)}
             required
           />
-          <Button type="submit" loading={createWeight.isPending}>
+          <Button type="submit" loading={createWeight.isPending} leftSection={<IconCheck size={16} />}>
             Enregistrer
           </Button>
         </Stack>

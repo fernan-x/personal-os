@@ -6,7 +6,9 @@ import {
   Stack,
   Progress,
   SimpleGrid,
+  ThemeIcon,
 } from "@mantine/core";
+import { IconCake, IconScale, IconSchool, IconActivity } from "@tabler/icons-react";
 import { usePetDashboard } from "../../hooks/use-puppy";
 import { computeTimeSince } from "@personal-os/domain";
 import { ACTIVITY_TYPE_LABELS_FR } from "../../lib/labels";
@@ -34,9 +36,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
     <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
       {/* Age & Stage */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
-        <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Âge
-        </Text>
+        <Group gap="xs" mb={4}>
+          <ThemeIcon variant="light" size="sm" color="pink">
+            <IconCake size={14} />
+          </ThemeIcon>
+          <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+            Âge
+          </Text>
+        </Group>
         <Text size="lg" fw={500}>
           {pet.age || "Inconnu"}
         </Text>
@@ -47,9 +54,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
 
       {/* Weight */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
-        <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Poids
-        </Text>
+        <Group gap="xs" mb={4}>
+          <ThemeIcon variant="light" size="sm" color="blue">
+            <IconScale size={14} />
+          </ThemeIcon>
+          <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+            Poids
+          </Text>
+        </Group>
         <Text size="lg" fw={500}>
           {latestWeight ? formatWeight(latestWeight.weight) : "Non renseigné"}
         </Text>
@@ -62,9 +74,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
 
       {/* Training Progress */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
-        <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Dressage
-        </Text>
+        <Group gap="xs" mb={4}>
+          <ThemeIcon variant="light" size="sm" color="green">
+            <IconSchool size={14} />
+          </ThemeIcon>
+          <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+            Dressage
+          </Text>
+        </Group>
         <Group gap="xs" mt={4}>
           <Text size="lg" fw={500}>
             {trainingProgress.learned}/{trainingProgress.total}
@@ -83,9 +100,14 @@ export function PetDashboardSummary({ householdId, petId }: Props) {
 
       {/* Today Checklist */}
       <Card shadow="xs" padding="sm" radius="sm" withBorder>
-        <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-          Aujourd'hui
-        </Text>
+        <Group gap="xs" mb={4}>
+          <ThemeIcon variant="light" size="sm" color="orange">
+            <IconActivity size={14} />
+          </ThemeIcon>
+          <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+            Aujourd'hui
+          </Text>
+        </Group>
         <Group gap="xs" mt={4}>
           <Text size="lg" fw={500}>
             {todayChecklist.completed}/{todayChecklist.total}
