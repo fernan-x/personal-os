@@ -5,6 +5,7 @@ import {
   ConflictException,
 } from "@nestjs/common";
 import { DatabaseService } from "../database/database.service";
+import { UploadService } from "../upload/upload.service";
 import {
   validateCreateHousehold,
   validateUpdateHousehold,
@@ -25,10 +26,28 @@ const MEMBER_INCLUDE = {
 
 @Injectable()
 export class HouseholdService {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(
+    private readonly db: DatabaseService,
+    private readonly uploadService: UploadService,
+  ) {}
+
+  private async resolveHouseholdPhotos<
+    T extends { pets: { photoUrl: string | null }[] },
+  >(household: T): Promise<T> {
+    return {
+      ...household,
+      pets: await this.uploadService.resolvePhotoUrls(household.pets),
+    };
+  }
+
+  private async resolveHouseholdsPhotos<
+    T extends { pets: { photoUrl: string | null }[] },
+  >(households: T[]): Promise<T[]> {
+    return Promise.all(households.map((h) => this.resolveHouseholdPhotos(h)));
+  }
 
   async findAll(userId: string) {
-    return this.db.household.findMany({
+    const households = await this.db.household.findMany({
       where: { members: { some: { userId } } },
       include: {
         ...MEMBER_INCLUDE,
@@ -36,6 +55,7 @@ export class HouseholdService {
       },
       orderBy: { createdAt: "desc" },
     });
+    return this.resolveHouseholdsPhotos(households);
   }
 
   async findOne(id: string) {
@@ -51,7 +71,7 @@ export class HouseholdService {
       throw new NotFoundException("Household not found");
     }
 
-    return household;
+    return this.resolveHouseholdPhotos(household);
   }
 
   async create(input: CreateHouseholdInput, userId: string) {
@@ -60,7 +80,7 @@ export class HouseholdService {
       throw new BadRequestException(errors);
     }
 
-    return this.db.household.create({
+    const household = await this.db.household.create({
       data: {
         name: input.name.trim(),
         members: { create: { userId } },
@@ -70,6 +90,7 @@ export class HouseholdService {
         pets: true,
       },
     });
+    return this.resolveHouseholdPhotos(household);
   }
 
   async update(id: string, input: UpdateHouseholdInput) {
@@ -78,7 +99,7 @@ export class HouseholdService {
       throw new BadRequestException(errors);
     }
 
-    return this.db.household.update({
+    const household = await this.db.household.update({
       where: { id },
       data: {
         ...(input.name !== undefined && { name: input.name.trim() }),
@@ -88,6 +109,7 @@ export class HouseholdService {
         pets: true,
       },
     });
+    return this.resolveHouseholdPhotos(household);
   }
 
   async addMember(householdId: string, input: AddHouseholdMemberInput) {

@@ -10,6 +10,7 @@ import {
   Alert,
   TextInput,
   ActionIcon,
+  Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useParams, useNavigate } from "react-router";
@@ -153,14 +154,19 @@ export function HouseholdPage() {
               }
             >
               <Group justify="space-between">
-                <div>
-                  <Text fw={500}>{pet.name}</Text>
-                  {pet.breed && (
-                    <Text size="sm" c="dimmed">
-                      {pet.breed}
-                    </Text>
-                  )}
-                </div>
+                <Group>
+                  <Avatar src={pet.photoUrl} alt={pet.name} radius="xl" size="md">
+                    <IconPaw size={16} />
+                  </Avatar>
+                  <div>
+                    <Text fw={500}>{pet.name}</Text>
+                    {pet.breed && (
+                      <Text size="sm" c="dimmed">
+                        {pet.breed}
+                      </Text>
+                    )}
+                  </div>
+                </Group>
                 <Button variant="subtle" size="xs">
                   Voir
                 </Button>

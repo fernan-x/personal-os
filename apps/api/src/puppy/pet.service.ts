@@ -4,18 +4,23 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { DatabaseService } from "../database/database.service";
+import { UploadService } from "../upload/upload.service";
 import { validateCreatePet, validateUpdatePet } from "@personal-os/domain";
 import type { CreatePetInput, UpdatePetInput } from "@personal-os/domain";
 
 @Injectable()
 export class PetService {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(
+    private readonly db: DatabaseService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   async findAll(householdId: string) {
-    return this.db.pet.findMany({
+    const pets = await this.db.pet.findMany({
       where: { householdId },
       orderBy: { createdAt: "desc" },
     });
+    return this.uploadService.resolvePhotoUrls(pets);
   }
 
   async findOne(petId: string) {
@@ -27,7 +32,7 @@ export class PetService {
       throw new NotFoundException("Pet not found");
     }
 
-    return pet;
+    return this.uploadService.resolvePhotoUrl(pet);
   }
 
   async create(householdId: string, input: CreatePetInput) {
@@ -36,7 +41,7 @@ export class PetService {
       throw new BadRequestException(errors);
     }
 
-    return this.db.pet.create({
+    const pet = await this.db.pet.create({
       data: {
         householdId,
         name: input.name.trim(),
@@ -45,6 +50,7 @@ export class PetService {
         photoUrl: input.photoUrl || null,
       },
     });
+    return this.uploadService.resolvePhotoUrl(pet);
   }
 
   async update(petId: string, input: UpdatePetInput) {
@@ -53,7 +59,7 @@ export class PetService {
       throw new BadRequestException(errors);
     }
 
-    return this.db.pet.update({
+    const pet = await this.db.pet.update({
       where: { id: petId },
       data: {
         ...(input.name !== undefined && { name: input.name.trim() }),
@@ -68,6 +74,7 @@ export class PetService {
         }),
       },
     });
+    return this.uploadService.resolvePhotoUrl(pet);
   }
 
   async remove(petId: string) {

@@ -1,7 +1,9 @@
-import { Modal, TextInput, Button, Stack } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
+import { Modal, TextInput, Button, Stack, FileInput } from "@mantine/core";
+import { IconCheck, IconPhoto } from "@tabler/icons-react";
 import { useState } from "react";
 import { useCreatePet } from "../../hooks/use-puppy";
+import { useUploadFile } from "../../hooks/use-upload";
+import { UPLOAD_ALLOWED_MIME_TYPES } from "@personal-os/domain";
 
 interface Props {
   householdId: string;
@@ -13,26 +15,42 @@ export function CreatePetModal({ householdId, opened, onClose }: Props) {
   const [name, setName] = useState("");
   const [breed, setBreed] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null);
   const createPet = useCreatePet(householdId);
+  const uploadFile = useUploadFile();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    let photoUrl: string | undefined;
+    if (photo) {
+      const result = await uploadFile.mutateAsync({
+        file: photo,
+        folder: "pets",
+      });
+      photoUrl = result.key;
+    }
+
     createPet.mutate(
       {
         name,
         breed: breed || undefined,
         birthDate: birthDate || undefined,
+        photoUrl,
       },
       {
         onSuccess: () => {
           setName("");
           setBreed("");
           setBirthDate("");
+          setPhoto(null);
           onClose();
         },
       },
     );
   }
+
+  const isLoading = uploadFile.isPending || createPet.isPending;
 
   return (
     <Modal opened={opened} onClose={onClose} title="Ajouter un animal">
@@ -58,7 +76,16 @@ export function CreatePetModal({ householdId, opened, onClose }: Props) {
             value={birthDate}
             onChange={(e) => setBirthDate(e.currentTarget.value)}
           />
-          <Button type="submit" loading={createPet.isPending} leftSection={<IconCheck size={16} />}>
+          <FileInput
+            label="Photo"
+            placeholder="Choisir une photo"
+            accept={UPLOAD_ALLOWED_MIME_TYPES.join(",")}
+            leftSection={<IconPhoto size={16} />}
+            value={photo}
+            onChange={setPhoto}
+            clearable
+          />
+          <Button type="submit" loading={isLoading} leftSection={<IconCheck size={16} />}>
             Ajouter
           </Button>
         </Stack>

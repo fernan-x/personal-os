@@ -7,8 +7,8 @@ import {
   Center,
   Alert,
   Tabs,
-  Badge,
   ActionIcon,
+  Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useParams, useNavigate } from "react-router";
@@ -85,6 +85,12 @@ export function PetPage() {
           </Button>
         }
       />
+
+      {pet.photoUrl && (
+        <Center>
+          <Avatar src={pet.photoUrl} alt={pet.name} size={120} radius={120} />
+        </Center>
+      )}
 
       <PetDashboardSummary householdId={householdId!} petId={petId!} />
 
