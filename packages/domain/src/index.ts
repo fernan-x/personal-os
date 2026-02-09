@@ -5,3 +5,4 @@ export * from "./budget/index.ts";
 export * from "./puppy/index.ts";
 export * from "./uploads/index.ts";
 export * from "./dashboard/index.ts";
+export * from "./meals/index.ts";

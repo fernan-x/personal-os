@@ -19,5 +19,9 @@ export {
   ActivityType,
   TrainingStatus,
   MedicationFrequency,
+  RecipeVisibility,
+  RecipeDifficulty,
+  MealSlot,
+  IngredientUnit,
 } from "@prisma/client";
 export type * from "@prisma/client";

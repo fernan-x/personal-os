@@ -14,6 +14,10 @@ import { PuppyPage } from "./pages/puppy/index";
 import { HouseholdPage } from "./pages/puppy/household";
 import { PetPage } from "./pages/puppy/pet";
 import { TodayPage } from "./pages/puppy/today";
+import { RecipesPage } from "./pages/meals/index";
+import { RecipeDetailPage } from "./pages/meals/recipe";
+import { CreateRecipePage } from "./pages/meals/create-recipe";
+import { EditRecipePage } from "./pages/meals/edit-recipe";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +44,10 @@ export const router = createBrowserRouter([
       { path: "puppy/:householdId", element: <HouseholdPage /> },
       { path: "puppy/:householdId/today", element: <TodayPage /> },
       { path: "puppy/:householdId/pets/:petId", element: <PetPage /> },
+      { path: "meals", element: <RecipesPage /> },
+      { path: "meals/new", element: <CreateRecipePage /> },
+      { path: "meals/:recipeId", element: <RecipeDetailPage /> },
+      { path: "meals/:recipeId/edit", element: <EditRecipePage /> },
     ],
   },
 ]);

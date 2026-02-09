@@ -21,6 +21,7 @@ import {
   IconLogout,
   IconChevronDown,
   IconLayoutDashboard,
+  IconToolsKitchen2,
 } from "@tabler/icons-react";
 import type { ComponentType } from "react";
 
@@ -35,6 +36,7 @@ const navItems: NavItem[] = [
   { label: "Habitudes", path: "/habits", icon: IconTargetArrow },
   { label: "Budget", path: "/budget", icon: IconWallet },
   { label: "Animaux", path: "/puppy", icon: IconPaw },
+  { label: "Repas", path: "/meals", icon: IconToolsKitchen2 },
 ];
 
 export function RootLayout() {
