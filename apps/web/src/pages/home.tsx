@@ -9,18 +9,35 @@ import {
   ThemeIcon,
   Center,
   Loader,
+  ActionIcon,
+  Button,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router";
+import { useState, useCallback } from "react";
 import {
   IconTargetArrow,
   IconWallet,
   IconPaw,
   IconPlus,
+  IconPencil,
+  IconCheck,
 } from "@tabler/icons-react";
 import { useAuth } from "../contexts/auth-context";
 import { useHabits } from "../hooks/use-habits";
 import { useBudgetGroups } from "../hooks/use-budget";
 import { useHouseholds } from "../hooks/use-puppy";
+import {
+  useDashboardWidgets,
+  useSetDashboard,
+  useRemoveDashboardWidget,
+  useAddDashboardWidget,
+  useUpdateDashboardWidget,
+} from "../hooks/use-dashboard";
+import { WidgetGrid } from "../components/dashboard/widget-grid";
+import { EditModeDrawer } from "../components/dashboard/edit-mode-drawer";
+import { WidgetConfigModal } from "../components/dashboard/widget-config-modal";
+import type { DashboardWidgetDto, WidgetType } from "@personal-os/domain";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -28,14 +45,29 @@ export function HomePage() {
   const { data: habits, isLoading: habitsLoading } = useHabits();
   const { data: groups, isLoading: groupsLoading } = useBudgetGroups();
   const { data: households, isLoading: householdsLoading } = useHouseholds();
+  const { data: widgets, isLoading: widgetsLoading } = useDashboardWidgets();
 
-  const isLoading = habitsLoading || groupsLoading || householdsLoading;
+  const setDashboard = useSetDashboard();
+  const removeDashboardWidget = useRemoveDashboardWidget();
+  const addDashboardWidget = useAddDashboardWidget();
+  const updateDashboardWidget = useUpdateDashboardWidget();
+
+  const [editMode, setEditMode] = useState(false);
+  const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
+    useDisclosure(false);
+  const [configModal, setConfigModal] = useState<{
+    type: WidgetType | null;
+    widget?: DashboardWidgetDto;
+  }>({ type: null });
+
+  const isLoading = habitsLoading || groupsLoading || householdsLoading || widgetsLoading;
 
   const totalHabits = habits?.length ?? 0;
-  const completedToday = habits?.filter((h) => {
-    const entry = h.entries[0];
-    return entry?.completed ?? false;
-  }).length ?? 0;
+  const completedToday =
+    habits?.filter((h) => {
+      const entry = h.entries[0];
+      return entry?.completed ?? false;
+    }).length ?? 0;
   const habitPercent =
     totalHabits > 0 ? Math.round((completedToday / totalHabits) * 100) : 0;
 
@@ -43,6 +75,69 @@ export function HomePage() {
   const totalHouseholds = households?.length ?? 0;
   const totalPets =
     households?.reduce((sum, h) => sum + (h.pets?.length ?? 0), 0) ?? 0;
+
+  const sortedWidgets = [...(widgets ?? [])].sort(
+    (a, b) => a.position - b.position,
+  );
+
+  const handleReorder = useCallback(
+    (reordered: DashboardWidgetDto[]) => {
+      setDashboard.mutate({
+        widgets: reordered.map((w) => ({
+          id: w.id,
+          type: w.type,
+          position: w.position,
+          config: w.config,
+        })),
+      });
+    },
+    [setDashboard],
+  );
+
+  const handleRemove = useCallback(
+    (id: string) => {
+      removeDashboardWidget.mutate(id);
+    },
+    [removeDashboardWidget],
+  );
+
+  const handleAddWidgetType = useCallback(
+    (type: WidgetType) => {
+      closeDrawer();
+      // Types that need config before adding
+      if (type === "budget_summary" || type === "pet_today_activities" || type === "pet_activities" || type === "pet_weight_evolution") {
+        setConfigModal({ type });
+      } else {
+        // Add immediately with defaults
+        addDashboardWidget.mutate({
+          type,
+          config: type === "habit_evolution" ? { period: "weekly" } : {},
+        });
+      }
+    },
+    [closeDrawer, addDashboardWidget],
+  );
+
+  const handleConfigSave = useCallback(
+    (config: Record<string, unknown>) => {
+      if (configModal.widget) {
+        // Editing existing widget
+        updateDashboardWidget.mutate({ id: configModal.widget.id, config });
+      } else if (configModal.type) {
+        // Adding new widget with config
+        addDashboardWidget.mutate({ type: configModal.type, config });
+      }
+      setConfigModal({ type: null });
+    },
+    [configModal, addDashboardWidget, updateDashboardWidget],
+  );
+
+  const handleConfigure = useCallback((widget: DashboardWidgetDto) => {
+    setConfigModal({
+      type: widget.type as WidgetType,
+      widget,
+    });
+  }, []);
 
   if (isLoading) {
     return (
@@ -55,19 +150,29 @@ export function HomePage() {
   return (
     <Stack gap="xl">
       {/* Welcome */}
-      <div>
-        <Title order={2}>
-          Bonjour, {user?.name || "utilisateur"} !
-        </Title>
-        <Text c="dimmed" size="sm" mt={4}>
-          {new Date().toLocaleDateString("fr-FR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </Text>
-      </div>
+      <Group justify="space-between" align="flex-start">
+        <div>
+          <Title order={2}>
+            Bonjour, {user?.name || "utilisateur"} !
+          </Title>
+          <Text c="dimmed" size="sm" mt={4}>
+            {new Date().toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </Text>
+        </div>
+        <ActionIcon
+          variant={editMode ? "filled" : "subtle"}
+          color={editMode ? "teal" : "gray"}
+          size="lg"
+          onClick={() => setEditMode(!editMode)}
+        >
+          {editMode ? <IconCheck size={18} /> : <IconPencil size={18} />}
+        </ActionIcon>
+      </Group>
 
       {/* Stats */}
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
@@ -127,7 +232,8 @@ export function HomePage() {
                 {totalPets}
               </Text>
               <Text size="sm" c="dimmed">
-                dans {totalHouseholds} {totalHouseholds <= 1 ? "foyer" : "foyers"}
+                dans {totalHouseholds}{" "}
+                {totalHouseholds <= 1 ? "foyer" : "foyers"}
               </Text>
             </div>
             <ThemeIcon variant="light" color="blue" size="xl" radius="md">
@@ -136,6 +242,54 @@ export function HomePage() {
           </Group>
         </Card>
       </SimpleGrid>
+
+      {/* Dashboard widgets */}
+      {sortedWidgets.length > 0 ? (
+        <div>
+          <Group justify="space-between" mb="sm">
+            <Text fw={600} size="sm" c="dimmed" tt="uppercase">
+              Tableau de bord
+            </Text>
+            {editMode && (
+              <Button
+                size="xs"
+                variant="light"
+                leftSection={<IconPlus size={14} />}
+                onClick={openDrawer}
+              >
+                Ajouter
+              </Button>
+            )}
+          </Group>
+          <WidgetGrid
+            widgets={sortedWidgets}
+            editMode={editMode}
+            onReorder={handleReorder}
+            onRemove={handleRemove}
+            onConfigure={handleConfigure}
+          />
+        </div>
+      ) : editMode ? (
+        <div>
+          <Group justify="space-between" mb="sm">
+            <Text fw={600} size="sm" c="dimmed" tt="uppercase">
+              Tableau de bord
+            </Text>
+          </Group>
+          <Card withBorder padding="xl" style={{ textAlign: "center" }}>
+            <Text c="dimmed" mb="sm">
+              Ajoutez des widgets pour personnaliser votre tableau de bord
+            </Text>
+            <Button
+              variant="light"
+              leftSection={<IconPlus size={16} />}
+              onClick={openDrawer}
+            >
+              Ajouter un widget
+            </Button>
+          </Card>
+        </div>
+      ) : null}
 
       {/* Quick actions */}
       <div>
@@ -191,6 +345,22 @@ export function HomePage() {
           ))}
         </SimpleGrid>
       </div>
+
+      {/* Edit mode drawer */}
+      <EditModeDrawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        onAdd={handleAddWidgetType}
+      />
+
+      {/* Widget config modal */}
+      <WidgetConfigModal
+        opened={configModal.type !== null}
+        onClose={() => setConfigModal({ type: null })}
+        widgetType={configModal.type}
+        initialConfig={configModal.widget?.config}
+        onSave={handleConfigSave}
+      />
     </Stack>
   );
 }
