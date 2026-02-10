@@ -16,6 +16,7 @@ import {
   IconToolsKitchen2,
   IconPlus,
   IconSearch,
+  IconCalendar,
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 import {
@@ -80,12 +81,21 @@ export function RecipesPage() {
         title="Repas"
         subtitle="Votre livre de recettes personnel"
         actions={
-          <Button
-            leftSection={<IconPlus size={16} />}
-            onClick={() => navigate("/meals/new")}
-          >
-            Nouvelle recette
-          </Button>
+          <>
+            <Button
+              variant="light"
+              leftSection={<IconCalendar size={16} />}
+              onClick={() => navigate("/meals/plans")}
+            >
+              Plans de repas
+            </Button>
+            <Button
+              leftSection={<IconPlus size={16} />}
+              onClick={() => navigate("/meals/new")}
+            >
+              Nouvelle recette
+            </Button>
+          </>
         }
       />
 

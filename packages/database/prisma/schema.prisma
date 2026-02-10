@@ -602,7 +602,6 @@ model MealPlanEntry {
   mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-  @@unique([mealPlanId, date, slot])
   @@index([mealPlanId])
   @@map("meal_plan_entries")
 }

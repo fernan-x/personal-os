@@ -6,9 +6,14 @@ import type {
   RecipeInstruction,
   RecipeTag,
   RecipeTagLink,
+  MealPlan,
+  MealPlanEntry,
   CreateRecipeInput,
   UpdateRecipeInput,
   RecipeFilters,
+  CreateMealPlanInput,
+  CreateMealPlanEntryInput,
+  UpdateMealPlanEntryInput,
 } from "@personal-os/domain";
 
 // ── Types ────────────────────────────────────────────────────
@@ -34,6 +39,21 @@ interface PaginatedRecipes {
   limit: number;
 }
 
+export type MealPlanListItem = MealPlan & {
+  _count: { entries: number };
+};
+
+export type MealPlanEntryDetail = MealPlanEntry & {
+  recipe: Recipe & {
+    ingredients: RecipeIngredient[];
+    tags: (RecipeTagLink & { tag: RecipeTag })[];
+  };
+};
+
+export type MealPlanDetail = MealPlan & {
+  entries: MealPlanEntryDetail[];
+};
+
 // ── Query keys ───────────────────────────────────────────────
 
 export const mealKeys = {
@@ -41,6 +61,8 @@ export const mealKeys = {
   myRecipes: ["meals", "recipes", "mine"] as const,
   recipe: (id: string) => ["meals", "recipes", id] as const,
   tags: ["meals", "tags"] as const,
+  plans: ["meals", "plans"] as const,
+  plan: (id: string) => ["meals", "plans", id] as const,
 };
 
 // ── Recipe queries ───────────────────────────────────────────
@@ -148,6 +170,94 @@ export function useCreateTag() {
       apiPost<RecipeTag>("meals/tags", { name }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: mealKeys.tags });
+    },
+  });
+}
+
+// ── Meal Plan queries ───────────────────────────────────────
+
+export function useMealPlans() {
+  return useQuery({
+    queryKey: mealKeys.plans,
+    queryFn: () => apiGet<MealPlanListItem[]>("meals/plans"),
+  });
+}
+
+export function useMealPlan(id: string) {
+  return useQuery({
+    queryKey: mealKeys.plan(id),
+    queryFn: () => apiGet<MealPlanDetail>(`meals/plans/${id}`),
+    enabled: !!id,
+  });
+}
+
+// ── Meal Plan mutations ─────────────────────────────────────
+
+export function useCreateMealPlan() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: CreateMealPlanInput) =>
+      apiPost<MealPlanListItem>("meals/plans", input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mealKeys.plans });
+    },
+  });
+}
+
+export function useDeleteMealPlan() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => apiDelete(`meals/plans/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mealKeys.plans });
+    },
+  });
+}
+
+export function useCreateMealPlanEntry() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      planId,
+      ...input
+    }: CreateMealPlanEntryInput & { planId: string }) =>
+      apiPost<MealPlanEntryDetail>(`meals/plans/${planId}/entries`, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["meals", "plans"] });
+    },
+  });
+}
+
+export function useUpdateMealPlanEntry() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      planId,
+      entryId,
+      ...input
+    }: UpdateMealPlanEntryInput & { planId: string; entryId: string }) =>
+      apiPatch<MealPlanEntryDetail>(
+        `meals/plans/${planId}/entries/${entryId}`,
+        input,
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["meals", "plans"] });
+    },
+  });
+}
+
+export function useDeleteMealPlanEntry() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ planId, entryId }: { planId: string; entryId: string }) =>
+      apiDelete(`meals/plans/${planId}/entries/${entryId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["meals", "plans"] });
     },
   });
 }

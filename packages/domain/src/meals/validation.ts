@@ -4,7 +4,9 @@ import type {
   CreateRecipeInput,
   UpdateRecipeInput,
   CreateMealPlanInput,
+  UpdateMealPlanInput,
   CreateMealPlanEntryInput,
+  UpdateMealPlanEntryInput,
   GenerateMealPlanInput,
 } from "./types.ts";
 import {
@@ -431,6 +433,54 @@ export function validateCreateMealPlanEntry(
       message: `Slot must be one of: ${MEAL_SLOTS.join(", ")}`,
     });
   }
+
+  if (input.servings !== undefined) {
+    if (!Number.isInteger(input.servings) || input.servings < 1) {
+      errors.push({
+        field: "servings",
+        message: "Servings must be at least 1",
+      });
+    } else if (input.servings > MAX_SERVINGS) {
+      errors.push({
+        field: "servings",
+        message: `Servings must be at most ${MAX_SERVINGS}`,
+      });
+    }
+  }
+
+  return errors;
+}
+
+export function validateUpdateMealPlan(
+  input: UpdateMealPlanInput,
+): ValidationError[] {
+  const errors: ValidationError[] = [];
+
+  if (input.name !== undefined) {
+    if (!input.name || input.name.trim().length === 0) {
+      errors.push({ field: "name", message: "Name is required" });
+    } else if (input.name.length > MEAL_PLAN_NAME_MAX_LENGTH) {
+      errors.push({
+        field: "name",
+        message: `Name must be at most ${MEAL_PLAN_NAME_MAX_LENGTH} characters`,
+      });
+    }
+  }
+
+  if (input.startDate && input.endDate && input.startDate > input.endDate) {
+    errors.push({
+      field: "endDate",
+      message: "End date must be after start date",
+    });
+  }
+
+  return errors;
+}
+
+export function validateUpdateMealPlanEntry(
+  input: UpdateMealPlanEntryInput,
+): ValidationError[] {
+  const errors: ValidationError[] = [];
 
   if (input.servings !== undefined) {
     if (!Number.isInteger(input.servings) || input.servings < 1) {

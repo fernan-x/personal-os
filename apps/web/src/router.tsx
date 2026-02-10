@@ -18,6 +18,8 @@ import { RecipesPage } from "./pages/meals/index";
 import { RecipeDetailPage } from "./pages/meals/recipe";
 import { CreateRecipePage } from "./pages/meals/create-recipe";
 import { EditRecipePage } from "./pages/meals/edit-recipe";
+import { MealPlansPage } from "./pages/meals/plans";
+import { MealPlanDetailPage } from "./pages/meals/plan-detail";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +48,8 @@ export const router = createBrowserRouter([
       { path: "puppy/:householdId/pets/:petId", element: <PetPage /> },
       { path: "meals", element: <RecipesPage /> },
       { path: "meals/new", element: <CreateRecipePage /> },
+      { path: "meals/plans", element: <MealPlansPage /> },
+      { path: "meals/plans/:planId", element: <MealPlanDetailPage /> },
       { path: "meals/:recipeId", element: <RecipeDetailPage /> },
       { path: "meals/:recipeId/edit", element: <EditRecipePage /> },
     ],

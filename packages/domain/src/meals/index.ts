@@ -52,7 +52,9 @@ export {
   validateCreateRecipe,
   validateUpdateRecipe,
   validateCreateMealPlan,
+  validateUpdateMealPlan,
   validateCreateMealPlanEntry,
+  validateUpdateMealPlanEntry,
   validateGenerateMealPlan,
 } from "./validation.ts";
 export {

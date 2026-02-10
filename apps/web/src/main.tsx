@@ -1,7 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { MantineProvider } from "@mantine/core";
+import { DatesProvider } from "@mantine/dates";
 import { QueryClientProvider } from "@tanstack/react-query";
+import "dayjs/locale/fr";
 import { RouterProvider } from "react-router/dom";
 import { theme } from "./theme";
 import { router } from "./router";
@@ -13,9 +15,11 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme} defaultColorScheme="light">
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
+        <DatesProvider settings={{ locale: "fr", firstDayOfWeek: 1 }}>
+          <AuthProvider>
+            <RouterProvider router={router} />
+          </AuthProvider>
+        </DatesProvider>
       </MantineProvider>
     </QueryClientProvider>
   </StrictMode>,
