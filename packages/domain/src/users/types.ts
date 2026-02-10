@@ -14,6 +14,7 @@ export interface AuthenticatedUser {
   email: string;
   name: string | null;
   isActive: boolean;
+  ssoProvider: string | null;
 }
 
 export interface AuthTokenPayload {

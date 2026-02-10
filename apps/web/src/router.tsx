@@ -20,6 +20,7 @@ import { CreateRecipePage } from "./pages/meals/create-recipe";
 import { EditRecipePage } from "./pages/meals/edit-recipe";
 import { MealPlansPage } from "./pages/meals/plans";
 import { MealPlanDetailPage } from "./pages/meals/plan-detail";
+import { SsoCallbackPage } from "./pages/sso-callback";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "auth/sso-callback", element: <SsoCallbackPage /> },
     ],
   },
   {

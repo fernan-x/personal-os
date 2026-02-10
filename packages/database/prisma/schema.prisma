@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  isActive  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  habits    Habit[]
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String?
+  name        String?
+  isActive    Boolean  @default(false)
+  ssoProvider String?
+  ssoId       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  habits      Habit[]
 
   budgetMemberships BudgetMembership[]
   incomes           Income[]
@@ -32,6 +34,7 @@ model User {
   recipeFavorites  RecipeFavorite[]
   mealPlans        MealPlan[]
 
+  @@unique([ssoProvider, ssoId])
   @@map("users")
 }
 

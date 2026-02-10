@@ -12,5 +12,6 @@ export {
   PASSWORD_MAX_LENGTH,
   NAME_MAX_LENGTH,
   JWT_EXPIRATION,
+  SSO_PROVIDER_AUTHENTIK,
 } from "./constants.ts";
 export { validateRegisterUser, validateLogin } from "./validation.ts";

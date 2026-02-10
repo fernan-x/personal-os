@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation, useSearchParams, Link } from "react-router";
 import {
   TextInput,
   PasswordInput,
@@ -11,23 +11,41 @@ import {
   Alert,
   Anchor,
   Center,
+  Divider,
 } from "@mantine/core";
-import { IconLayoutDashboard, IconMail, IconLock, IconLogin } from "@tabler/icons-react";
+import { IconLayoutDashboard, IconMail, IconLock, IconLogin, IconKey } from "@tabler/icons-react";
 import { useAuth } from "../contexts/auth-context";
-import { ApiError } from "../lib/api-client";
+import { ApiError, apiGet } from "../lib/api-client";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [ssoEnabled, setSsoEnabled] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const from =
     (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
+
+  useEffect(() => {
+    const ssoError = searchParams.get("error");
+    if (ssoError === "sso_failed") {
+      setError("La connexion SSO a échoué. Veuillez réessayer.");
+    } else if (ssoError === "sso_unavailable") {
+      setError("La connexion SSO n'est pas disponible.");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    apiGet<{ enabled: boolean }>("auth/oidc/status")
+      .then((data) => setSsoEnabled(data.enabled))
+      .catch(() => setSsoEnabled(false));
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -113,6 +131,21 @@ export function LoginPage() {
             </Text>
           </Stack>
         </form>
+
+        {ssoEnabled && (
+          <>
+            <Divider label="ou" labelPosition="center" />
+            <Button
+              component="a"
+              href="/api/auth/oidc/login"
+              variant="outline"
+              fullWidth
+              leftSection={<IconKey size={16} />}
+            >
+              Se connecter avec Authentik
+            </Button>
+          </>
+        )}
       </Stack>
     </Paper>
   );
