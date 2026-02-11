@@ -77,7 +77,7 @@ export function BudgetSummaryWidget({ config }: Props) {
 
   // We only have summary for current plan, so show summary stats + simplified chart
   return (
-    <Stack gap="sm">
+    <Stack gap="sm" className="h-full">
       {summary && (
         <Group justify="space-around">
           <div style={{ textAlign: "center" }}>
@@ -95,19 +95,21 @@ export function BudgetSummaryWidget({ config }: Props) {
         </Group>
       )}
       {sortedPlans.length > 1 && (
-        <ResponsiveContainer width="100%" height={160}>
-          <BarChart
-            data={sortedPlans.map((p: MonthlyPlan) => ({
-              name: `${MONTH_LABELS[p.month - 1]} ${p.year.toString().slice(-2)}`,
-            }))}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-            <YAxis tick={{ fontSize: 11 }} width={30} />
-            <Tooltip />
-            <Legend />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="flex-1 min-h-0">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={sortedPlans.map((p: MonthlyPlan) => ({
+                name: `${MONTH_LABELS[p.month - 1]} ${p.year.toString().slice(-2)}`,
+              }))}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} width={30} />
+              <Tooltip />
+              <Legend />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       )}
     </Stack>
   );

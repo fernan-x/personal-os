@@ -44,7 +44,7 @@ export function PetTodayActivitiesWidget({ config }: Props) {
   const total = petChecklist.items.length;
 
   return (
-    <Stack gap="xs">
+    <Stack gap="xs" className="h-full">
       <Group justify="space-between">
         <Text size="sm" fw={500}>{petChecklist.pet.name}</Text>
         <Badge
@@ -55,21 +55,25 @@ export function PetTodayActivitiesWidget({ config }: Props) {
           {completed}/{total}
         </Badge>
       </Group>
-      {petChecklist.items.map((item) => (
-        <Group key={item.id} gap="xs">
-          <ThemeIcon
-            variant="light"
-            color={item.completed ? "teal" : "gray"}
-            size="xs"
-            radius="xl"
-          >
-            {item.completed ? <IconCheck size={10} /> : <IconClock size={10} />}
-          </ThemeIcon>
-          <Text size="xs" c={item.completed ? "dimmed" : undefined} td={item.completed ? "line-through" : undefined}>
-            {item.template.time} — {item.template.name}
-          </Text>
-        </Group>
-      ))}
+      <div className="flex-1 overflow-y-auto">
+        <Stack gap="xs">
+          {petChecklist.items.map((item) => (
+            <Group key={item.id} gap="xs">
+              <ThemeIcon
+                variant="light"
+                color={item.completed ? "teal" : "gray"}
+                size="xs"
+                radius="xl"
+              >
+                {item.completed ? <IconCheck size={10} /> : <IconClock size={10} />}
+              </ThemeIcon>
+              <Text size="xs" c={item.completed ? "dimmed" : undefined} td={item.completed ? "line-through" : undefined}>
+                {item.template.time} — {item.template.name}
+              </Text>
+            </Group>
+          ))}
+        </Stack>
+      </div>
     </Stack>
   );
 }

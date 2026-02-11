@@ -16,7 +16,13 @@ export {
   MAX_DASHBOARD_WIDGETS,
   WIDGET_TYPE_LABELS,
   WIDGET_TYPE_DESCRIPTIONS,
+  MODULES,
+  MODULE_DEFINITIONS,
+  WIDGET_MODULE_MAP,
+  WIDGET_SIZES,
+  WIDGET_SIZE_LABELS,
 } from "./constants.ts";
+export type { ModuleId, ModuleDefinition, WidgetSize } from "./constants.ts";
 export {
   isValidWidgetType,
   validateCreateDashboardWidget,

@@ -121,7 +121,7 @@ export function PetActivitiesWidget({ config }: Props) {
   }
 
   return (
-    <Stack gap="xs">
+    <Stack gap="xs" className="h-full">
       {/* Day navigation */}
       <Group justify="space-between">
         <ActionIcon
@@ -145,35 +145,39 @@ export function PetActivitiesWidget({ config }: Props) {
       </Group>
 
       {/* Activity list */}
-      {dayLogs.length === 0 ? (
-        <Text c="dimmed" size="xs" ta="center" py="xs">
-          Aucune activité
-        </Text>
-      ) : (
-        dayLogs.map((log) => (
-          <Group key={log.id} gap="xs" wrap="nowrap">
-            <Badge variant="light" size="xs">
-              {ACTIVITY_TYPE_LABELS_FR[log.type] ?? log.type}
-            </Badge>
-            {log.duration && (
-              <Text size="xs" c="dimmed">
-                {log.duration} min
-              </Text>
-            )}
-            {log.note && (
-              <Text size="xs" c="dimmed" lineClamp={1} style={{ flex: 1 }}>
-                {log.note}
-              </Text>
-            )}
-            <Text size="xs" c="dimmed">
-              {new Date(log.loggedAt).toLocaleTimeString("fr-FR", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
+      <div className="flex-1 overflow-y-auto">
+        <Stack gap="xs">
+          {dayLogs.length === 0 ? (
+            <Text c="dimmed" size="xs" ta="center" py="xs">
+              Aucune activité
             </Text>
-          </Group>
-        ))
-      )}
+          ) : (
+            dayLogs.map((log) => (
+              <Group key={log.id} gap="xs" wrap="nowrap">
+                <Badge variant="light" size="xs">
+                  {ACTIVITY_TYPE_LABELS_FR[log.type] ?? log.type}
+                </Badge>
+                {log.duration && (
+                  <Text size="xs" c="dimmed">
+                    {log.duration} min
+                  </Text>
+                )}
+                {log.note && (
+                  <Text size="xs" c="dimmed" lineClamp={1} style={{ flex: 1 }}>
+                    {log.note}
+                  </Text>
+                )}
+                <Text size="xs" c="dimmed">
+                  {new Date(log.loggedAt).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </Group>
+            ))
+          )}
+        </Stack>
+      </div>
 
       {/* Quick add */}
       {isToday && !showForm && (

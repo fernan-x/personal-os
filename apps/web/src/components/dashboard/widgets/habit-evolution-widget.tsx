@@ -70,7 +70,7 @@ export function HabitEvolutionWidget({ config }: Props) {
   });
 
   return (
-    <div>
+    <div className="h-full flex flex-col">
       <SegmentedControl
         size="xs"
         mb="sm"
@@ -81,30 +81,32 @@ export function HabitEvolutionWidget({ config }: Props) {
           { label: "Mois", value: "monthly" },
         ]}
       />
-      <ResponsiveContainer width="100%" height={180}>
-        <AreaChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 11 }}
-            interval={period === "monthly" ? 4 : 0}
-          />
-          <YAxis
-            domain={[0, 100]}
-            tick={{ fontSize: 11 }}
-            tickFormatter={(v) => `${v}%`}
-            width={40}
-          />
-          <Tooltip formatter={(v) => [`${v}%`, "Taux"]} />
-          <Area
-            type="monotone"
-            dataKey="taux"
-            stroke="#12b886"
-            fill="#12b886"
-            fillOpacity={0.2}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <div className="flex-1 min-h-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="date"
+              tick={{ fontSize: 11 }}
+              interval={period === "monthly" ? 4 : 0}
+            />
+            <YAxis
+              domain={[0, 100]}
+              tick={{ fontSize: 11 }}
+              tickFormatter={(v) => `${v}%`}
+              width={40}
+            />
+            <Tooltip formatter={(v) => [`${v}%`, "Taux"]} />
+            <Area
+              type="monotone"
+              dataKey="taux"
+              stroke="#12b886"
+              fill="#12b886"
+              fillOpacity={0.2}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

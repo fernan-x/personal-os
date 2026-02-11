@@ -1,11 +1,28 @@
 import { Card, Group, Text, ActionIcon } from "@mantine/core";
-import { IconGripVertical, IconSettings, IconTrash } from "@tabler/icons-react";
-import { WIDGET_TYPE_LABELS } from "@personal-os/domain";
-import type { DashboardWidgetDto, WidgetType } from "@personal-os/domain";
+import {
+  IconGripVertical,
+  IconSettings,
+  IconTrash,
+  IconTargetArrow,
+  IconWallet,
+  IconPaw,
+} from "@tabler/icons-react";
+import {
+  WIDGET_TYPE_LABELS,
+  WIDGET_MODULE_MAP,
+  MODULE_DEFINITIONS,
+} from "@personal-os/domain";
+import type { DashboardWidgetDto, WidgetType, ModuleId } from "@personal-os/domain";
 import { WidgetRenderer } from "./widget-renderer";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import type { DraggableAttributes } from "@dnd-kit/core";
-import type { CSSProperties } from "react";
+import type { ComponentType } from "react";
+
+const MODULE_ICONS: Record<ModuleId, ComponentType<{ size: number; stroke: number; color?: string }>> = {
+  habits: IconTargetArrow,
+  budget: IconWallet,
+  pets: IconPaw,
+};
 
 interface Props {
   widget: DashboardWidgetDto;
@@ -14,7 +31,6 @@ interface Props {
   onRemove?: () => void;
   dragAttributes?: DraggableAttributes;
   dragListeners?: SyntheticListenerMap;
-  style?: CSSProperties;
 }
 
 export function WidgetShell({
@@ -24,13 +40,22 @@ export function WidgetShell({
   onRemove,
   dragAttributes,
   dragListeners,
-  style,
 }: Props) {
   const label =
     WIDGET_TYPE_LABELS[widget.type as WidgetType] ?? widget.type;
+  const moduleId = WIDGET_MODULE_MAP[widget.type as WidgetType];
+  const moduleDef = moduleId ? MODULE_DEFINITIONS[moduleId] : undefined;
+  const moduleColor = moduleDef?.color ?? "gray";
+  const ModuleIcon = moduleId ? MODULE_ICONS[moduleId] : null;
 
   return (
-    <Card shadow="sm" padding="md" radius="md" withBorder style={style}>
+    <Card
+      shadow="sm"
+      padding="md"
+      radius="md"
+      withBorder
+      className="h-full flex flex-col"
+    >
       <Group justify="space-between" mb="xs">
         <Group gap="xs">
           {editMode && (
@@ -44,6 +69,13 @@ export function WidgetShell({
             >
               <IconGripVertical size={16} />
             </ActionIcon>
+          )}
+          {ModuleIcon && (
+            <ModuleIcon
+              size={16}
+              stroke={1.5}
+              color={`var(--mantine-color-${moduleColor}-5)`}
+            />
           )}
           <Text fw={500} size="sm">
             {label}
@@ -60,7 +92,9 @@ export function WidgetShell({
           </Group>
         )}
       </Group>
-      <WidgetRenderer widget={widget} />
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <WidgetRenderer widget={widget} />
+      </div>
     </Card>
   );
 }

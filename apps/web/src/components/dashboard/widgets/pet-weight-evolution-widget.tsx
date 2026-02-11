@@ -72,7 +72,7 @@ export function PetWeightEvolutionWidget({ config }: Props) {
   }));
 
   return (
-    <div>
+    <div className="h-full flex flex-col">
       <Group justify="center" mb="sm" gap="xs">
         <Text size="sm" fw={600}>
           {formatWeight(latest.weight)}
@@ -88,25 +88,27 @@ export function PetWeightEvolutionWidget({ config }: Props) {
           </Badge>
         )}
       </Group>
-      <ResponsiveContainer width="100%" height={180}>
-        <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-          <YAxis
-            tick={{ fontSize: 11 }}
-            tickFormatter={(v) => `${v}kg`}
-            width={40}
-          />
-          <Tooltip formatter={(v) => [`${v} kg`, "Poids"]} />
-          <Line
-            type="monotone"
-            dataKey="poids"
-            stroke="#228be6"
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="flex-1 min-h-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+            <YAxis
+              tick={{ fontSize: 11 }}
+              tickFormatter={(v) => `${v}kg`}
+              width={40}
+            />
+            <Tooltip formatter={(v) => [`${v} kg`, "Poids"]} />
+            <Line
+              type="monotone"
+              dataKey="poids"
+              stroke="#228be6"
+              strokeWidth={2}
+              dot={{ r: 3 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

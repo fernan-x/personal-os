@@ -23,6 +23,7 @@ import {
   IconPencil,
   IconCheck,
 } from "@tabler/icons-react";
+import type { DashboardWidgetDto, WidgetType } from "@personal-os/domain";
 import { useAuth } from "../contexts/auth-context";
 import { useHabits } from "../hooks/use-habits";
 import { useBudgetGroups } from "../hooks/use-budget";
@@ -37,7 +38,6 @@ import {
 import { WidgetGrid } from "../components/dashboard/widget-grid";
 import { EditModeDrawer } from "../components/dashboard/edit-mode-drawer";
 import { WidgetConfigModal } from "../components/dashboard/widget-config-modal";
-import type { DashboardWidgetDto, WidgetType } from "@personal-os/domain";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -125,7 +125,10 @@ export function HomePage() {
         updateDashboardWidget.mutate({ id: configModal.widget.id, config });
       } else if (configModal.type) {
         // Adding new widget with config
-        addDashboardWidget.mutate({ type: configModal.type, config });
+        addDashboardWidget.mutate({
+          type: configModal.type,
+          config,
+        });
       }
       setConfigModal({ type: null });
     },
