@@ -3,8 +3,10 @@ import {
   Get,
   Post,
   Patch,
+  Delete,
   Body,
   Param,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { HabitsService } from "./habits.service";
@@ -22,8 +24,20 @@ export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
   @Get()
-  findAll(@CurrentUser() user: AuthenticatedUser) {
-    return this.habitsService.findAll(user.id);
+  findAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query("date") date?: string,
+  ) {
+    return this.habitsService.findAll(user.id, date);
+  }
+
+  @Get("summary")
+  getSummary(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query("from") from: string,
+    @Query("to") to: string,
+  ) {
+    return this.habitsService.getSummary(user.id, from, to);
   }
 
   @Get(":id")
@@ -46,6 +60,14 @@ export class HabitsController {
     @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.habitsService.update(id, input, user.id);
+  }
+
+  @Delete(":id")
+  remove(
+    @Param("id") id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.habitsService.remove(id, user.id);
   }
 
   @Post(":id/entries")

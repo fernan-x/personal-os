@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Button, Modal, Select, Stack, TextInput, Textarea } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
+import { Button, Chip, Group, Modal, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import { IconCheck, IconTrash } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import {
   HABIT_FREQUENCIES,
@@ -9,7 +9,8 @@ import {
   validateUpdateHabit,
 } from "@personal-os/domain";
 import type { Habit, HabitFrequency, UpdateHabitInput } from "@personal-os/domain";
-import { useUpdateHabit } from "../../hooks/use-habits";
+import { useUpdateHabit, useDeleteHabit } from "../../hooks/use-habits";
+import { FREQUENCY_LABELS_FR, DAY_LABELS_SHORT_FR } from "../../lib/labels";
 
 interface EditHabitModalProps {
   habit: Habit | null;
@@ -19,12 +20,14 @@ interface EditHabitModalProps {
 
 export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) {
   const updateHabit = useUpdateHabit();
+  const deleteHabit = useDeleteHabit();
 
   const form = useForm<UpdateHabitInput>({
     initialValues: {
       name: "",
       description: "",
       frequency: "daily",
+      customDays: [],
     },
     validate: (values) => {
       const errors = validateUpdateHabit(values);
@@ -42,6 +45,7 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
         name: habit.name,
         description: habit.description ?? "",
         frequency: habit.frequency,
+        customDays: habit.customDays ?? [],
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,6 +62,16 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
         },
       },
     );
+  }
+
+  function handleDelete() {
+    if (!habit) return;
+
+    deleteHabit.mutate(habit.id, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   }
 
   return (
@@ -82,15 +96,48 @@ export function EditHabitModal({ habit, opened, onClose }: EditHabitModalProps) 
           />
           <Select
             label="Fréquence"
-            data={HABIT_FREQUENCIES.map((f) => ({ value: f, label: f }))}
+            data={HABIT_FREQUENCIES.map((f) => ({ value: f, label: FREQUENCY_LABELS_FR[f] || f }))}
             {...form.getInputProps("frequency")}
-            onChange={(value) =>
-              form.setFieldValue("frequency", (value ?? "daily") as HabitFrequency)
-            }
+            onChange={(value) => {
+              const freq = (value ?? "daily") as HabitFrequency;
+              form.setFieldValue("frequency", freq);
+              if (freq !== "custom") form.setFieldValue("customDays", []);
+            }}
           />
-          <Button type="submit" loading={updateHabit.isPending} leftSection={<IconCheck size={16} />}>
-            Enregistrer
-          </Button>
+          {form.values.frequency === "custom" && (
+            <Chip.Group
+              multiple
+              value={form.values.customDays?.map(String) ?? []}
+              onChange={(values: string[]) =>
+                form.setFieldValue(
+                  "customDays",
+                  values.map(Number).sort((a, b) => a - b),
+                )
+              }
+            >
+              <Group gap="xs">
+                {([1, 2, 3, 4, 5, 6, 7] as const).map((day) => (
+                  <Chip key={day} value={String(day)} size="sm">
+                    {DAY_LABELS_SHORT_FR[day]}
+                  </Chip>
+                ))}
+              </Group>
+            </Chip.Group>
+          )}
+          <Group justify="space-between">
+            <Button
+              variant="subtle"
+              color="red"
+              leftSection={<IconTrash size={16} />}
+              onClick={handleDelete}
+              loading={deleteHabit.isPending}
+            >
+              Supprimer
+            </Button>
+            <Button type="submit" loading={updateHabit.isPending} leftSection={<IconCheck size={16} />}>
+              Enregistrer
+            </Button>
+          </Group>
         </Stack>
       </form>
     </Modal>

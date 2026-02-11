@@ -13,7 +13,13 @@ import {
   Center,
   Divider,
 } from "@mantine/core";
-import { IconLayoutDashboard, IconMail, IconLock, IconLogin, IconKey } from "@tabler/icons-react";
+import {
+  IconLayoutDashboard,
+  IconMail,
+  IconLock,
+  IconLogin,
+  IconKey,
+} from "@tabler/icons-react";
 import { useAuth } from "../contexts/auth-context";
 import { ApiError, apiGet } from "../lib/api-client";
 
@@ -142,7 +148,7 @@ export function LoginPage() {
               fullWidth
               leftSection={<IconKey size={16} />}
             >
-              Se connecter avec Authentik
+              Se connecter avec Datsite
             </Button>
           </>
         )}

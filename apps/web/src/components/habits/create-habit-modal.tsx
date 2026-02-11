@@ -1,4 +1,4 @@
-import { Button, Modal, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import { Button, Chip, Group, Modal, Select, Stack, TextInput, Textarea } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@personal-os/domain";
 import type { CreateHabitInput, HabitFrequency } from "@personal-os/domain";
 import { useCreateHabit } from "../../hooks/use-habits";
-import { FREQUENCY_LABELS_FR } from "../../lib/labels";
+import { FREQUENCY_LABELS_FR, DAY_LABELS_SHORT_FR } from "../../lib/labels";
 
 interface CreateHabitModalProps {
   opened: boolean;
@@ -24,6 +24,7 @@ export function CreateHabitModal({ opened, onClose }: CreateHabitModalProps) {
       name: "",
       description: "",
       frequency: "daily",
+      customDays: [],
     },
     validate: (values) => {
       const errors = validateCreateHabit(values);
@@ -68,10 +69,32 @@ export function CreateHabitModal({ opened, onClose }: CreateHabitModalProps) {
             label="Fréquence"
             data={HABIT_FREQUENCIES.map((f) => ({ value: f, label: FREQUENCY_LABELS_FR[f] || f }))}
             {...form.getInputProps("frequency")}
-            onChange={(value) =>
-              form.setFieldValue("frequency", (value ?? "daily") as HabitFrequency)
-            }
+            onChange={(value) => {
+              const freq = (value ?? "daily") as HabitFrequency;
+              form.setFieldValue("frequency", freq);
+              if (freq !== "custom") form.setFieldValue("customDays", []);
+            }}
           />
+          {form.values.frequency === "custom" && (
+            <Chip.Group
+              multiple
+              value={form.values.customDays?.map(String) ?? []}
+              onChange={(values: string[]) =>
+                form.setFieldValue(
+                  "customDays",
+                  values.map(Number).sort((a, b) => a - b),
+                )
+              }
+            >
+              <Group gap="xs">
+                {([1, 2, 3, 4, 5, 6, 7] as const).map((day) => (
+                  <Chip key={day} value={String(day)} size="sm">
+                    {DAY_LABELS_SHORT_FR[day]}
+                  </Chip>
+                ))}
+              </Group>
+            </Chip.Group>
+          )}
           <Button type="submit" loading={createHabit.isPending} leftSection={<IconCheck size={16} />}>
             Créer l'habitude
           </Button>

@@ -27,8 +27,13 @@ export interface PetWeightEvolutionConfig {
   petId: string;
 }
 
+export interface HabitTodayConfig {
+  // no config needed
+}
+
 export interface WidgetConfigMap {
   habit_evolution: HabitEvolutionConfig;
+  habit_today: HabitTodayConfig;
   budget_summary: BudgetSummaryConfig;
   pet_today_activities: PetTodayActivitiesConfig;
   pet_activities: PetActivitiesConfig;

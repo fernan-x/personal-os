@@ -42,6 +42,20 @@ export function validateCreateHabit(
     });
   }
 
+  if (input.frequency === "custom") {
+    if (!input.customDays || input.customDays.length === 0) {
+      errors.push({
+        field: "customDays",
+        message: "Custom days are required when frequency is custom",
+      });
+    } else if (input.customDays.some((d) => d < 1 || d > 7 || !Number.isInteger(d))) {
+      errors.push({
+        field: "customDays",
+        message: "Custom days must be integers between 1 (Mon) and 7 (Sun)",
+      });
+    }
+  }
+
   return errors;
 }
 
@@ -77,6 +91,20 @@ export function validateUpdateHabit(
       field: "frequency",
       message: `Frequency must be one of: ${HABIT_FREQUENCIES.join(", ")}`,
     });
+  }
+
+  if (input.frequency === "custom") {
+    if (!input.customDays || input.customDays.length === 0) {
+      errors.push({
+        field: "customDays",
+        message: "Custom days are required when frequency is custom",
+      });
+    } else if (input.customDays.some((d) => d < 1 || d > 7 || !Number.isInteger(d))) {
+      errors.push({
+        field: "customDays",
+        message: "Custom days must be integers between 1 (Mon) and 7 (Sun)",
+      });
+    }
   }
 
   return errors;

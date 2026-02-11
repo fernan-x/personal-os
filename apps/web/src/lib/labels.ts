@@ -38,6 +38,17 @@ export const FREQUENCY_LABELS_FR: Record<string, string> = {
   custom: 'Personnalisé',
 };
 
+// Short day-of-week labels (ISO: 1=Mon … 7=Sun)
+export const DAY_LABELS_SHORT_FR: Record<number, string> = {
+  1: 'Lun',
+  2: 'Mar',
+  3: 'Mer',
+  4: 'Jeu',
+  5: 'Ven',
+  6: 'Sam',
+  7: 'Dim',
+};
+
 // Budget scope labels
 export const SCOPE_LABELS_FR: Record<string, string> = {
   personal: 'Personnel',

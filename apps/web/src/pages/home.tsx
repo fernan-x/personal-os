@@ -114,6 +114,7 @@ export function HomePage() {
           config: type === "habit_evolution" ? { period: "weekly" } : {},
         });
       }
+
     },
     [closeDrawer, addDashboardWidget],
   );

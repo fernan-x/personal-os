@@ -1,5 +1,6 @@
 export const WIDGET_TYPES = [
   "habit_evolution",
+  "habit_today",
   "budget_summary",
   "pet_today_activities",
   "pet_activities",
@@ -11,6 +12,7 @@ export const MAX_DASHBOARD_WIDGETS = 12;
 export const WIDGET_TYPE_LABELS: Record<(typeof WIDGET_TYPES)[number], string> =
   {
     habit_evolution: "Évolution des habitudes",
+    habit_today: "Habitudes du jour",
     budget_summary: "Résumé du budget",
     pet_today_activities: "Routines",
     pet_activities: "Activités",
@@ -23,6 +25,7 @@ export const WIDGET_TYPE_DESCRIPTIONS: Record<
 > = {
   habit_evolution:
     "Taux de complétion de vos habitudes sur la semaine ou le mois",
+  habit_today: "Checklist des habitudes du jour",
   budget_summary: "Revenus, dépenses et épargne d'un groupe budgétaire",
   pet_today_activities: "Checklist des routines du jour pour un animal",
   pet_activities: "Activités enregistrées du jour avec navigation",
@@ -51,6 +54,7 @@ export const WIDGET_MODULE_MAP: Record<
   ModuleId
 > = {
   habit_evolution: "habits",
+  habit_today: "habits",
   budget_summary: "budget",
   pet_today_activities: "pets",
   pet_activities: "pets",
@@ -70,6 +74,7 @@ export type WidgetSize = "sm" | "m" | "l" | "xl";
 
 export const WIDGET_SIZES: Record<(typeof WIDGET_TYPES)[number], WidgetSize> = {
   habit_evolution: "l",
+  habit_today: "m",
   budget_summary: "m",
   pet_today_activities: "m",
   pet_activities: "m",

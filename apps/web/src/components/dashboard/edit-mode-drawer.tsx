@@ -27,6 +27,7 @@ interface Props {
 
 const WIDGET_ICONS: Record<WidgetType, ComponentType<{ size: number; stroke: number }>> = {
   habit_evolution: IconTargetArrow,
+  habit_today: IconTargetArrow,
   budget_summary: IconWallet,
   pet_today_activities: IconPaw,
   pet_activities: IconActivity,
@@ -41,6 +42,7 @@ const MODULE_ICONS: Record<ModuleId, ComponentType<{ size: number; stroke: numbe
 
 const WIDGET_COLORS: Record<WidgetType, string> = {
   habit_evolution: "teal",
+  habit_today: "teal",
   budget_summary: "amber",
   pet_today_activities: "blue",
   pet_activities: "violet",
