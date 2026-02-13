@@ -34,7 +34,7 @@ export const WIDGET_TYPE_DESCRIPTIONS: Record<
 
 // ── Modules ─────────────────────────────────────────────────
 
-export const MODULES = ["habits", "budget", "pets"] as const;
+export const MODULES = ["habits", "budget", "pets", "meals"] as const;
 export type ModuleId = (typeof MODULES)[number];
 
 export interface ModuleDefinition {
@@ -47,6 +47,7 @@ export const MODULE_DEFINITIONS: Record<ModuleId, ModuleDefinition> = {
   habits: { label: "Habitudes", color: "teal" },
   budget: { label: "Budget", color: "grape" },
   pets: { label: "Animaux", color: "blue" },
+  meals: { label: "Repas", color: "orange" },
 };
 
 export const WIDGET_MODULE_MAP: Record<

@@ -103,6 +103,7 @@ export class AuthService {
         name: user.name,
         isActive: user.isActive,
         ssoProvider: user.ssoProvider,
+        enabledModules: user.enabledModules,
       },
       accessToken,
     };

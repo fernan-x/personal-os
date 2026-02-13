@@ -69,10 +69,11 @@ export const budgetKeys = {
 
 // ── Groups ──────────────────────────────────────────────────────
 
-export function useBudgetGroups() {
+export function useBudgetGroups(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: budgetKeys.groups,
     queryFn: () => apiGet<BudgetGroupWithMembers[]>("budget/groups"),
+    enabled: options?.enabled,
   });
 }
 

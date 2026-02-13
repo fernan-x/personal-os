@@ -5,6 +5,8 @@ export type {
   AuthenticatedUser,
   AuthTokenPayload,
   AuthResponse,
+  UpdateProfileInput,
+  UpdateModulesInput,
 } from "./types.ts";
 export {
   EMAIL_MAX_LENGTH,
@@ -14,4 +16,9 @@ export {
   JWT_EXPIRATION,
   SSO_PROVIDER_AUTHENTIK,
 } from "./constants.ts";
-export { validateRegisterUser, validateLogin } from "./validation.ts";
+export {
+  validateRegisterUser,
+  validateLogin,
+  validateUpdateProfile,
+  validateUpdateModules,
+} from "./validation.ts";

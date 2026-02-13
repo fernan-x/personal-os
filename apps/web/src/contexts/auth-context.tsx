@@ -22,6 +22,7 @@ import type {
 
 interface AuthContextValue {
   user: AuthenticatedUser | null;
+  setUser: (user: AuthenticatedUser) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (input: LoginInput) => Promise<void>;
@@ -69,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         isLoading,
         isAuthenticated: !!user,
         login,

@@ -23,10 +23,11 @@ export const habitKeys = {
   detail: (id: string) => ["habits", id] as const,
 };
 
-export function useHabits() {
+export function useHabits(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: habitKeys.all,
     queryFn: () => apiGet<HabitWithEntries[]>("habits"),
+    enabled: options?.enabled,
   });
 }
 

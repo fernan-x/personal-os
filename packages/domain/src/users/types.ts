@@ -15,6 +15,15 @@ export interface AuthenticatedUser {
   name: string | null;
   isActive: boolean;
   ssoProvider: string | null;
+  enabledModules: string[];
+}
+
+export interface UpdateProfileInput {
+  name?: string;
+}
+
+export interface UpdateModulesInput {
+  enabledModules: string[];
 }
 
 export interface AuthTokenPayload {

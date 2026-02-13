@@ -22,6 +22,7 @@ import {
   IconChevronDown,
   IconLayoutDashboard,
   IconToolsKitchen2,
+  IconSettings,
 } from "@tabler/icons-react";
 import type { ComponentType } from "react";
 
@@ -29,14 +30,15 @@ interface NavItem {
   label: string;
   path: string;
   icon: ComponentType<{ size: number; stroke: number }>;
+  moduleId?: string;
 }
 
 const navItems: NavItem[] = [
   { label: "Accueil", path: "/", icon: IconHome },
-  { label: "Habitudes", path: "/habits", icon: IconTargetArrow },
-  { label: "Budget", path: "/budget", icon: IconWallet },
-  { label: "Animaux", path: "/puppy", icon: IconPaw },
-  { label: "Repas", path: "/meals", icon: IconToolsKitchen2 },
+  { label: "Habitudes", path: "/habits", icon: IconTargetArrow, moduleId: "habits" },
+  { label: "Budget", path: "/budget", icon: IconWallet, moduleId: "budget" },
+  { label: "Animaux", path: "/puppy", icon: IconPaw, moduleId: "pets" },
+  { label: "Repas", path: "/meals", icon: IconToolsKitchen2, moduleId: "meals" },
 ];
 
 export function RootLayout() {
@@ -109,6 +111,13 @@ export function RootLayout() {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item
+                leftSection={<IconSettings size={16} />}
+                onClick={() => navigate("/settings")}
+              >
+                Paramètres
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Item
                 leftSection={<IconLogout size={16} />}
                 onClick={handleLogout}
               >
@@ -121,18 +130,24 @@ export function RootLayout() {
 
       <AppShell.Navbar p="md">
         <AppShell.Section grow>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              label={item.label}
-              leftSection={<item.icon size={20} stroke={1.5} />}
-              active={isActive(item.path)}
-              onClick={() => {
-                navigate(item.path);
-                toggle();
-              }}
-            />
-          ))}
+          {navItems
+            .filter(
+              (item) =>
+                !item.moduleId ||
+                user?.enabledModules.includes(item.moduleId),
+            )
+            .map((item) => (
+              <NavLink
+                key={item.path}
+                label={item.label}
+                leftSection={<item.icon size={20} stroke={1.5} />}
+                active={isActive(item.path)}
+                onClick={() => {
+                  navigate(item.path);
+                  toggle();
+                }}
+              />
+            ))}
         </AppShell.Section>
         <AppShell.Section>
           <Divider mb="sm" color="cream.2" />

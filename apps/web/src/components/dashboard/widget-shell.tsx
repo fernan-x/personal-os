@@ -6,6 +6,7 @@ import {
   IconTargetArrow,
   IconWallet,
   IconPaw,
+  IconToolsKitchen2,
 } from "@tabler/icons-react";
 import {
   WIDGET_TYPE_LABELS,
@@ -22,6 +23,7 @@ const MODULE_ICONS: Record<ModuleId, ComponentType<{ size: number; stroke: numbe
   habits: IconTargetArrow,
   budget: IconWallet,
   pets: IconPaw,
+  meals: IconToolsKitchen2,
 };
 
 interface Props {

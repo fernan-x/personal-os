@@ -42,9 +42,10 @@ import { WidgetConfigModal } from "../components/dashboard/widget-config-modal";
 export function HomePage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { data: habits, isLoading: habitsLoading } = useHabits();
-  const { data: groups, isLoading: groupsLoading } = useBudgetGroups();
-  const { data: households, isLoading: householdsLoading } = useHouseholds();
+  const enabledModules = user?.enabledModules ?? [];
+  const { data: habits, isLoading: habitsLoading } = useHabits({ enabled: enabledModules.includes("habits") });
+  const { data: groups, isLoading: groupsLoading } = useBudgetGroups({ enabled: enabledModules.includes("budget") });
+  const { data: households, isLoading: householdsLoading } = useHouseholds({ enabled: enabledModules.includes("pets") });
   const { data: widgets, isLoading: widgetsLoading } = useDashboardWidgets();
 
   const setDashboard = useSetDashboard();
@@ -180,71 +181,77 @@ export function HomePage() {
 
       {/* Stats */}
       <SimpleGrid cols={{ base: 1, sm: 3 }}>
-        <Card>
-          <Group justify="space-between" align="flex-start">
-            <div>
-              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                Habitudes
-              </Text>
-              <Text size="xl" fw={700} mt="xs">
-                {completedToday}/{totalHabits}
-              </Text>
-              <Text size="sm" c="dimmed">
-                terminées aujourd'hui
-              </Text>
-            </div>
-            <RingProgress
-              size={64}
-              thickness={6}
-              roundCaps
-              sections={[{ value: habitPercent, color: "teal" }]}
-              label={
-                <Center>
-                  <IconTargetArrow size={20} stroke={1.5} />
-                </Center>
-              }
-            />
-          </Group>
-        </Card>
+        {enabledModules.includes("habits") && (
+          <Card>
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                  Habitudes
+                </Text>
+                <Text size="xl" fw={700} mt="xs">
+                  {completedToday}/{totalHabits}
+                </Text>
+                <Text size="sm" c="dimmed">
+                  terminées aujourd'hui
+                </Text>
+              </div>
+              <RingProgress
+                size={64}
+                thickness={6}
+                roundCaps
+                sections={[{ value: habitPercent, color: "teal" }]}
+                label={
+                  <Center>
+                    <IconTargetArrow size={20} stroke={1.5} />
+                  </Center>
+                }
+              />
+            </Group>
+          </Card>
+        )}
 
-        <Card>
-          <Group justify="space-between" align="flex-start">
-            <div>
-              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                Budget
-              </Text>
-              <Text size="xl" fw={700} mt="xs">
-                {totalGroups}
-              </Text>
-              <Text size="sm" c="dimmed">
-                {totalGroups <= 1 ? "groupe" : "groupes"}
-              </Text>
-            </div>
-            <ThemeIcon variant="light" color="amber" size="xl" radius="md">
-              <IconWallet size={24} stroke={1.5} />
-            </ThemeIcon>
-          </Group>
-        </Card>
+        {enabledModules.includes("budget") && (
+          <Card>
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                  Budget
+                </Text>
+                <Text size="xl" fw={700} mt="xs">
+                  {totalGroups}
+                </Text>
+                <Text size="sm" c="dimmed">
+                  {totalGroups <= 1 ? "groupe" : "groupes"}
+                </Text>
+              </div>
+              <ThemeIcon variant="light" color="amber" size="xl" radius="md">
+                <IconWallet size={24} stroke={1.5} />
+              </ThemeIcon>
+            </Group>
+          </Card>
+        )}
 
-        <Card>
-          <Group justify="space-between" align="flex-start">
-            <div>
-              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-                Animaux
-              </Text>
-              <Text size="xl" fw={700} mt="xs">
-                {totalPets}
-              </Text>
-              <Text size="sm" c="dimmed">
-                dans {totalHouseholds}{" "}
-                {totalHouseholds <= 1 ? "foyer" : "foyers"}
-              </Text>
-            </div>
-            <ThemeIcon variant="light" color="blue" size="xl" radius="md">
-              <IconPaw size={24} stroke={1.5} />
-            </ThemeIcon>
-          </Group>
-        </Card>
+        {enabledModules.includes("pets") && (
+          <Card>
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                  Animaux
+                </Text>
+                <Text size="xl" fw={700} mt="xs">
+                  {totalPets}
+                </Text>
+                <Text size="sm" c="dimmed">
+                  dans {totalHouseholds}{" "}
+                  {totalHouseholds <= 1 ? "foyer" : "foyers"}
+                </Text>
+              </div>
+              <ThemeIcon variant="light" color="blue" size="xl" radius="md">
+                <IconPaw size={24} stroke={1.5} />
+              </ThemeIcon>
+            </Group>
+          </Card>
+        )}
       </SimpleGrid>
 
       {/* Dashboard widgets */}
@@ -301,32 +308,38 @@ export function HomePage() {
           Accès rapide
         </Text>
         <SimpleGrid cols={{ base: 2, sm: 4 }}>
-          {[
+          {([
             {
               label: "Mes habitudes",
               icon: IconTargetArrow,
               color: "teal",
               path: "/habits",
+              moduleId: "habits",
             },
             {
               label: "Mon budget",
               icon: IconWallet,
               color: "amber",
               path: "/budget",
+              moduleId: "budget",
             },
             {
               label: "Mes animaux",
               icon: IconPaw,
               color: "blue",
               path: "/puppy",
+              moduleId: "pets",
             },
             {
               label: "Nouvelle habitude",
               icon: IconPlus,
               color: "gray",
               path: "/habits",
+              moduleId: "habits",
             },
-          ].map((item) => (
+          ] as const)
+            .filter((item) => enabledModules.includes(item.moduleId))
+            .map((item) => (
             <Card
               key={item.label}
               style={{ cursor: "pointer", textAlign: "center" }}

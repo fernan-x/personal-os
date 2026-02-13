@@ -29,6 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       name: user.name,
       isActive: user.isActive,
       ssoProvider: user.ssoProvider,
+      enabledModules: user.enabledModules,
     };
   }
 }

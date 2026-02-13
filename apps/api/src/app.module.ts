@@ -7,10 +7,11 @@ import { PuppyModule } from "./puppy/puppy.module";
 import { UploadModule } from "./upload/upload.module";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { MealsModule } from "./meals/meals.module";
+import { UsersModule } from "./users/users.module";
 import { AppController } from "./app.controller";
 
 @Module({
-  imports: [DatabaseModule, AuthModule, UploadModule, DashboardModule, HabitsModule, BudgetModule, PuppyModule, MealsModule],
+  imports: [DatabaseModule, AuthModule, UploadModule, DashboardModule, HabitsModule, BudgetModule, PuppyModule, MealsModule, UsersModule],
   controllers: [AppController],
 })
 export class AppModule {}

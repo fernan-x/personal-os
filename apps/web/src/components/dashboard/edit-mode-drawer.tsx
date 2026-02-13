@@ -5,6 +5,7 @@ import {
   IconPaw,
   IconActivity,
   IconScale,
+  IconToolsKitchen2,
 } from "@tabler/icons-react";
 import {
   WIDGET_TYPES,
@@ -38,6 +39,7 @@ const MODULE_ICONS: Record<ModuleId, ComponentType<{ size: number; stroke: numbe
   habits: IconTargetArrow,
   budget: IconWallet,
   pets: IconPaw,
+  meals: IconToolsKitchen2,
 };
 
 const WIDGET_COLORS: Record<WidgetType, string> = {
@@ -50,7 +52,7 @@ const WIDGET_COLORS: Record<WidgetType, string> = {
 };
 
 function groupWidgetsByModule(): Record<ModuleId, WidgetType[]> {
-  const groups: Record<ModuleId, WidgetType[]> = { habits: [], budget: [], pets: [] };
+  const groups: Record<ModuleId, WidgetType[]> = { habits: [], budget: [], pets: [], meals: [] };
   for (const type of WIDGET_TYPES) {
     const moduleId = WIDGET_MODULE_MAP[type];
     groups[moduleId].push(type);

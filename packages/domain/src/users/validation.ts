@@ -4,8 +4,14 @@ import {
   PASSWORD_MAX_LENGTH,
   NAME_MAX_LENGTH,
 } from "./constants.ts";
-import type { RegisterUserInput, LoginInput } from "./types.ts";
+import type {
+  RegisterUserInput,
+  LoginInput,
+  UpdateProfileInput,
+  UpdateModulesInput,
+} from "./types.ts";
 import type { ValidationError } from "../common/index.ts";
+import { MODULES } from "../dashboard/constants.ts";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -58,6 +64,47 @@ export function validateLogin(input: LoginInput): ValidationError[] {
 
   if (!input.password || input.password.length === 0) {
     errors.push({ field: "password", message: "Password is required" });
+  }
+
+  return errors;
+}
+
+export function validateUpdateProfile(
+  input: UpdateProfileInput,
+): ValidationError[] {
+  const errors: ValidationError[] = [];
+
+  if (input.name !== undefined && input.name.length > NAME_MAX_LENGTH) {
+    errors.push({
+      field: "name",
+      message: `Name must be at most ${NAME_MAX_LENGTH} characters`,
+    });
+  }
+
+  return errors;
+}
+
+export function validateUpdateModules(
+  input: UpdateModulesInput,
+): ValidationError[] {
+  const errors: ValidationError[] = [];
+
+  if (!Array.isArray(input.enabledModules)) {
+    errors.push({
+      field: "enabledModules",
+      message: "enabledModules must be an array",
+    });
+    return errors;
+  }
+
+  const validIds = new Set<string>(MODULES);
+  for (const id of input.enabledModules) {
+    if (!validIds.has(id)) {
+      errors.push({
+        field: "enabledModules",
+        message: `Unknown module: ${id}`,
+      });
+    }
   }
 
   return errors;

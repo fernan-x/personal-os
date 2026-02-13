@@ -27,6 +27,7 @@ import {
   IconTargetArrow,
   IconWallet,
   IconPaw,
+  IconToolsKitchen2,
 } from "@tabler/icons-react";
 import {
   WIDGET_SIZES,
@@ -58,6 +59,7 @@ const MODULE_ICONS: Record<
   habits: IconTargetArrow,
   budget: IconWallet,
   pets: IconPaw,
+  meals: IconToolsKitchen2,
 };
 
 function getSize(widget: DashboardWidgetDto): WidgetSize {

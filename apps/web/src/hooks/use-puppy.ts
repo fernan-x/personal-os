@@ -80,10 +80,11 @@ export const puppyKeys = {
 
 // ── Households ──────────────────────────────────────────────────
 
-export function useHouseholds() {
+export function useHouseholds(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: puppyKeys.households,
     queryFn: () => apiGet<HouseholdWithMembers[]>("puppy/households"),
+    enabled: options?.enabled,
   });
 }
 

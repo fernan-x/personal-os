@@ -21,6 +21,7 @@ import { EditRecipePage } from "./pages/meals/edit-recipe";
 import { MealPlansPage } from "./pages/meals/plans";
 import { MealPlanDetailPage } from "./pages/meals/plan-detail";
 import { SsoCallbackPage } from "./pages/sso-callback";
+import { SettingsPage } from "./pages/settings";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
       { path: "meals/plans/:planId", element: <MealPlanDetailPage /> },
       { path: "meals/:recipeId", element: <RecipeDetailPage /> },
       { path: "meals/:recipeId/edit", element: <EditRecipePage /> },
+      { path: "settings", element: <SettingsPage /> },
     ],
   },
 ]);
