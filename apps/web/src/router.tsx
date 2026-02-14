@@ -20,6 +20,7 @@ import { CreateRecipePage } from "./pages/meals/create-recipe";
 import { EditRecipePage } from "./pages/meals/edit-recipe";
 import { MealPlansPage } from "./pages/meals/plans";
 import { MealPlanDetailPage } from "./pages/meals/plan-detail";
+import { GroceryPage } from "./pages/meals/grocery";
 import { SsoCallbackPage } from "./pages/sso-callback";
 import { SettingsPage } from "./pages/settings";
 
@@ -52,6 +53,7 @@ export const router = createBrowserRouter([
       { path: "meals", element: <RecipesPage /> },
       { path: "meals/new", element: <CreateRecipePage /> },
       { path: "meals/plans", element: <MealPlansPage /> },
+      { path: "meals/plans/:planId/grocery", element: <GroceryPage /> },
       { path: "meals/plans/:planId", element: <MealPlanDetailPage /> },
       { path: "meals/:recipeId", element: <RecipeDetailPage /> },
       { path: "meals/:recipeId/edit", element: <EditRecipePage /> },

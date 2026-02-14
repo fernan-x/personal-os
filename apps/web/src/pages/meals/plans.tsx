@@ -18,12 +18,14 @@ import {
   IconPlus,
   IconDots,
   IconTrash,
+  IconSparkles,
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
 import { useMealPlans, useDeleteMealPlan } from "../../hooks/use-meals";
 import { PageHeader } from "../../components/shared/page-header";
 import { EmptyState } from "../../components/shared/empty-state";
 import { CreateMealPlanModal } from "../../components/meals/create-meal-plan-modal";
+import { GenerateMealPlanModal } from "../../components/meals/generate-meal-plan-modal";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 
@@ -32,6 +34,7 @@ export function MealPlansPage() {
   const { data: plans, isLoading, error } = useMealPlans();
   const deletePlan = useDeleteMealPlan();
   const [createOpen, setCreateOpen] = useState(false);
+  const [generateOpen, setGenerateOpen] = useState(false);
 
   function handleDelete(id: string) {
     if (window.confirm("Supprimer ce plan de repas ?")) {
@@ -46,12 +49,21 @@ export function MealPlansPage() {
         title="Plans de repas"
         subtitle="Organisez vos repas de la semaine"
         actions={
-          <Button
-            leftSection={<IconPlus size={16} />}
-            onClick={() => setCreateOpen(true)}
-          >
-            Nouveau plan
-          </Button>
+          <Group gap="xs">
+            <Button
+              variant="light"
+              leftSection={<IconSparkles size={16} />}
+              onClick={() => setGenerateOpen(true)}
+            >
+              Generer un plan
+            </Button>
+            <Button
+              leftSection={<IconPlus size={16} />}
+              onClick={() => setCreateOpen(true)}
+            >
+              Nouveau plan
+            </Button>
+          </Group>
         }
       />
 
@@ -133,6 +145,11 @@ export function MealPlansPage() {
       <CreateMealPlanModal
         opened={createOpen}
         onClose={() => setCreateOpen(false)}
+      />
+
+      <GenerateMealPlanModal
+        opened={generateOpen}
+        onClose={() => setGenerateOpen(false)}
       />
     </Stack>
   );

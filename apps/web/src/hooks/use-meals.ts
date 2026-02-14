@@ -14,6 +14,8 @@ import type {
   CreateMealPlanInput,
   CreateMealPlanEntryInput,
   UpdateMealPlanEntryInput,
+  GenerateMealPlanInput,
+  GroceryItem,
 } from "@personal-os/domain";
 
 // ── Types ────────────────────────────────────────────────────
@@ -52,6 +54,7 @@ export type MealPlanEntryDetail = MealPlanEntry & {
 
 export type MealPlanDetail = MealPlan & {
   entries: MealPlanEntryDetail[];
+  warnings?: string[];
 };
 
 // ── Query keys ───────────────────────────────────────────────
@@ -63,6 +66,7 @@ export const mealKeys = {
   tags: ["meals", "tags"] as const,
   plans: ["meals", "plans"] as const,
   plan: (id: string) => ["meals", "plans", id] as const,
+  grocery: (id: string) => ["meals", "plans", id, "grocery"] as const,
 };
 
 // ── Recipe queries ───────────────────────────────────────────
@@ -191,6 +195,14 @@ export function useMealPlan(id: string) {
   });
 }
 
+export function useGroceryList(planId: string) {
+  return useQuery({
+    queryKey: mealKeys.grocery(planId),
+    queryFn: () => apiGet<GroceryItem[]>(`meals/plans/${planId}/grocery`),
+    enabled: !!planId,
+  });
+}
+
 // ── Meal Plan mutations ─────────────────────────────────────
 
 export function useCreateMealPlan() {
@@ -258,6 +270,18 @@ export function useDeleteMealPlanEntry() {
       apiDelete(`meals/plans/${planId}/entries/${entryId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["meals", "plans"] });
+    },
+  });
+}
+
+export function useGenerateMealPlan() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: GenerateMealPlanInput) =>
+      apiPost<MealPlanDetail>("meals/plans/generate", input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mealKeys.plans });
     },
   });
 }

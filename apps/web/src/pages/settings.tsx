@@ -14,6 +14,7 @@ import { MODULES, MODULE_DEFINITIONS } from "@personal-os/domain";
 import { useAuth } from "../contexts/auth-context";
 import { useUpdateProfile, useUpdateModules } from "../hooks/use-user";
 import { PageHeader } from "../components/shared/page-header";
+import { NutritionalProfileForm } from "../components/settings/nutritional-profile-form";
 
 export function SettingsPage() {
   const { user } = useAuth();
@@ -68,6 +69,8 @@ export function SettingsPage() {
           </Group>
         </Stack>
       </Card>
+
+      <NutritionalProfileForm />
 
       {/* Modules section */}
       <Card>

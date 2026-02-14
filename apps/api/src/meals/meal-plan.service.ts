@@ -11,19 +11,24 @@ import {
   validateUpdateMealPlan,
   validateCreateMealPlanEntry,
   validateUpdateMealPlanEntry,
+  validateGenerateMealPlan,
+  aggregateIngredients,
 } from "@personal-os/domain";
 import type {
   CreateMealPlanInput,
   UpdateMealPlanInput,
   CreateMealPlanEntryInput,
   UpdateMealPlanEntryInput,
+  GenerateMealPlanInput,
 } from "@personal-os/domain";
+import { MealPlanGeneratorService } from "./meal-plan-generator.service";
 
 @Injectable()
 export class MealPlanService {
   constructor(
     private readonly db: DatabaseService,
     private readonly uploadService: UploadService,
+    private readonly generatorService: MealPlanGeneratorService,
   ) {}
 
   async findAll(userId: string) {
@@ -32,6 +37,20 @@ export class MealPlanService {
       orderBy: { startDate: "desc" },
       include: { _count: { select: { entries: true } } },
     });
+  }
+
+  async generate(input: GenerateMealPlanInput, userId: string) {
+    const errors = validateGenerateMealPlan(input);
+    if (errors.length > 0) {
+      throw new BadRequestException(errors);
+    }
+
+    const { planId, warnings } = await this.generatorService.generate(
+      input,
+      userId,
+    );
+    const plan = await this.findOne(planId, userId);
+    return { ...plan, warnings };
   }
 
   async findOne(id: string, userId: string) {
@@ -209,6 +228,8 @@ export class MealPlanService {
     const data: Record<string, unknown> = {};
     if (input.servings !== undefined) data.servings = input.servings;
     if (input.recipeId !== undefined) data.recipeId = input.recipeId;
+    if (input.date !== undefined) data.date = new Date(input.date);
+    if (input.slot !== undefined) data.slot = input.slot;
 
     return this.db.mealPlanEntry.update({
       where: { id: entryId },
@@ -222,6 +243,32 @@ export class MealPlanService {
         },
       },
     });
+  }
+
+  async getGroceryList(planId: string, userId: string) {
+    const plan = await this.db.mealPlan.findUnique({
+      where: { id: planId },
+      include: {
+        entries: {
+          include: {
+            recipe: {
+              include: {
+                ingredients: { orderBy: { sortOrder: "asc" } },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!plan) {
+      throw new NotFoundException(`Meal plan with id "${planId}" not found`);
+    }
+    if (plan.userId !== userId) {
+      throw new ForbiddenException("You do not have access to this meal plan");
+    }
+
+    return aggregateIngredients(plan.entries);
   }
 
   async removeEntry(planId: string, entryId: string, userId: string) {

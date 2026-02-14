@@ -16,6 +16,12 @@ model User {
   ssoProvider String?
   ssoId       String?
   enabledModules String[] @default(["habits", "budget", "pets", "meals"])
+  weight        Float?
+  height        Float?
+  birthDate     DateTime?      @db.Date
+  gender        Gender?
+  activityLevel ActivityLevel?
+  fitnessGoal   FitnessGoal?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   habits      Habit[]
@@ -37,6 +43,25 @@ model User {
 
   @@unique([ssoProvider, ssoId])
   @@map("users")
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum ActivityLevel {
+  sedentary
+  light
+  moderate
+  active
+  very_active
+}
+
+enum FitnessGoal {
+  lose
+  maintain
+  gain
 }
 
 enum HabitFrequency {

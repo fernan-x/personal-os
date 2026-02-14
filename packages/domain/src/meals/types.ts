@@ -92,6 +92,8 @@ export interface CreateMealPlanEntryInput {
 export interface UpdateMealPlanEntryInput {
   recipeId?: string;
   servings?: number;
+  date?: string;
+  slot?: MealSlot;
 }
 
 export interface GenerateMealPlanInput {
@@ -100,6 +102,8 @@ export interface GenerateMealPlanInput {
   slots: MealSlot[];
   tagIds?: string[];
   maxPrepTime?: number;
+  name?: string;
+  calorieTarget?: number;
 }
 
 // ── Grocery ──────────────────────────────────────────────────

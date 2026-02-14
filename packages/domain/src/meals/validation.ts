@@ -496,6 +496,21 @@ export function validateUpdateMealPlanEntry(
     }
   }
 
+  if (input.date !== undefined) {
+    if (!input.date || isNaN(Date.parse(input.date))) {
+      errors.push({ field: "date", message: "Date must be a valid date string" });
+    }
+  }
+
+  if (input.slot !== undefined) {
+    if (!isValidSlot(input.slot)) {
+      errors.push({
+        field: "slot",
+        message: `Slot must be one of: ${MEAL_SLOTS.join(", ")}`,
+      });
+    }
+  }
+
   return errors;
 }
 
@@ -532,6 +547,19 @@ export function validateGenerateMealPlan(
           message: `Invalid slot: ${slot}. Must be one of: ${MEAL_SLOTS.join(", ")}`,
         });
       }
+    }
+  }
+
+  if (input.calorieTarget !== undefined && input.calorieTarget !== null) {
+    if (
+      typeof input.calorieTarget !== "number" ||
+      input.calorieTarget < 800 ||
+      input.calorieTarget > 10000
+    ) {
+      errors.push({
+        field: "calorieTarget",
+        message: "Calorie target must be between 800 and 10000",
+      });
     }
   }
 

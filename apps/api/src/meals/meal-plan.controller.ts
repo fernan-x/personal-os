@@ -16,6 +16,7 @@ import type {
   UpdateMealPlanInput,
   CreateMealPlanEntryInput,
   UpdateMealPlanEntryInput,
+  GenerateMealPlanInput,
   AuthenticatedUser,
 } from "@personal-os/domain";
 
@@ -29,12 +30,28 @@ export class MealPlanController {
     return this.mealPlanService.findAll(user.id);
   }
 
+  @Post("generate")
+  generate(
+    @Body() input: GenerateMealPlanInput,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.mealPlanService.generate(input, user.id);
+  }
+
   @Post()
   create(
     @Body() input: CreateMealPlanInput,
     @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.mealPlanService.create(input, user.id);
+  }
+
+  @Get(":id/grocery")
+  getGroceryList(
+    @Param("id") id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.mealPlanService.getGroceryList(id, user.id);
   }
 
   @Get(":id")
