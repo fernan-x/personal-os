@@ -23,6 +23,17 @@ export interface AddGroupMemberInput {
 export interface CreateExpenseCategoryInput {
   name: string;
   icon?: string;
+  autoCreateEnvelope?: boolean;
+}
+
+export interface UpdateExpenseCategoryInput {
+  name?: string;
+  icon?: string | null;
+  autoCreateEnvelope?: boolean;
+}
+
+export interface ImportEnvelopesInput {
+  sourcePlanId: string;
 }
 
 // ── Monthly Plan ────────────────────────────────────────────────

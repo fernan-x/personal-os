@@ -1,5 +1,4 @@
 import {
-  Text,
   Stack,
   Group,
   Button,
@@ -10,10 +9,12 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { useParams, useNavigate } from "react-router";
-import { IconReceipt, IconPlus, IconArrowLeft } from "@tabler/icons-react";
+import { IconReceipt, IconPlus, IconArrowLeft, IconDownload } from "@tabler/icons-react";
 import { useEnvelopes } from "../../hooks/use-envelopes";
+import { useMonthlyPlan } from "../../hooks/use-budget";
 import { EnvelopeCard } from "../../components/budget/envelope-card";
 import { AddEnvelopeModal } from "../../components/budget/add-envelope-modal";
+import { ImportEnvelopesModal } from "../../components/budget/import-envelopes-modal";
 import { useDisclosure } from "@mantine/hooks";
 import { PageHeader } from "../../components/shared/page-header";
 import { EmptyState } from "../../components/shared/empty-state";
@@ -25,7 +26,9 @@ export function BudgetTrackingPage() {
   }>();
   const navigate = useNavigate();
   const { data: envelopes, isLoading, error } = useEnvelopes(groupId!, planId!);
+  const { data: plan } = useMonthlyPlan(groupId!, planId!);
   const [addOpened, { open: openAdd, close: closeAdd }] = useDisclosure(false);
+  const [importOpened, { open: openImport, close: closeImport }] = useDisclosure(false);
 
   if (isLoading) {
     return (
@@ -51,9 +54,14 @@ export function BudgetTrackingPage() {
           </ActionIcon>
         }
         actions={
-          <Button leftSection={<IconPlus size={16} />} onClick={openAdd}>
-            Ajouter une enveloppe
-          </Button>
+          <Group gap="xs">
+            <Button variant="light" leftSection={<IconDownload size={16} />} onClick={openImport}>
+              Importer
+            </Button>
+            <Button leftSection={<IconPlus size={16} />} onClick={openAdd}>
+              Ajouter une enveloppe
+            </Button>
+          </Group>
         }
       />
 
@@ -83,6 +91,14 @@ export function BudgetTrackingPage() {
         planId={planId!}
         opened={addOpened}
         onClose={closeAdd}
+        plan={plan}
+      />
+
+      <ImportEnvelopesModal
+        groupId={groupId!}
+        planId={planId!}
+        opened={importOpened}
+        onClose={closeImport}
       />
     </Stack>
   );

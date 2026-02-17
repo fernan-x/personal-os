@@ -5,6 +5,7 @@ import type {
   CreateEnvelopeInput,
   UpdateEnvelopeInput,
   CreateEnvelopeEntryInput,
+  ImportEnvelopesInput,
   ExpenseCategory,
 } from "@personal-os/domain";
 
@@ -78,6 +79,22 @@ export function useDeleteEnvelope(groupId: string, planId: string) {
       apiDelete(`budget/groups/${groupId}/plans/${planId}/envelopes/${id}`),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: envelopeKeys.all(groupId, planId) });
+      qc.invalidateQueries({ queryKey: budgetKeys.planSummary(groupId, planId) });
+    },
+  });
+}
+
+export function useImportEnvelopes(groupId: string, planId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: ImportEnvelopesInput) =>
+      apiPost(
+        `budget/groups/${groupId}/plans/${planId}/envelopes/import`,
+        input,
+      ),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: envelopeKeys.all(groupId, planId) });
+      qc.invalidateQueries({ queryKey: budgetKeys.plan(groupId, planId) });
       qc.invalidateQueries({ queryKey: budgetKeys.planSummary(groupId, planId) });
     },
   });

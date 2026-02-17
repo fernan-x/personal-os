@@ -88,6 +88,39 @@ export class EnvelopeService {
     return { deleted: true };
   }
 
+  async importFromPlan(targetPlanId: string, sourcePlanId: string) {
+    await this.ensurePlanExists(targetPlanId);
+    await this.ensurePlanExists(sourcePlanId);
+
+    const sourceEnvelopes = await this.db.envelope.findMany({
+      where: { monthlyPlanId: sourcePlanId },
+      include: { category: true },
+    });
+
+    const existingEnvelopes = await this.db.envelope.findMany({
+      where: { monthlyPlanId: targetPlanId },
+      select: { categoryId: true },
+    });
+
+    const existingCategoryIds = new Set(existingEnvelopes.map((e) => e.categoryId));
+
+    const toCreate = sourceEnvelopes.filter(
+      (e) => !existingCategoryIds.has(e.categoryId),
+    );
+
+    for (const envelope of toCreate) {
+      await this.db.envelope.create({
+        data: {
+          monthlyPlanId: targetPlanId,
+          categoryId: envelope.categoryId,
+          allocatedAmount: envelope.allocatedAmount,
+        },
+      });
+    }
+
+    return this.findAll(targetPlanId);
+  }
+
   private async ensurePlanExists(planId: string) {
     const plan = await this.db.monthlyPlan.findUnique({ where: { id: planId } });
     if (!plan) {

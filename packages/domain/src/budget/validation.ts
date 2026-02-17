@@ -4,6 +4,7 @@ import type {
   UpdateBudgetGroupInput,
   AddGroupMemberInput,
   CreateExpenseCategoryInput,
+  UpdateExpenseCategoryInput,
   CreateMonthlyPlanInput,
   CreateIncomeInput,
   UpdateIncomeInput,
@@ -97,6 +98,32 @@ export function validateCreateExpenseCategory(
   }
 
   if (input.icon !== undefined && input.icon.length > CATEGORY_ICON_MAX_LENGTH) {
+    errors.push({
+      field: "icon",
+      message: `Icon must be at most ${CATEGORY_ICON_MAX_LENGTH} characters`,
+    });
+  }
+
+  return errors;
+}
+
+export function validateUpdateExpenseCategory(
+  input: UpdateExpenseCategoryInput,
+): ValidationError[] {
+  const errors: ValidationError[] = [];
+
+  if (input.name !== undefined) {
+    if (!input.name || input.name.trim().length === 0) {
+      errors.push({ field: "name", message: "Name is required" });
+    } else if (input.name.length > CATEGORY_NAME_MAX_LENGTH) {
+      errors.push({
+        field: "name",
+        message: `Name must be at most ${CATEGORY_NAME_MAX_LENGTH} characters`,
+      });
+    }
+  }
+
+  if (input.icon !== undefined && input.icon !== null && input.icon.length > CATEGORY_ICON_MAX_LENGTH) {
     errors.push({
       field: "icon",
       message: `Icon must be at most ${CATEGORY_ICON_MAX_LENGTH} characters`,

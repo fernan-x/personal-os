@@ -49,7 +49,7 @@ export class PlannedExpenseService {
 
     await this.ensurePlanExists(planId);
 
-    return this.db.plannedExpense.create({
+    const expense = await this.db.plannedExpense.create({
       data: {
         monthlyPlanId: planId,
         userId,
@@ -61,6 +61,12 @@ export class PlannedExpenseService {
       },
       include: EXPENSE_INCLUDE,
     });
+
+    if (input.categoryId) {
+      await this.autoCreateEnvelopeIfNeeded(planId, input.categoryId);
+    }
+
+    return expense;
   }
 
   async update(id: string, input: UpdatePlannedExpenseInput) {
@@ -139,6 +145,31 @@ export class PlannedExpenseService {
         },
       },
       include: EXPENSE_INCLUDE,
+    });
+  }
+
+  private async autoCreateEnvelopeIfNeeded(planId: string, categoryId: string) {
+    const category = await this.db.expenseCategory.findUnique({
+      where: { id: categoryId },
+    });
+    if (!category?.autoCreateEnvelope) return;
+
+    const existing = await this.db.envelope.findUnique({
+      where: { monthlyPlanId_categoryId: { monthlyPlanId: planId, categoryId } },
+    });
+    if (existing) return;
+
+    const expenses = await this.db.plannedExpense.findMany({
+      where: { monthlyPlanId: planId, categoryId },
+    });
+    const totalAmount = expenses.reduce((sum, e) => sum + e.amount, 0);
+
+    await this.db.envelope.create({
+      data: {
+        monthlyPlanId: planId,
+        categoryId,
+        allocatedAmount: totalAmount,
+      },
     });
   }
 

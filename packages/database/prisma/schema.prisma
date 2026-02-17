@@ -212,10 +212,11 @@ model ExpenseShare {
 }
 
 model ExpenseCategory {
-  id        String  @id @default(cuid())
-  name      String  @unique
-  icon      String?
-  isDefault Boolean @default(false)
+  id                 String  @id @default(cuid())
+  name               String  @unique
+  icon               String?
+  isDefault          Boolean @default(false)
+  autoCreateEnvelope Boolean @default(false)
 
   expenses  PlannedExpense[]
   envelopes Envelope[]

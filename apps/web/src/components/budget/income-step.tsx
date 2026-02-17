@@ -9,12 +9,17 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import {
   useCreateIncome,
   useDeleteIncome,
   type MonthlyPlanFull,
 } from "../../hooks/use-budget";
+import type { Income } from "@personal-os/domain";
+import { EditIncomeModal } from "./edit-income-modal";
+
+type UserInfo = { id: string; email: string; name: string | null };
 
 interface Props {
   groupId: string;
@@ -30,6 +35,8 @@ export function IncomeStep({ groupId, plan }: Props) {
   const [amount, setAmount] = useState<number | string>("");
   const createIncome = useCreateIncome(groupId, plan.id);
   const deleteIncome = useDeleteIncome(groupId, plan.id);
+  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
+  const [editingIncome, setEditingIncome] = useState<(Income & { user: UserInfo }) | null>(null);
 
   function handleAdd(e: React.FormEvent) {
     e.preventDefault();
@@ -44,6 +51,11 @@ export function IncomeStep({ groupId, plan }: Props) {
         },
       },
     );
+  }
+
+  function handleRowClick(income: Income & { user: UserInfo }) {
+    setEditingIncome(income);
+    openEdit();
   }
 
   const totalIncome = plan.incomes.reduce((sum, i) => sum + i.amount, 0);
@@ -80,7 +92,7 @@ export function IncomeStep({ groupId, plan }: Props) {
       </form>
 
       {plan.incomes.length > 0 && (
-        <Table striped>
+        <Table striped highlightOnHover>
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Source</Table.Th>
@@ -91,7 +103,11 @@ export function IncomeStep({ groupId, plan }: Props) {
           </Table.Thead>
           <Table.Tbody>
             {plan.incomes.map((income) => (
-              <Table.Tr key={income.id}>
+              <Table.Tr
+                key={income.id}
+                style={{ cursor: "pointer" }}
+                onClick={() => handleRowClick(income)}
+              >
                 <Table.Td>{income.source}</Table.Td>
                 <Table.Td>{income.user.name || income.user.email}</Table.Td>
                 <Table.Td ta="right">{formatCents(income.amount)} €</Table.Td>
@@ -100,7 +116,10 @@ export function IncomeStep({ groupId, plan }: Props) {
                     color="red"
                     variant="subtle"
                     size="sm"
-                    onClick={() => deleteIncome.mutate(income.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteIncome.mutate(income.id);
+                    }}
                   >
                     <IconTrash size={14} />
                   </ActionIcon>
@@ -121,6 +140,14 @@ export function IncomeStep({ groupId, plan }: Props) {
           </Table.Tfoot>
         </Table>
       )}
+
+      <EditIncomeModal
+        income={editingIncome}
+        opened={editOpened}
+        onClose={closeEdit}
+        groupId={groupId}
+        planId={plan.id}
+      />
     </Stack>
   );
 }

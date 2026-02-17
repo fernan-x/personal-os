@@ -18,6 +18,7 @@ import type {
   UpdateExpenseStatusInput,
   CreateSharedExpenseInput,
   CreateExpenseCategoryInput,
+  UpdateExpenseCategoryInput,
   PlanSummary,
 } from "@personal-os/domain";
 
@@ -144,6 +145,24 @@ export function useCreateExpenseCategory() {
   return useMutation({
     mutationFn: (input: CreateExpenseCategoryInput) =>
       apiPost<ExpenseCategory>("budget/categories", input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: budgetKeys.categories }),
+  });
+}
+
+export function useUpdateExpenseCategory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...input }: UpdateExpenseCategoryInput & { id: string }) =>
+      apiPatch<ExpenseCategory>(`budget/categories/${id}`, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: budgetKeys.categories }),
+  });
+}
+
+export function useDeleteExpenseCategory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiDelete(`budget/categories/${id}`),
     onSuccess: () => qc.invalidateQueries({ queryKey: budgetKeys.categories }),
   });
 }

@@ -12,6 +12,7 @@ import {
   Checkbox,
 } from "@mantine/core";
 import { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import {
   useCreatePlannedExpense,
@@ -20,6 +21,15 @@ import {
   useExpenseCategories,
   type MonthlyPlanFull,
 } from "../../hooks/use-budget";
+import type { PlannedExpense, ExpenseCategory } from "@personal-os/domain";
+import { EditExpenseModal } from "./edit-expense-modal";
+
+type UserInfo = { id: string; email: string; name: string | null };
+type ExpenseWithDetails = PlannedExpense & {
+  user: UserInfo | null;
+  category: ExpenseCategory | null;
+  shares: Array<{ id: string; userId: string; percentage: number; user: UserInfo }>;
+};
 
 interface Props {
   groupId: string;
@@ -41,6 +51,8 @@ export function ExpenseStep({ groupId, plan }: Props) {
   const deleteExpense = useDeletePlannedExpense(groupId, plan.id);
   const updateStatus = useUpdateExpenseStatus(groupId, plan.id);
   const { data: categories } = useExpenseCategories();
+  const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
+  const [editingExpense, setEditingExpense] = useState<ExpenseWithDetails | null>(null);
 
   function handleAdd(e: React.FormEvent) {
     e.preventDefault();
@@ -68,6 +80,11 @@ export function ExpenseStep({ groupId, plan }: Props) {
       id: expenseId,
       status: currentStatus === "paid" ? "pending" : "paid",
     });
+  }
+
+  function handleRowClick(expense: ExpenseWithDetails) {
+    setEditingExpense(expense);
+    openEdit();
   }
 
   const totalExpenses = plan.expenses.reduce((sum, e) => sum + e.amount, 0);
@@ -139,7 +156,7 @@ export function ExpenseStep({ groupId, plan }: Props) {
       </form>
 
       {plan.expenses.length > 0 && (
-        <Table striped>
+        <Table striped highlightOnHover>
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Payé</Table.Th>
@@ -152,11 +169,16 @@ export function ExpenseStep({ groupId, plan }: Props) {
           </Table.Thead>
           <Table.Tbody>
             {plan.expenses.map((expense) => (
-              <Table.Tr key={expense.id}>
+              <Table.Tr
+                key={expense.id}
+                style={{ cursor: "pointer" }}
+                onClick={() => handleRowClick(expense)}
+              >
                 <Table.Td>
                   <Checkbox
                     checked={expense.status === "paid"}
                     onChange={() => toggleStatus(expense.id, expense.status)}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </Table.Td>
                 <Table.Td>
@@ -184,7 +206,10 @@ export function ExpenseStep({ groupId, plan }: Props) {
                     color="red"
                     variant="subtle"
                     size="sm"
-                    onClick={() => deleteExpense.mutate(expense.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteExpense.mutate(expense.id);
+                    }}
                   >
                     <IconTrash size={14} />
                   </ActionIcon>
@@ -205,6 +230,14 @@ export function ExpenseStep({ groupId, plan }: Props) {
           </Table.Tfoot>
         </Table>
       )}
+
+      <EditExpenseModal
+        expense={editingExpense}
+        opened={editOpened}
+        onClose={closeEdit}
+        groupId={groupId}
+        planId={plan.id}
+      />
     </Stack>
   );
 }

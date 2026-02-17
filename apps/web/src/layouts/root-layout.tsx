@@ -23,6 +23,7 @@ import {
   IconLayoutDashboard,
   IconToolsKitchen2,
   IconSettings,
+  IconReceipt,
 } from "@tabler/icons-react";
 import type { ComponentType } from "react";
 
@@ -41,11 +42,19 @@ const navItems: NavItem[] = [
   { label: "Repas", path: "/meals", icon: IconToolsKitchen2, moduleId: "meals" },
 ];
 
+function extractBudgetPlanContext(pathname: string): { groupId: string; planId: string } | null {
+  const match = pathname.match(/^\/budget\/([^/]+)\/plans\/([^/]+)/);
+  if (!match) return null;
+  return { groupId: match[1], planId: match[2] };
+}
+
 export function RootLayout() {
   const [opened, { toggle }] = useDisclosure();
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+
+  const budgetPlanCtx = extractBudgetPlanContext(location.pathname);
 
   function handleLogout() {
     logout();
@@ -136,18 +145,59 @@ export function RootLayout() {
                 !item.moduleId ||
                 user?.enabledModules.includes(item.moduleId),
             )
-            .map((item) => (
-              <NavLink
-                key={item.path}
-                label={item.label}
-                leftSection={<item.icon size={20} stroke={1.5} />}
-                active={isActive(item.path)}
-                onClick={() => {
-                  navigate(item.path);
-                  toggle();
-                }}
-              />
-            ))}
+            .map((item) => {
+              if (item.path === "/budget" && budgetPlanCtx) {
+                const trackingPath = `/budget/${budgetPlanCtx.groupId}/plans/${budgetPlanCtx.planId}/tracking`;
+                const planPath = `/budget/${budgetPlanCtx.groupId}/plans/${budgetPlanCtx.planId}`;
+                return (
+                  <NavLink
+                    key={item.path}
+                    label={item.label}
+                    leftSection={<item.icon size={20} stroke={1.5} />}
+                    active={isActive(item.path)}
+                    defaultOpened
+                    onClick={() => {
+                      navigate(item.path);
+                      toggle();
+                    }}
+                  >
+                    <NavLink
+                      label="Planification"
+                      leftSection={<IconWallet size={16} stroke={1.5} />}
+                      active={location.pathname === planPath}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(planPath);
+                        toggle();
+                      }}
+                    />
+                    <NavLink
+                      label="Suivi des dépenses"
+                      leftSection={<IconReceipt size={16} stroke={1.5} />}
+                      active={location.pathname === trackingPath}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(trackingPath);
+                        toggle();
+                      }}
+                    />
+                  </NavLink>
+                );
+              }
+
+              return (
+                <NavLink
+                  key={item.path}
+                  label={item.label}
+                  leftSection={<item.icon size={20} stroke={1.5} />}
+                  active={isActive(item.path)}
+                  onClick={() => {
+                    navigate(item.path);
+                    toggle();
+                  }}
+                />
+              );
+            })}
         </AppShell.Section>
         <AppShell.Section>
           <Divider mb="sm" color="cream.2" />
